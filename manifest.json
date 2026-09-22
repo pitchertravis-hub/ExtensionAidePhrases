@@ -1,0 +1,21 @@
+{
+   "action": {
+      "default_icon": {
+         "128": "icons/icon128.png",
+         "16": "icons/icon16.png",
+         "48": "icons/icon48.png"
+      },
+      "default_popup": "popup.html"
+   },
+   "description": "Gérez vos phrases",
+   "icons": {
+      "128": "icons/icon128.png",
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+   },
+   "key": "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAuIps44ED16j5hjaVqdtlAPwwd5jqBaVyR6qTjixGnlSsjw378WoBC/klh9HrP+TB6Bti5+nCqkw26FA/WYrynYN9AWTbuHQRXNhFO/Mtw9BSYuqAcUjURaUWFjNc0Flng4ndSCE5DRAZfK3CwYft+7q4gM7nZxv5ZXjaTMjqwpaN+clIFevS6gdi41r2QM+uYHU3ZScwohKbXRfdyYCR15GIzg4661k+YDgJ1TE53Qqdg8gX0jgBtPbaWowEyD5J0aXaIjSgb0XWJGOBiBiN7Qyxbf61wyMhjcc/vKQrHscmSTb0LNIl0un/KTTWqF3VRJc2Aa4avBTMqes5X3ECMwIDAQAB",
+   "manifest_version": 3,
+   "name": "Phrase - TP",
+   "update_url": "https://clients2.google.com/service/update2/crx",
+   "version": "2.5"
+}

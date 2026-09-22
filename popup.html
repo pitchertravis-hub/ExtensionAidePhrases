@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Phrases - TP</title>
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+</head>
+<body>
+    <!-- Interface 1 -->
+    <div id="interface1">
+	
+        <h2>ZenText</h2>
+				    
+        <select id="listSelect">
+
+        </select>
+		
+		<button id="addListBtn"><i class="fas fa-plus"></i></button>
+		<span id="openInterface3">
+			<svg width="64px" height="64px" viewBox="0 0 128.00 128.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--noto" preserveAspectRatio="xMidYMid meet" fill="#000000">
+				<path d="M116 4H12c-4.42 0-8 3.58-8 8v104c0 4.42 3.58 8 8 8h104c4.42 0 8-3.58 8-8V12c0-4.42-3.58-8-8-8z" fill="#243ea8"></path>
+				<path d="M109.7 4H11.5A7.555 7.555 0 0 0 4 11.5v97.9c-.01 4.14 3.34 7.49 7.48 7.5H109.6c4.14.01 7.49-3.34 7.5-7.48V11.5c.09-4.05-3.13-7.41-7.18-7.5h-.22z" fill="#4765bd"></path>
+				<path d="M39.7 12.9c0-2.3-1.6-3-10.8-2.7c-7.7.3-11.5 1.2-13.8 4s-2.9 8.5-3 15.3c0 4.8 0 9.3 2.5 9.3c3.4 0 3.4-7.9 6.2-12.3c5.4-8.7 18.9-10.6 18.9-13.6z" opacity=".3" fill="#fafafa"></path>
+				<g fill="#fafafa">
+				<path d="M29.19 36.87h10.35v54.89H29.19V36.87z"></path>
+				<path d="M52.04 36.87h18.55c5.72 0 10.71 1.15 14.95 3.45c4.24 2.3 7.51 5.52 9.81 9.66c2.3 4.14 3.45 8.92 3.45 14.34s-1.15 10.2-3.45 14.34c-2.3 4.14-5.57 7.36-9.81 9.66s-9.23 3.45-14.95 3.45H52.04v-54.9zm18.09 45.08c5.93 0 10.45-1.57 13.57-4.71c3.12-3.14 4.68-7.45 4.68-12.92s-1.56-9.78-4.68-12.92c-3.12-3.14-7.64-4.71-13.57-4.71h-7.74v35.27h7.74z"></path>
+				</g>
+			</svg>
+		</span>
+
+		
+		<button id="start"><i class="fa fa-microphone"></i></button>
+		<div id="output"style="display: none; margin-top:5px; padding:2px; border:1px solid #ccc;"></div>
+		<input type="text" id="searchBar" placeholder="Rechercher rubrique">
+
+		<div id="contextMenu1" class="context-menu" style="display: none;, ">
+			<ul>
+			<li id="editlist">Modifier</li>
+			<li id="deletelist">Supprimer</li>
+			</ul>
+		</div>
+             
+		<ul id="rubriqueList"></ul>
+		
+		<div id="contextMenu" class="context-menu" style="display: none;">
+			<ul>
+			<li id="editRubrique">Modifier</li>
+			<li id="deleteRubrique">Supprimer</li>
+			</ul>
+		</div>
+        
+        <button id="addRubriqueBtn"><i class="fas fa-plus"></i> Rubrique</button>
+		
+		<!-- Menu -->
+		<div class="menu-container">
+			<i id="settingsBtn" class="fas fa-cog"></i>
+			<class="menu-btn" id="settingsBtn">
+		
+			
+			
+			<div class="dropdown-content" id="settingsMenu">
+			<button id="importBtn">Import</button>
+			<button id="exportBtn">Export</button>
+			</div>
+					
+			<button id="dark-mode-toggle">
+			<i class="sun-icon">☀️</i>
+			<i class="moon-icon">🌙</i>
+			</button>
+		
+		</div>
+		
+		<footer class="footer">Version 2.5</footer>
+	
+	</div>
+		
+    <!-- Interface 2 -->
+	<div id="interface2" class="hidden">
+        <h1 id="rubriqueTitle"></h1>
+        
+        <div id="phraseList"></div>
+		
+		<button id="backBtn">Retour</button>
+        <button id="addPhraseBtn"><i class="fas fa-plus"></i> Phrase</button>
+		<button id="globalDeleteButton">Supprimer</button>
+		
+	</div>
+	
+	<!-- Interface 3 -->
+	<div id="interface3" class="hidden">
+	
+		<button id="backBtn2"> <i class="fas fa-times" style="color: red;"></i></button>
+		
+        <h3>Navigation ID</h3>
+        
+	<div class="search-container">
+		<input type="text" id="searchInput" placeholder="Rechercher..." />
+		<button id="changeIntroBtn" title="Modifier le texte d’introduction">📝</button>
+	</div>
+
+	<div id="resultsContainer"></div>
+
+        <select id="module">
+            <option value="">Sélectionner</option>
+            <option value="A">A : Comptoir</option>
+            <option value="B">B : Gestion Stock</option>
+            <option value="C">C : Données</option>
+            <option value="D">D : Suivi Administratif</option>
+            <option value="E">E : Configuration</option>
+            <option value="F">F : BDD Médic</option>
+            <option value="G">G : Utilitaires / Listes</option>
+            <option value="H">H : Service Suivi Patient</option>
+            <option value="I">I : Location</option>
+        </select>
+        
+		<div id="optionContainer" style="display: none;">
+		<select id="option">
+			<option value="">Sélectionner</option>
+		</select>
+		</div>
+
+		<div id="subOptionContainer" style="display: none;">
+		<select id="subOption">
+			<option value="">Sélectionner</option>
+		</select>
+		</div>
+		
+        <div class="result" id="result"></div>		
+		
+    </div>
+
+    <script src="script.js"></script>
+	<script src="id.js"></script>
+	<script src="js/Sortable.min.js"></script>
+	<link rel="stylesheet" href="styles.css"> 
+	
+	
+</body>
+
+</html>
