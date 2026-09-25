@@ -3,200 +3,222 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap">
 <style>
-/* ============ Page (présentation de la maquette) ============ */
+[hidden]{display:none!important}
+*{box-sizing:border-box}
+
+/* ============ Page de présentation ============ */
 :root{
-  --pg-bg:#EEF1F5; --pg-surface:#FFFFFF; --pg-ink:#18223A; --pg-muted:#5B6579;
-  --pg-line:#D9DEE7; --pg-accent:#2F57C9; --pg-accent-soft:#E3EAFB; --pg-warn:#B4540F; --pg-warn-soft:#FBEBDD;
-  --pg-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
-  --pg-body:"Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
-  --pg-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+  --pg-bg:#ECEEF2; --pg-surface:#FFFFFF; --pg-ink:#151922; --pg-muted:#626878;
+  --pg-line:#DADDE4; --pg-accent:#23408E; --pg-accent-soft:#E6EBF7; --pg-gold:#9A7A45; --pg-gold-soft:#F4EDE1;
+  --pg-sans:"Manrope","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  --pg-mono:"JetBrains Mono",ui-monospace,Consolas,monospace;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
     color-scheme:dark;
-    --pg-bg:#0F1522; --pg-surface:#172033; --pg-ink:#E6EAF2; --pg-muted:#98A2B6;
-    --pg-line:#28324A; --pg-accent:#86A5F5; --pg-accent-soft:#1D2A4B; --pg-warn:#F0A468; --pg-warn-soft:#3A2717;
+    --pg-bg:#0C0F14; --pg-surface:#141922; --pg-ink:#E7E9EF; --pg-muted:#9199A9;
+    --pg-line:#252C39; --pg-accent:#9DB1EA; --pg-accent-soft:#1B2540; --pg-gold:#D3B47F; --pg-gold-soft:#2C2517;
   }
 }
 :root[data-theme="dark"]{
   color-scheme:dark;
-  --pg-bg:#0F1522; --pg-surface:#172033; --pg-ink:#E6EAF2; --pg-muted:#98A2B6;
-  --pg-line:#28324A; --pg-accent:#86A5F5; --pg-accent-soft:#1D2A4B; --pg-warn:#F0A468; --pg-warn-soft:#3A2717;
+  --pg-bg:#0C0F14; --pg-surface:#141922; --pg-ink:#E7E9EF; --pg-muted:#9199A9;
+  --pg-line:#252C39; --pg-accent:#9DB1EA; --pg-accent-soft:#1B2540; --pg-gold:#D3B47F; --pg-gold-soft:#2C2517;
 }
-*{box-sizing:border-box}
-[hidden]{display:none!important}
-body{margin:0;background:var(--pg-bg);color:var(--pg-ink);font:15px/1.55 var(--pg-body)}
-.wrap{max-width:1180px;margin:0 auto;padding-inline:24px;padding-block:40px 64px}
+body{margin:0;background:var(--pg-bg);color:var(--pg-ink);font:15px/1.6 var(--pg-sans)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:24px;padding-block:44px 72px}
 @media (max-width:600px){.wrap{padding-inline:16px}}
-h1,h2,h3{font-family:var(--pg-display);text-wrap:balance;margin:0}
-h1{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-.01em}
-h2{font-size:24px;font-weight:700;margin-bottom:6px}
-h3{font-size:17px;font-weight:700}
-.eyebrow{font:600 12px/1 var(--pg-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--pg-accent)}
-.lede{color:var(--pg-muted);max-width:68ch;margin:10px 0 0}
-section{margin-top:48px}
-.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px;margin-bottom:18px}
-.sec-head p{margin:0;color:var(--pg-muted);max-width:62ch}
-code,.mono{font-family:var(--pg-mono);font-size:.88em}
-.seg{display:inline-flex;border:1px solid var(--pg-line);border-radius:8px;background:var(--pg-surface);padding:3px;gap:2px}
-.seg button{border:0;background:none;color:var(--pg-muted);font:600 13px var(--pg-body);padding:6px 12px;border-radius:6px;cursor:pointer}
-.seg button[aria-pressed="true"]{background:var(--pg-accent-soft);color:var(--pg-accent)}
-.seg button:focus-visible{outline:2px solid var(--pg-accent);outline-offset:1px}
+h1,h2,h3{text-wrap:balance;margin:0;letter-spacing:-.02em}
+h1{font-size:clamp(30px,4.2vw,44px);font-weight:800;line-height:1.1}
+h2{font-size:25px;font-weight:800;margin-bottom:6px}
+h3{font-size:16px;font-weight:700;letter-spacing:-.01em}
+.eyebrow{font:600 11.5px/1 var(--pg-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--pg-gold)}
+.lede{color:var(--pg-muted);max-width:70ch;margin:12px 0 0}
+section{margin-top:56px}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px 24px;margin-bottom:20px}
+.sec-head p{margin:0;color:var(--pg-muted);max-width:60ch}
+code,.mono{font-family:var(--pg-mono);font-size:.86em}
+.seg{display:inline-flex;border:1px solid var(--pg-line);border-radius:999px;background:var(--pg-surface);padding:3px;gap:2px}
+.seg button{border:0;background:none;color:var(--pg-muted);font:700 13px var(--pg-sans);padding:6px 14px;border-radius:999px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--pg-ink);color:var(--pg-bg)}
+.seg button:focus-visible{outline:2px solid var(--pg-accent);outline-offset:2px}
 
-/* Plateau des fenêtres */
-.stage{display:flex;flex-wrap:wrap;gap:36px 40px;align-items:flex-start}
-.win{display:flex;flex-direction:column;gap:10px;max-width:100%}
-.win-label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:13px}
-.win-label b{font-family:var(--pg-display);font-size:15px}
+.stage{display:flex;flex-wrap:wrap;gap:40px 44px;align-items:flex-start}
+.win{display:flex;flex-direction:column;gap:12px;max-width:100%}
+.win-label{display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+.win-label b{font-size:15px;font-weight:800}
 .dim{font:500 12px var(--pg-mono);color:var(--pg-muted)}
-.scroller{max-width:100%;overflow-x:auto;padding:0 0 6px}
-.popup{border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 12px 32px -12px rgba(20,30,60,.35);outline:1px solid var(--pg-line);overflow:hidden;width:max-content}
-.ruler{position:relative;height:14px;margin-top:2px}
-.ruler::before{content:"";position:absolute;left:0;right:0;top:6px;border-top:1px dashed var(--pg-muted);opacity:.6}
+.scroller{max-width:100%;overflow-x:auto;padding-bottom:6px}
+.popup{border-radius:12px;box-shadow:0 1px 2px rgba(15,20,35,.06),0 18px 40px -18px rgba(15,20,35,.45);outline:1px solid var(--pg-line);overflow:hidden;width:max-content}
+.ruler{position:relative;height:14px}
+.ruler::before{content:"";position:absolute;left:0;right:0;top:6px;border-top:1px dashed var(--pg-muted);opacity:.55}
 .ruler span{position:absolute;left:50%;top:0;transform:translateX(-50%);background:var(--pg-bg);padding:0 6px;font:500 11px var(--pg-mono);color:var(--pg-muted)}
 .win-notes{margin:0;padding-left:18px;color:var(--pg-muted);font-size:13.5px;max-width:420px}
-.win-notes li+li{margin-top:3px}
+.win-notes li+li{margin-top:4px}
 
-/* Plan */
+.card{background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:12px;padding:18px 20px}
+.answer{max-width:860px}
+.answer p{margin:0}.answer p+p{margin-top:10px;color:var(--pg-muted)}
+.table-wrap{overflow-x:auto}
+table.t{border-collapse:collapse;width:100%;min-width:680px;background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:12px;overflow:hidden;font-size:14px}
+.t th,.t td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--pg-line);vertical-align:top}
+.t th{font:600 11px var(--pg-mono);text-transform:uppercase;letter-spacing:.08em;color:var(--pg-muted);background:var(--pg-bg)}
+.t tr:last-child td{border-bottom:0}
+.t tr.pick td{background:var(--pg-accent-soft)}
+.pill{display:inline-block;font:600 10.5px var(--pg-mono);padding:2px 8px;border-radius:99px;white-space:nowrap;vertical-align:1px}
+.pill.bug{background:var(--pg-gold-soft);color:var(--pg-gold)}
+.pill.ok{background:var(--pg-accent);color:var(--pg-bg)}
+.pill.no{background:var(--pg-bg);color:var(--pg-muted);border:1px solid var(--pg-line)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px;margin:0;padding:0;list-style:none}
+.grid li{background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:10px;padding:12px 14px;font-size:14px}
+.grid li b{display:block;margin-bottom:2px}
+.grid li span{color:var(--pg-muted)}
 .phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
-.phase{background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:10px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px}
-.phase .num{font:600 12px var(--pg-mono);color:var(--pg-accent)}
+.phase{display:flex;flex-direction:column;gap:8px}
+.phase .num{font:600 11.5px var(--pg-mono);color:var(--pg-gold);letter-spacing:.06em}
 .phase ul{margin:0;padding-left:18px;font-size:14px}
 .phase li+li{margin-top:4px}
-.phase .files{margin-top:auto;padding-top:8px;border-top:1px solid var(--pg-line);font:500 12px var(--pg-mono);color:var(--pg-muted)}
-table.t{border-collapse:collapse;width:100%;min-width:640px;background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:10px;overflow:hidden;font-size:14px}
-.t th,.t td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--pg-line);vertical-align:top}
-.t th{font:600 12px var(--pg-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--pg-muted);background:var(--pg-bg)}
-.t tr:last-child td{border-bottom:0}
-.pill{display:inline-block;font:600 11px var(--pg-mono);padding:2px 8px;border-radius:99px;white-space:nowrap}
-.pill.bug{background:var(--pg-warn-soft);color:var(--pg-warn)}
-.pill.ok{background:var(--pg-accent-soft);color:var(--pg-accent)}
-.table-wrap{overflow-x:auto}
-.keep{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none}
-.keep li{background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:8px;padding:10px 12px;font-size:14px}
-.keep li code{color:var(--pg-accent)}
-
-
-.answer{background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:10px;padding:16px 20px;max-width:820px}
-.answer p{margin:0}.answer p+p{margin-top:10px;color:var(--pg-muted)}
-.t tr.pick td{background:var(--pg-accent-soft)}
-.tree-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px}
-@media (max-width:800px){.tree-grid{grid-template-columns:1fr}}
-.tree{margin:0;overflow-x:auto;background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:10px;padding:16px 18px;font:500 12.5px/1.6 var(--pg-mono);color:var(--pg-ink)}
+.phase .files{margin-top:auto;padding-top:10px;border-top:1px solid var(--pg-line);font:500 12px var(--pg-mono);color:var(--pg-muted)}
+.tree-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+@media (max-width:820px){.tree-grid{grid-template-columns:1fr}}
+.tree{margin:0;overflow-x:auto;font:500 12.5px/1.65 var(--pg-mono)}
 .tree .c{color:var(--pg-muted)}
 
-/* ============ Extension : jeu de jetons proposé (styles.css v3) ============ */
+/* ============ Extension : styles proposés (css/tokens.css) ============ */
 .zt{
-  --bg:#F3F5F8; --surface:#FFFFFF; --surface-2:#EDF0F5; --ink:#1B2437; --muted:#667085;
-  --line:#DCE1EA; --accent:#2F57C9; --accent-ink:#FFFFFF; --accent-soft:#E6ECFB;
-  --ok:#1F8A4C; --ok-soft:#E1F3E8; --danger:#C0392B; --danger-soft:#FBE7E4; --hl:#FFF1B8;
-  --r:8px; --r-sm:6px;
-  --font:"Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
-  --mono:Consolas, "Cascadia Mono", ui-monospace, monospace;
-  background:var(--bg);color:var(--ink);font:13px/1.45 var(--font);
-  -webkit-font-smoothing:antialiased;
+  --bg:#F4F5F7; --surface:#FFFFFF; --sunken:#EEF0F3; --ink:#161A22; --ink-2:#3A404D; --muted:#7A8090;
+  --line:#E3E5EA; --line-strong:#D2D6DD;
+  --accent:#23408E; --accent-soft:#EBEFF8;
+  --gold:#9A7A45; --gold-soft:#F5EFE4;
+  --ok:#2E7D57; --ok-soft:#E6F2EB; --danger:#B3362B; --danger-soft:#F9E9E7;
+  --solid:#161A22; --solid-ink:#FFFFFF;
+  --shadow:0 1px 2px rgba(22,26,34,.05),0 4px 14px -6px rgba(22,26,34,.12);
+  --r:10px; --r-sm:7px;
+  --font:"Manrope","Segoe UI Variable Text","Segoe UI",system-ui,sans-serif;
+  --mono:"JetBrains Mono",Consolas,ui-monospace,monospace;
+  background:var(--bg);color:var(--ink);font:500 12.5px/1.45 var(--font);-webkit-font-smoothing:antialiased;
 }
 .zt[data-zt-theme="dark"]{
   color-scheme:dark;
-  --bg:#141922; --surface:#1C2330; --surface-2:#232B3A; --ink:#E4E8F0; --muted:#8E98AB;
-  --line:#2C3546; --accent:#7F9CF2; --accent-ink:#0F1522; --accent-soft:#243154;
-  --ok:#5CC98A; --ok-soft:#173826; --danger:#F0877A; --danger-soft:#3B1D1A; --hl:#4A4018;
+  --bg:#0F1217; --surface:#171B23; --sunken:#1D222C; --ink:#E9EBF0; --ink-2:#C3C8D2; --muted:#8A91A0;
+  --line:#252B36; --line-strong:#313846;
+  --accent:#A3B5EC; --accent-soft:#1D2641;
+  --gold:#D6B781; --gold-soft:#2B2418;
+  --ok:#6CCB98; --ok-soft:#16301F; --danger:#EE8A7E; --danger-soft:#3A1C19;
+  --solid:#E9EBF0; --solid-ink:#0F1217;
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 16px -8px rgba(0,0,0,.6);
 }
 .zt *{box-sizing:border-box}
 .zt button{font:inherit;color:inherit;cursor:pointer}
 .zt :focus-visible{outline:2px solid var(--accent);outline-offset:1px}
-.zt .ico{width:14px;height:14px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
-.zt .ibtn{display:inline-grid;place-items:center;width:24px;height:24px;border:0;border-radius:var(--r-sm);background:transparent;color:var(--muted)}
-.zt .ibtn:hover{background:var(--surface-2);color:var(--ink)}
-.zt .ibtn.is-on{background:var(--danger-soft);color:var(--danger)}
-.zt .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:28px;padding:0 10px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:12px}
-.zt .btn:hover{background:var(--surface-2)}
-.zt .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
-.zt .btn.primary:hover{filter:brightness(1.08)}
-.zt .btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
-.zt .btn.ghost:hover{background:var(--surface-2);color:var(--ink)}
-.zt .field{display:flex;align-items:center;gap:4px;height:28px;padding:0 4px 0 7px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--muted)}
+.zt .ico{width:14px;height:14px;flex:none;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.zt .cap{font:700 9.5px/1 var(--font);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.zt .ibtn{display:inline-grid;place-items:center;width:26px;height:26px;border:0;border-radius:var(--r-sm);background:transparent;color:var(--muted);transition:background .15s,color .15s}
+.zt .ibtn:hover{background:var(--sunken);color:var(--ink)}
+.zt .ibtn.is-on{color:var(--danger);background:var(--danger-soft)}
+.zt .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:30px;padding:0 12px;border-radius:var(--r-sm);border:1px solid var(--line-strong);background:var(--surface);font-weight:700;font-size:12px;transition:background .15s,transform .1s}
+.zt .btn:hover{background:var(--sunken)}
+.zt .btn:active{transform:translateY(1px)}
+.zt .btn.solid{background:var(--solid);border-color:var(--solid);color:var(--solid-ink)}
+.zt .btn.solid:hover{opacity:.9}
+.zt .field{display:flex;align-items:center;gap:6px;height:30px;padding:0 4px 0 9px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--muted);transition:border-color .15s,box-shadow .15s}
 .zt .field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
 .zt .field input{flex:1;min-width:0;border:0;background:none;outline:0;font:inherit;color:var(--ink);padding:0}
 .zt .field input::placeholder{color:var(--muted)}
-.zt .select{appearance:none;width:100%;height:28px;padding:0 22px 0 8px;border:1px solid var(--line);border-radius:var(--r-sm);color:var(--ink);font:inherit;font-weight:600;
-  background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 7px center}
-.zt .brand{display:flex;align-items:center;gap:6px;font-weight:700;font-size:14px;letter-spacing:-.01em}
-.zt .brand i{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;background:var(--accent);color:var(--accent-ink);font:700 11px var(--font);font-style:normal}
+.zt .select{appearance:none;width:100%;height:30px;padding:0 24px 0 9px;border:1px solid var(--line);border-radius:var(--r-sm);color:var(--ink);font:inherit;font-weight:700;
+  background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%237A8090' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 8px center}
+.zt .mono-z{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:6px;background:var(--solid);color:var(--gold);font:800 11px var(--font)}
+.zt .pop{position:absolute;z-index:5;min-width:140px;padding:5px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:0 12px 28px -10px rgba(0,0,0,.35)}
+.zt .pop button{display:flex;align-items:center;gap:8px;width:100%;height:28px;padding:0 8px;border:0;border-radius:6px;background:none;text-align:left;font-size:12px;font-weight:600}
+.zt .pop button:hover{background:var(--sunken)}
+.zt .pop hr{border:0;border-top:1px solid var(--line);margin:4px 2px}
+.zt .pop .danger{color:var(--danger)}
 
-/* --- Vue 1 : Rubriques (150 px + 2×5 px = 160 px, comme aujourd'hui) --- */
-.v1{width:150px;padding:5px;box-sizing:content-box;display:flex;flex-direction:column;gap:6px}
-.v1 .top{display:flex;align-items:center;justify-content:space-between;height:26px}
-.v1 .top .acts{display:flex;gap:0}
+/* --- Vue 1 · Rubriques : 150 + 2×5 = 160 px --- */
+.v1{width:150px;padding:5px;box-sizing:content-box;display:flex;flex-direction:column;gap:8px;position:relative}
+.v1 .top{display:flex;align-items:center;justify-content:space-between;height:28px;padding-left:2px}
+.v1 .brand{display:flex;align-items:center;gap:6px;font-weight:800;font-size:13px;letter-spacing:-.01em}
+.v1 .top .acts{display:flex}
+.v1 .top .ibtn{width:22px;height:22px}
+.v1 .blk{display:flex;flex-direction:column;gap:5px}
 .v1 .row{display:flex;gap:4px}
-.v1 .row .select{flex:1}
-.v1 .row .btn{width:28px;padding:0}
-.v1 .rub{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;max-height:340px;overflow:auto}
-.v1 .rub li{position:relative;display:flex;align-items:center;gap:4px;height:30px;padding:0 4px 0 8px;border-radius:var(--r-sm);cursor:pointer;background:var(--surface);border:1px solid transparent}
-.v1 .rub li:hover{border-color:var(--line)}
-.v1 .rub li .n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
-.v1 .rub li .c{font:600 10px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.v1 .row .select{flex:1;min-width:0}
+.v1 .row .btn{width:30px;padding:0}
+.v1 .field .ibtn{width:22px;height:22px}
+.v1 .head{display:flex;justify-content:space-between;align-items:baseline;padding:2px 2px 0}
+.v1 .rub{list-style:none;margin:0;padding:3px;display:flex;flex-direction:column;max-height:320px;overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--shadow)}
+.v1 .rub li{position:relative;display:flex;align-items:center;gap:6px;height:29px;padding:0 3px 0 8px;border-radius:6px;cursor:pointer;transition:background .12s}
+.v1 .rub li+li{box-shadow:0 -1px 0 var(--line)}
+.v1 .rub li:hover,.v1 .rub li:hover+li{box-shadow:none}
+.v1 .rub li:hover{background:var(--sunken)}
+.v1 .rub li .n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700;color:var(--ink-2)}
+.v1 .rub li:hover .n{color:var(--ink)}
+.v1 .rub li .c{font:500 10px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums;padding-right:4px}
 .v1 .rub li .more{display:none;width:20px;height:20px}
 .v1 .rub li:hover .c{display:none}
 .v1 .rub li:hover .more{display:inline-grid}
-.v1 .rub li.hl{background:var(--hl);border-color:transparent}
-.v1 .rub li.hl .c{display:none}
-.v1 .foot{display:flex;align-items:center;justify-content:space-between;padding-top:4px;border-top:1px solid var(--line)}
-.v1 .foot small{font:10px var(--mono);color:var(--muted)}
-.v1 .menu{position:absolute;right:4px;top:28px;z-index:3;width:128px;padding:4px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:0 8px 20px -6px rgba(0,0,0,.25)}
-.v1 .menu button{display:flex;align-items:center;gap:7px;width:100%;height:26px;padding:0 7px;border:0;border-radius:5px;background:none;text-align:left;font-size:12px}
-.v1 .menu button:hover{background:var(--surface-2)}
-.v1 .menu hr{border:0;border-top:1px solid var(--line);margin:3px 0}
-.v1 .menu .danger{color:var(--danger)}
+.v1 .rub li.hl{background:var(--gold-soft);box-shadow:none}
+.v1 .rub li.hl+li{box-shadow:none}
+.v1 .rub li.hl .n{color:var(--ink)}
+.v1 .rub li.hl::before{content:"";position:absolute;left:3px;top:9px;bottom:9px;width:2px;border-radius:2px;background:var(--gold)}
+.v1 .foot{display:flex;align-items:center;justify-content:space-between;padding:0 2px}
+.v1 .foot small{font:500 9.5px var(--mono);color:var(--muted)}
+.v1 .foot i{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--ok);margin-right:4px;vertical-align:1px}
 
-/* --- Vue 2 : Phrases (765 px + 2×5 px = 775 px, comme aujourd'hui) --- */
-.v2{width:765px;padding:5px;box-sizing:content-box;display:flex;flex-direction:column;gap:6px}
-.v2 .bar{display:flex;align-items:center;gap:8px;height:36px;padding:0 4px}
-.v2 .crumb{display:flex;align-items:baseline;gap:6px;flex:1;min-width:0}
-.v2 .crumb span{color:var(--muted);font-size:12px}
-.v2 .crumb h1{margin:0;font:700 17px var(--font);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.v2 .crumb em{font:600 11px var(--mono);font-style:normal;color:var(--muted)}
-.v2 .bar .field{width:190px}
-.v2 .list{display:flex;flex-direction:column;gap:6px;max-height:480px;overflow:auto;padding:1px}
-.v2 .ph{display:grid;grid-template-columns:18px 1fr auto;align-items:start;gap:6px;padding:8px 8px 8px 4px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line)}
-.v2 .ph:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
-.v2 .grip{color:var(--muted);opacity:.45;cursor:grab;padding-top:3px;display:grid;place-items:center}
-.v2 .ph:hover .grip{opacity:1}
-.v2 .txt{font-size:13.5px;line-height:1.55;outline:0;padding:1px 2px;border-radius:4px;white-space:pre-wrap}
-.v2 .txt:focus{background:var(--surface-2)}
-.v2 .txt a{color:var(--accent)}
-.v2 .acts{display:flex;gap:2px;align-items:center}
-.v2 .copy{height:26px;padding:0 9px;border-radius:var(--r-sm);border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:12px;display:inline-flex;align-items:center;gap:5px;min-width:78px;justify-content:center}
-.v2 .copy.done{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+/* --- Vue 2 · Phrases : 765 + 2×5 = 775 px --- */
+.v2{width:765px;padding:5px;box-sizing:content-box;display:flex;flex-direction:column;gap:8px}
+.v2 .bar{display:flex;align-items:center;gap:10px;padding:6px 4px 4px}
+.v2 .title{flex:1;min-width:0;display:flex;flex-direction:column;gap:3px}
+.v2 .title h1{margin:0;font:800 19px/1.1 var(--font);letter-spacing:-.02em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v2 .title h1 em{font:500 12px var(--mono);font-style:normal;color:var(--muted);margin-left:8px;letter-spacing:0}
+.v2 .bar .field{width:200px}
+.v2 .list{display:flex;flex-direction:column;gap:6px;max-height:470px;overflow:auto;padding:1px}
+.v2 .ph{position:relative;display:grid;grid-template-columns:30px 1fr auto;align-items:start;gap:4px;padding:10px 10px 10px 4px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);transition:border-color .15s}
+.v2 .ph:hover{border-color:var(--line-strong)}
+.v2 .idx{display:grid;place-items:center;height:20px;font:500 10.5px var(--mono);color:var(--muted);cursor:grab;border-radius:5px}
+.v2 .idx .ico{display:none}
+.v2 .ph:hover .idx span{display:none}
+.v2 .ph:hover .idx .ico{display:block}
+.v2 .txt{font-size:13.5px;font-weight:500;line-height:1.6;color:var(--ink-2);outline:0;padding:0 4px;border-radius:5px;white-space:pre-wrap}
+.v2 .txt:focus{background:var(--sunken);color:var(--ink)}
+.v2 .txt a{color:var(--accent);text-underline-offset:2px}
+.v2 .acts{display:flex;gap:2px;align-items:center;padding-left:8px}
+.v2 .copy{height:28px;padding:0 11px;border-radius:999px;border:1px solid var(--line-strong);background:var(--surface);color:var(--ink);font-weight:700;font-size:11.5px;display:inline-flex;align-items:center;gap:6px;min-width:84px;justify-content:center;transition:background .15s,border-color .15s,color .15s}
+.v2 .copy:hover{background:var(--solid);border-color:var(--solid);color:var(--solid-ink)}
+.v2 .copy.done,.v2 .copy.done:hover{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
 .v2 .del:hover{background:var(--danger-soft);color:var(--danger)}
-.v2 .add{height:34px;border:1px dashed var(--line);border-radius:var(--r);background:transparent;color:var(--muted);font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
-.v2 .add:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
-.v2 .undo{display:flex;align-items:center;gap:10px;justify-content:space-between;height:32px;padding:0 6px 0 12px;border-radius:var(--r);background:var(--ink);color:var(--bg);font-size:12px}
-.v2 .undo button{border:0;background:none;color:var(--bg);font-weight:700;text-decoration:underline;padding:4px 6px}
+.v2 .add{height:38px;border:1px dashed var(--line-strong);border-radius:var(--r);background:transparent;color:var(--muted);font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px}
+.v2 .add:hover{color:var(--ink);border-color:var(--ink);background:var(--surface)}
+.v2 .undo{display:flex;align-items:center;justify-content:space-between;gap:10px;height:36px;padding:0 6px 0 14px;border-radius:var(--r);background:var(--solid);color:var(--solid-ink);font-weight:600}
+.v2 .undo button{border:0;background:none;color:var(--gold);font-weight:800;padding:4px 8px}
 
-/* --- Vue 3 : Navigation ID (300 px + 2×5 px = 310 px, comme aujourd'hui) --- */
-.v3{width:300px;padding:5px;box-sizing:content-box;display:flex;flex-direction:column;gap:8px}
-.v3 .top{display:flex;align-items:center;gap:4px;height:28px}
-.v3 .top h1{flex:1;margin:0;font:700 14px var(--font)}
-.v3 .sug{position:relative}
-.v3 .sug ul{list-style:none;margin:4px 0 0;padding:4px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:0 8px 20px -8px rgba(0,0,0,.25)}
-.v3 .sug li{padding:6px 7px;border-radius:5px;font-size:12px;cursor:pointer;display:flex;flex-direction:column;gap:1px}
-.v3 .sug li small{color:var(--muted);font-size:11px}
-.v3 .sug li.on,.v3 .sug li:hover{background:var(--accent-soft)}
-.v3 .sug mark{background:none;color:var(--accent);font-weight:700}
-.v3 .steps{display:flex;flex-direction:column;gap:6px}
-.v3 .step{display:grid;grid-template-columns:18px 1fr;align-items:center;gap:6px}
-.v3 .step b{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;font:700 10px var(--mono);background:var(--surface-2);color:var(--muted)}
-.v3 .step.set b{background:var(--accent);color:var(--accent-ink)}
-.v3 .out{border-radius:var(--r);background:var(--surface);border:1px solid var(--line);overflow:hidden}
-.v3 .out p{margin:0;padding:9px 10px 4px;color:var(--muted);font-size:12px}
-.v3 .path{list-style:none;margin:0;padding:2px 10px 10px;display:flex;flex-direction:column;gap:3px;font-size:13px}
-.v3 .path li{display:flex;gap:7px;align-items:baseline}
-.v3 .path li span{font:600 11px var(--mono);color:var(--accent);min-width:14px}
-.v3 .out footer{display:flex;align-items:center;justify-content:space-between;padding:6px 6px 6px 10px;border-top:1px solid var(--line);background:var(--surface-2);font-size:11.5px;color:var(--ok);font-weight:600}
-.v3 .out footer .btn{height:24px}
+/* --- Vue 3 · Navigation ID : 300 + 2×5 = 310 px --- */
+.v3{width:300px;padding:5px;box-sizing:content-box;display:flex;flex-direction:column;gap:10px}
+.v3 .top{display:flex;align-items:center;gap:4px;height:30px}
+.v3 .top h1{flex:1;margin:0;font:800 14px var(--font);letter-spacing:-.01em}
+.v3 .sug ul{list-style:none;margin:5px 0 0;padding:4px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow)}
+.v3 .sug li{padding:6px 8px;border-radius:6px;cursor:pointer;display:flex;flex-direction:column;gap:1px}
+.v3 .sug li b{font-weight:700}
+.v3 .sug li small{color:var(--muted);font:500 10.5px var(--mono)}
+.v3 .sug li.on,.v3 .sug li:hover{background:var(--sunken)}
+.v3 .sug mark{background:none;color:var(--accent);font-weight:800}
+.v3 .path-steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;position:relative}
+.v3 .path-steps::before{content:"";position:absolute;left:9px;top:14px;bottom:14px;width:1px;background:var(--line-strong)}
+.v3 .path-steps li{position:relative;display:grid;grid-template-columns:19px 1fr;gap:8px;align-items:center}
+.v3 .path-steps li b{position:relative;z-index:1;display:grid;place-items:center;width:19px;height:19px;border-radius:50%;font:600 10px var(--mono);background:var(--bg);border:1px solid var(--line-strong);color:var(--muted)}
+.v3 .path-steps li.set b{background:var(--solid);border-color:var(--solid);color:var(--gold)}
+.v3 .ticket{border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:var(--shadow);overflow:hidden}
+.v3 .ticket p{margin:0;padding:11px 12px 6px;color:var(--muted);font-style:italic;font-size:12px}
+.v3 .ticket ol{list-style:none;margin:0;padding:0 12px 12px;display:flex;flex-direction:column;gap:4px;font-weight:700;font-size:13px}
+.v3 .ticket ol li{display:flex;gap:9px;align-items:baseline}
+.v3 .ticket ol li span{font:600 10.5px var(--mono);color:var(--gold);min-width:12px}
+.v3 .ticket footer{display:flex;align-items:center;justify-content:space-between;padding:6px 6px 6px 12px;border-top:1px dashed var(--line-strong);background:var(--sunken);font-size:11.5px;color:var(--ok);font-weight:700}
+.v3 .ticket footer span{display:inline-flex;align-items:center;gap:5px}
+.v3 .ticket footer .btn{height:26px;padding:0 10px;font-size:11.5px;color:var(--ink)}
+.zt[data-zt-theme="dark"] .v3 .path-steps li.set b,.zt[data-zt-theme="dark"] .mono-z{color:var(--solid-ink)}
+@media (prefers-reduced-motion:reduce){.zt *{transition:none!important}}
 </style>
 
 <svg width="0" height="0" style="position:absolute" aria-hidden="true">
@@ -204,15 +226,14 @@ table.t{border-collapse:collapse;width:100%;min-width:640px;background:var(--pg-
   <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.3-4.3"/></symbol>
   <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
-  <symbol id="i-cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
-  <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+  <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></symbol>
   <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
   <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
   <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></symbol>
   <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="18" r="1"/></symbol>
   <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></symbol>
-  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
   <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12M6 10l6 6 6-6M5 20h14"/></symbol>
   <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 20V8M6 14l6-6 6 6M5 4h14"/></symbol>
   <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
@@ -220,9 +241,9 @@ table.t{border-collapse:collapse;width:100%;min-width:640px;background:var(--pg-
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">Phrase – TP · extension Chrome · v2.5 → v3.0 · WXT + React</div>
+    <div class="eyebrow">Phrase – TP · extension Chrome · v2.5 → v3.0</div>
     <h1>Refonte de ZenText</h1>
-    <p class="lede">Nouvelle structure et nouveau style pour les trois fenêtres de l'extension. Les largeurs ne changent pas : 160&nbsp;px pour les rubriques, 775&nbsp;px pour les phrases, 310&nbsp;px pour la Navigation ID. La hauteur reste automatique, comme aujourd'hui. Les données enregistrées sont reprises telles quelles.</p>
+    <p class="lede">Un style plus sobre et plus soigné pour les trois fenêtres, sans rien installer : l'extension reste un dossier de fichiers HTML, CSS et JavaScript, publié sur le Chrome Web Store comme aujourd'hui. Les largeurs ne changent pas (160, 775 et 310&nbsp;px) et les données enregistrées sont reprises telles quelles.</p>
   </header>
 
   <!-- =================== MAQUETTE =================== -->
@@ -231,7 +252,7 @@ table.t{border-collapse:collapse;width:100%;min-width:640px;background:var(--pg-
       <div>
         <div class="eyebrow">Maquette · échelle 1:1</div>
         <h2 id="h-maq">Les trois fenêtres</h2>
-        <p>Les boutons de la maquette réagissent : copier, supprimer puis annuler, menu «&nbsp;⋯&nbsp;», micro.</p>
+        <p>Encre graphite, bleu saphir pour les liens et le focus, touche dorée pour ce qui est choisi. Les boutons réagissent : copier, supprimer puis annuler, menus, micro.</p>
       </div>
       <div class="seg" role="group" aria-label="Thème de l'extension">
         <button type="button" id="zt-light" aria-pressed="true">Clair</button>
@@ -242,63 +263,66 @@ table.t{border-collapse:collapse;width:100%;min-width:640px;background:var(--pg-
     <div class="stage">
       <!-- Vue 1 -->
       <div class="win">
-        <div class="win-label"><b>1 · Rubriques</b><span class="dim">160 px</span></div>
+        <div class="win-label"><b>Rubriques</b><span class="dim">160 px</span></div>
         <div class="popup">
           <div class="zt v1" id="v1">
             <div class="top">
-              <div class="brand"><i>Z</i>ZenText</div>
+              <div class="brand"><span class="mono-z">Z</span>ZenText</div>
               <div class="acts">
-                <button class="ibtn" type="button" title="Navigation ID"><svg class="ico"><use href="#i-map"/></svg></button>
-                <button class="ibtn" type="button" title="Réglages" id="cogBtn"><svg class="ico"><use href="#i-cog"/></svg></button>
+                <button class="ibtn" type="button" title="Navigation ID"><svg class="ico"><use href="#i-compass"/></svg></button>
+                <button class="ibtn" type="button" title="Réglages" id="cogBtn"><svg class="ico"><use href="#i-sliders"/></svg></button>
               </div>
             </div>
-            <div class="row">
-              <select class="select" id="m-list" aria-label="Liste"><option>Hotline</option><option>Formation</option><option>Relances</option></select>
-              <button class="btn" type="button" title="Nouvelle liste"><svg class="ico"><use href="#i-plus"/></svg></button>
+            <div class="blk">
+              <span class="cap">Liste</span>
+              <div class="row">
+                <select class="select" id="m-list" aria-label="Liste"><option>Hotline</option><option>Formation</option><option>Relances</option></select>
+                <button class="btn" type="button" title="Nouvelle liste"><svg class="ico"><use href="#i-plus"/></svg></button>
+              </div>
             </div>
             <label class="field">
               <svg class="ico"><use href="#i-search"/></svg>
               <input id="m-search" placeholder="Rechercher" aria-label="Rechercher une rubrique">
               <button class="ibtn" type="button" id="micBtn" title="Recherche vocale"><svg class="ico"><use href="#i-mic"/></svg></button>
             </label>
-            <div style="position:relative">
-              <ul class="rub" id="rubList">
-                <li><span class="n">Accueil appel</span><span class="c">4</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
-                <li><span class="n">Mot de passe</span><span class="c">6</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
-                <li class="hl"><span class="n">Télétransmission</span><span class="c">5</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
-                <li><span class="n">Imprimante</span><span class="c">3</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
-                <li><span class="n">Lecteur Vitale</span><span class="c">7</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
-                <li><span class="n">Sauvegarde</span><span class="c">2</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
-                <li><span class="n">Mise à jour</span><span class="c">4</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
-                <li><span class="n">Fin d'appel</span><span class="c">3</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
-              </ul>
-              <div class="menu" id="rubMenu" hidden>
-                <button type="button"><svg class="ico"><use href="#i-pen"/></svg>Renommer</button>
-                <hr>
-                <button type="button" class="danger"><svg class="ico"><use href="#i-trash"/></svg>Supprimer</button>
-              </div>
-              <div class="menu" id="cogMenu" hidden style="top:-4px">
-                <button type="button"><svg class="ico"><use href="#i-down"/></svg>Importer</button>
-                <button type="button"><svg class="ico"><use href="#i-up"/></svg>Exporter</button>
-                <hr>
-                <button type="button"><svg class="ico"><use href="#i-moon"/></svg>Thème sombre</button>
-              </div>
+            <div class="head"><span class="cap">Rubriques</span><span class="cap">8</span></div>
+            <ul class="rub" id="rubList">
+              <li><span class="n">Accueil appel</span><span class="c">4</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+              <li><span class="n">Mot de passe</span><span class="c">6</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+              <li class="hl"><span class="n">Télétransmission</span><span class="c">5</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+              <li><span class="n">Imprimante</span><span class="c">3</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+              <li><span class="n">Lecteur Vitale</span><span class="c">7</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+              <li><span class="n">Sauvegarde</span><span class="c">2</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+              <li><span class="n">Mise à jour</span><span class="c">4</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+              <li><span class="n">Fin d'appel</span><span class="c">3</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+            </ul>
+            <button class="btn solid" type="button"><svg class="ico"><use href="#i-plus"/></svg>Rubrique</button>
+            <div class="foot"><small><i></i>Sauvegardé 22/09</small><small>v3.0</small></div>
+
+            <div class="pop" id="rubMenu" hidden style="left:14px">
+              <button type="button"><svg class="ico"><use href="#i-pen"/></svg>Renommer</button>
+              <hr>
+              <button type="button" class="danger"><svg class="ico"><use href="#i-trash"/></svg>Supprimer</button>
             </div>
-            <button class="btn primary" type="button"><svg class="ico"><use href="#i-plus"/></svg>Rubrique</button>
-            <div class="foot"><small>v3.0</small><small>sauvegardé 22/09</small></div>
+            <div class="pop" id="cogMenu" hidden style="left:14px;top:36px">
+              <button type="button"><svg class="ico"><use href="#i-down"/></svg>Importer</button>
+              <button type="button"><svg class="ico"><use href="#i-up"/></svg>Exporter</button>
+              <hr>
+              <button type="button"><svg class="ico"><use href="#i-moon"/></svg>Thème sombre</button>
+            </div>
           </div>
         </div>
         <div class="ruler"><span>150 + 2×5</span></div>
         <ul class="win-notes">
-          <li>En-tête : nom, accès Navigation ID, menu Réglages (import, export, thème).</li>
-          <li>Micro intégré au champ de recherche. La rubrique reconnue passe en jaune.</li>
-          <li>Nombre de phrases à droite. Au survol, bouton «&nbsp;⋯&nbsp;» (renommer, supprimer). Le clic droit marche toujours.</li>
+          <li>En-tête : monogramme, accès Navigation ID, menu Réglages (import, export, thème).</li>
+          <li>Micro dans le champ de recherche. La rubrique reconnue reçoit un filet doré.</li>
+          <li>Rubriques groupées dans un seul bloc, séparées par un trait fin. Au survol, bouton «&nbsp;⋯&nbsp;». Le clic droit marche toujours.</li>
         </ul>
       </div>
 
       <!-- Vue 3 -->
       <div class="win">
-        <div class="win-label"><b>3 · Navigation ID</b><span class="dim">310 px</span></div>
+        <div class="win-label"><b>Navigation ID</b><span class="dim">310 px</span></div>
         <div class="popup">
           <div class="zt v3" id="v3">
             <div class="top">
@@ -309,52 +333,52 @@ table.t{border-collapse:collapse;width:100%;min-width:640px;background:var(--pg-
             <div class="sug">
               <label class="field"><svg class="ico"><use href="#i-search"/></svg><input id="m-nav" value="renouv" aria-label="Rechercher un menu"></label>
               <ul>
-                <li class="on"><span><mark>Renouv</mark>ellement</span><small>A Comptoir › M Rappel › U</small></li>
+                <li class="on"><b><mark>Renouv</mark>ellement</b><small>A Comptoir › M Rappel › U</small></li>
               </ul>
             </div>
-            <div class="steps">
-              <div class="step set"><b>1</b><select class="select" id="m-mod" aria-label="Module"><option>A : Comptoir</option></select></div>
-              <div class="step set"><b>2</b><select class="select" id="m-opt" aria-label="Option"><option>M : Rappel</option></select></div>
-              <div class="step set"><b>3</b><select class="select" id="m-sub" aria-label="Sous-option"><option>U : Renouvellement</option></select></div>
-            </div>
-            <div class="out">
+            <ol class="path-steps">
+              <li class="set"><b>1</b><select class="select" id="m-mod" aria-label="Module"><option>A · Comptoir</option></select></li>
+              <li class="set"><b>2</b><select class="select" id="m-opt" aria-label="Option"><option>M · Rappel</option></select></li>
+              <li class="set"><b>3</b><select class="select" id="m-sub" aria-label="Sous-option"><option>U · Renouvellement</option></select></li>
+            </ol>
+            <div class="ticket">
               <p>Je vous invite à suivre le chemin suivant :</p>
-              <ol class="path">
+              <ol>
                 <li><span>•</span>Menu ID</li>
                 <li><span>A</span>Comptoir</li>
                 <li><span>M</span>Rappel</li>
                 <li><span>U</span>Renouvellement</li>
               </ol>
-              <footer><span>✓ Copié dans le presse-papiers</span><button class="btn" type="button" id="navCopy"><svg class="ico"><use href="#i-copy"/></svg>Recopier</button></footer>
+              <footer><span><svg class="ico"><use href="#i-check"/></svg>Copié</span><button class="btn" type="button" id="navCopy"><svg class="ico"><use href="#i-copy"/></svg>Recopier</button></footer>
             </div>
           </div>
         </div>
         <div class="ruler"><span>300 + 2×5</span></div>
         <ul class="win-notes">
-          <li>Recherche en premier : les suggestions montrent le chemin complet et le texte trouvé.</li>
-          <li>Les trois listes deviennent des étapes numérotées 1-2-3 : on voit ce qui reste à choisir.</li>
-          <li>Le résultat s'affiche comme la phrase collée, avec la confirmation de copie et un bouton pour recopier.</li>
+          <li>La recherche passe en premier. Chaque suggestion montre son chemin complet.</li>
+          <li>Les trois listes forment un parcours 1-2-3 relié par un trait : on voit ce qui reste à choisir.</li>
+          <li>Le résultat ressemble à la phrase collée, avec la confirmation de copie et un bouton pour recopier.</li>
         </ul>
       </div>
 
       <!-- Vue 2 -->
       <div class="win" style="flex-basis:100%">
-        <div class="win-label"><b>2 · Phrases d'une rubrique</b><span class="dim">775 px</span></div>
+        <div class="win-label"><b>Phrases d'une rubrique</b><span class="dim">775 px</span></div>
         <div class="scroller">
           <div class="popup">
             <div class="zt v2" id="v2">
               <div class="bar">
                 <button class="ibtn" type="button" title="Retour aux rubriques"><svg class="ico"><use href="#i-back"/></svg></button>
-                <div class="crumb"><span>Hotline ›</span><h1>Télétransmission</h1><em>5 phrases</em></div>
+                <div class="title"><span class="cap">Hotline</span><h1>Télétransmission<em>5 phrases</em></h1></div>
                 <label class="field"><svg class="ico"><use href="#i-search"/></svg><input id="m-phsearch" placeholder="Filtrer les phrases" aria-label="Filtrer les phrases"></label>
-                <button class="btn primary" type="button"><svg class="ico"><use href="#i-plus"/></svg>Phrase</button>
+                <button class="btn solid" type="button"><svg class="ico"><use href="#i-plus"/></svg>Phrase</button>
               </div>
               <div class="list" id="phList">
-                <div class="ph"><span class="grip"><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">Bonjour, je vois que les lots de télétransmission du jour ne sont pas partis. Pouvez-vous me confirmer que le lecteur Vitale est bien branché et allumé ?</div><div class="acts"><button class="copy" type="button"><svg class="ico"><use href="#i-copy"/></svg>Copier</button><button class="ibtn del" type="button" title="Supprimer"><svg class="ico"><use href="#i-trash"/></svg></button></div></div>
-                <div class="ph"><span class="grip"><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">Les rejets SCOR se consultent dans le suivi des lots. Ouvrez le lot concerné, puis cliquez sur « Détail des rejets » pour voir le motif pour chaque facture.</div><div class="acts"><button class="copy" type="button"><svg class="ico"><use href="#i-copy"/></svg>Copier</button><button class="ibtn del" type="button" title="Supprimer"><svg class="ico"><use href="#i-trash"/></svg></button></div></div>
-                <div class="ph"><span class="grip"><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">Je relance l'envoi depuis mon poste. Merci de laisser le logiciel ouvert quelques minutes.
+                <div class="ph"><span class="idx"><span>01</span><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">Bonjour, je vois que les lots de télétransmission du jour ne sont pas partis. Pouvez-vous me confirmer que le lecteur Vitale est bien branché et allumé ?</div><div class="acts"><button class="copy" type="button"><svg class="ico"><use href="#i-copy"/></svg>Copier</button><button class="ibtn del" type="button" title="Supprimer"><svg class="ico"><use href="#i-trash"/></svg></button></div></div>
+                <div class="ph"><span class="idx"><span>02</span><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">Les rejets SCOR se consultent dans le suivi des lots. Ouvrez le lot concerné, puis cliquez sur « Détail des rejets » pour voir le motif de chaque facture.</div><div class="acts"><button class="copy" type="button"><svg class="ico"><use href="#i-copy"/></svg>Copier</button><button class="ibtn del" type="button" title="Supprimer"><svg class="ico"><use href="#i-trash"/></svg></button></div></div>
+                <div class="ph"><span class="idx"><span>03</span><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">Je relance l'envoi depuis mon poste. Merci de laisser le logiciel ouvert quelques minutes.
 Si le lot reste en attente, je vous rappelle avant 17 h.</div><div class="acts"><button class="copy" type="button"><svg class="ico"><use href="#i-copy"/></svg>Copier</button><button class="ibtn del" type="button" title="Supprimer"><svg class="ico"><use href="#i-trash"/></svg></button></div></div>
-                <div class="ph"><span class="grip"><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">La procédure complète est disponible ici : <a href="#">https://aide.exemple.fr/teletransmission</a></div><div class="acts"><button class="copy" type="button"><svg class="ico"><use href="#i-copy"/></svg>Copier</button><button class="ibtn del" type="button" title="Supprimer"><svg class="ico"><use href="#i-trash"/></svg></button></div></div>
+                <div class="ph"><span class="idx"><span>04</span><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">La procédure complète est disponible ici : <a href="#">https://aide.exemple.fr/teletransmission</a></div><div class="acts"><button class="copy" type="button"><svg class="ico"><use href="#i-copy"/></svg>Copier</button><button class="ibtn del" type="button" title="Supprimer"><svg class="ico"><use href="#i-trash"/></svg></button></div></div>
               </div>
               <div class="undo" id="undoBar" hidden><span>Phrase supprimée.</span><button type="button" id="undoBtn">Annuler</button></div>
               <button class="add" type="button"><svg class="ico"><use href="#i-plus"/></svg>Ajouter une phrase</button>
@@ -363,112 +387,92 @@ Si le lot reste en attente, je vous rappelle avant 17 h.</div><div class="acts">
           <div class="ruler" style="width:775px"><span>765 + 2×5</span></div>
         </div>
         <ul class="win-notes" style="max-width:720px">
-          <li>Barre du haut : retour, fil d'Ariane (liste › rubrique), nombre de phrases, filtre, bouton «&nbsp;+ Phrase&nbsp;».</li>
-          <li>Chaque phrase a sa poignée de glisser-déposer, son bouton Copier (devient «&nbsp;Copié&nbsp;» en vert 1,5&nbsp;s) et sa corbeille.</li>
-          <li>Le bouton «&nbsp;Supprimer&nbsp;» global, qui demandait de sélectionner une phrase d'abord, disparaît. La suppression se fait par phrase et peut être annulée.</li>
+          <li>Barre du haut : retour, nom de la liste en petites capitales, titre de la rubrique, filtre, bouton «&nbsp;Phrase&nbsp;».</li>
+          <li>Numéro d'ordre à gauche ; au survol il devient la poignée de glisser-déposer. Copier passe en noir au survol, puis «&nbsp;Copié&nbsp;» en vert.</li>
+          <li>Corbeille sur chaque phrase, avec «&nbsp;Annuler&nbsp;» pendant 5&nbsp;s. Le bouton «&nbsp;Supprimer&nbsp;» global disparaît.</li>
         </ul>
       </div>
-    </div>
-  </section>
-
-  <!-- =================== AVANT / APRÈS =================== -->
-  <section aria-labelledby="h-diff">
-    <div class="sec-head"><div><div class="eyebrow">Structure</div><h2 id="h-diff">Ce qui change dans chaque fenêtre</h2></div></div>
-    <div class="table-wrap">
-      <table class="t">
-        <thead><tr><th>Élément</th><th>Aujourd'hui (v2.5)</th><th>Proposé (v3.0)</th></tr></thead>
-        <tbody>
-          <tr><td>Icônes</td><td>Font Awesome 6 beta chargé depuis un CDN, plus un SVG de 5 chemins pour la carte</td><td>Icônes intégrées au paquet (lucide) : pas de réseau, affichage immédiat</td></tr>
-          <tr><td>Couleurs, thème</td><td>Couleurs écrites en dur, ~40 règles <code>[data-theme="dark"]</code> une par une</td><td>~15 variables CSS, redéfinies une seule fois pour le sombre</td></tr>
-          <tr><td>Mise en page</td><td>Marges fixes (<code>margin-left: 255px</code>, <code>70px</code>…) pour centrer les boutons</td><td>Flex et grid avec <code>gap</code> : rien ne se décale si un libellé change</td></tr>
-          <tr><td>Saisie de noms</td><td><code>prompt()</code>, <code>confirm()</code>, <code>alert()</code> du navigateur</td><td>Petit panneau dans la fenêtre (champ + Valider / Annuler)</td></tr>
-          <tr><td>Supprimer une phrase</td><td>Cliquer la phrase, puis le bouton global, sans annulation</td><td>Corbeille sur la phrase, barre «&nbsp;Annuler&nbsp;» pendant 5&nbsp;s</td></tr>
-          <tr><td>Actions sur rubrique / liste</td><td>Clic droit uniquement</td><td>Bouton «&nbsp;⋯&nbsp;» au survol et clic droit</td></tr>
-          <tr><td>Retour de copie</td><td>Aucun</td><td>«&nbsp;Copié&nbsp;» en vert sur le bouton, message dans la Navigation ID</td></tr>
-          <tr><td>Largeurs</td><td>160 / 775 / 310&nbsp;px</td><td>160 / 775 / 310&nbsp;px (inchangées)</td></tr>
-        </tbody>
-      </table>
     </div>
   </section>
 
   <!-- =================== TECHNO =================== -->
   <section aria-labelledby="h-tech">
     <div class="sec-head">
-      <div><div class="eyebrow">Technologie</div><h2 id="h-tech">npm dans une extension Chrome ?</h2></div>
+      <div><div class="eyebrow">Technologie</div><h2 id="h-tech">La meilleure option sans rien installer</h2></div>
     </div>
-    <div class="answer">
-      <p><strong>Oui, mais seulement pour construire l'extension.</strong> npm et Node ne tournent pas dans Chrome. On les utilise sur votre PC : <code>npm run build</code> assemble le code et les bibliothèques en fichiers <code>.js</code>, <code>.css</code> et <code>.html</code> ordinaires, dans un dossier <code>dist/</code>. C'est ce dossier qu'on charge dans <code>chrome://extensions</code> ou qu'on publie sur le Chrome Web Store.</p>
-      <p>Une contrainte du Manifest V3 va dans ce sens : une extension ne peut pas charger de script depuis Internet. Tout doit être dans le paquet. Un outil de build règle ça automatiquement, et fait aussi disparaître le lien vers Font Awesome.</p>
+    <div class="card answer">
+      <p><strong>HTML, CSS et JavaScript modernes, sans bibliothèque de plus.</strong> L'extension ne tourne que dans Chrome, qui sait déjà faire tout ce dont elle a besoin : fenêtres de dialogue, menus, modules JavaScript, variables CSS. On écrit les fichiers, on recharge l'extension, on zippe le dossier et on l'envoie sur le Chrome Web Store, exactement comme aujourd'hui.</p>
+      <p>Pas de Node, pas de npm, pas d'étape de construction. La seule bibliothèque gardée est <code>Sortable.min.js</code>, déjà dans le dossier.</p>
     </div>
 
     <div class="table-wrap" style="margin-top:18px">
       <table class="t">
-        <thead><tr><th>Option</th><th>Ce que c'est</th><th>Pour</th><th>Contre</th></tr></thead>
+        <thead><tr><th>Option</th><th>Installation</th><th>Verdict</th></tr></thead>
         <tbody>
-          <tr><td><b>A · JavaScript sans build</b></td><td>Comme aujourd'hui, découpé en modules ES (<code>import</code>)</td><td>Rien à installer. On modifie un fichier, on recharge.</td><td>Pas de composants ni de typage. Les trois vues restent gérées à la main dans le DOM, source des bugs actuels.</td></tr>
-          <tr><td><b>B · Vite + TypeScript, sans framework</b></td><td>Build npm, code découpé et typé</td><td>Paquet très léger, vérification des types.</td><td>L'affichage reste écrit à la main : beaucoup de code pour les listes, menus et dialogues.</td></tr>
-          <tr class="pick"><td><b>C · WXT + React + TypeScript</b> <span class="pill ok">recommandé</span></td><td>WXT : outil de build fait pour les extensions, basé sur Vite</td><td>Même pile que ProdALC (React 19, Zustand, Tailwind 4, lucide). Rechargement auto en développement, manifeste généré, commande <code>zip</code> pour le Web Store.</td><td>Il faut Node 20+ et une étape de build. Le popup pèse ~150 Ko au lieu de ~65 Ko, sans effet visible à l'ouverture.</td></tr>
+          <tr class="pick"><td><b>JavaScript natif en modules</b> <span class="pill ok">retenu</span></td><td>Aucune</td><td>Tout ce qu'il faut est intégré à Chrome. Code découpé en petits fichiers, zéro dépendance nouvelle.</td></tr>
+          <tr><td><b>Preact + htm</b> (un fichier <code>.js</code> copié dans <code>lib/</code>)</td><td>Aucune</td><td>Possible et léger (~5&nbsp;Ko), mais ajoute une façon d'écrire à apprendre pour trois petites vues.</td></tr>
+          <tr><td><b>Alpine.js, petite-vue</b></td><td>Aucune</td><td><span class="pill no">bloqué</span> Leur version standard exécute du code à partir de texte, ce que Chrome interdit dans les extensions Manifest V3.</td></tr>
+          <tr><td><b>React, Vue, WXT, Vite</b></td><td>Node + npm</td><td><span class="pill no">écarté</span> Demande d'installer Node et de construire l'extension avant chaque essai.</td></tr>
         </tbody>
       </table>
     </div>
 
-    <h3 style="margin-top:26px">Pile retenue (option C)</h3>
-    <ul class="keep" style="margin-top:10px">
-      <li><b>WXT</b> : build, manifeste V3, <code>npm run dev</code> ouvre Chrome avec l'extension chargée</li>
-      <li><b>React 19 + TypeScript</b> : une vue = un composant</li>
-      <li><b>Zustand</b> : un seul état (listes, vue ouverte), sauvegardé automatiquement</li>
-      <li><b>Tailwind 4</b> : les jetons de couleur de la maquette, clair et sombre</li>
-      <li><b>lucide-react</b> : icônes intégrées au paquet</li>
-      <li><b>@dnd-kit/sortable</b> : glisser-déposer, remplace <code>Sortable.min.js</code></li>
-      <li><b>Radix Dialog</b> : dialogues accessibles, remplacent <code>prompt/confirm</code></li>
-      <li><b>Vitest</b> : tests sur la fusion d'import, la recherche et la génération du chemin ID</li>
+    <h3 style="margin-top:28px">Ce que Chrome fournit déjà</h3>
+    <ul class="grid" style="margin-top:12px">
+      <li><b><code>&lt;dialog&gt;</code></b><span>Fenêtres « Renommer », « Supprimer ? », texte d'intro ID. Remplace <code>prompt</code>, <code>confirm</code> et <code>alert</code>.</span></li>
+      <li><b>Attribut <code>popover</code></b><span>Menus «&nbsp;⋯&nbsp;» et Réglages : se ferment seuls au clic dehors ou avec Échap.</span></li>
+      <li><b><code>&lt;script type="module"&gt;</code></b><span>Découpe le code en fichiers avec <code>import</code> / <code>export</code>.</span></li>
+      <li><b>Variables CSS</b><span>Une palette claire et une sombre, basculées par un seul attribut.</span></li>
+      <li><b>Icônes SVG inline</b><span>Dans <code>popup.html</code>, plus de lien vers Font Awesome sur Internet.</span></li>
+      <li><b>Police Manrope</b><span>Un fichier <code>.woff2</code> placé dans <code>fonts/</code>. Sinon, la police système Segoe UI.</span></li>
     </ul>
   </section>
 
   <!-- =================== ARBORESCENCE =================== -->
   <section aria-labelledby="h-tree">
     <div class="sec-head">
-      <div><div class="eyebrow">Restructuration</div><h2 id="h-tree">Nouvelle organisation du code</h2></div>
-      <p>Aujourd'hui, <code>script.js</code> fait tout : données, affichage, voix, import, thème. Il est découpé par rôle, et le catalogue des menus ID de <code>id.js</code> devient un fichier de données à part.</p>
+      <div><div class="eyebrow">Restructuration</div><h2 id="h-tree">Nouvelle organisation des fichiers</h2></div>
+      <p>Aujourd'hui <code>script.js</code> fait tout : données, affichage, voix, import, thème. Il est découpé par rôle. Le catalogue des menus ID sort de <code>id.js</code> pour devenir un fichier de données.</p>
     </div>
     <div class="tree-grid">
-<pre class="tree"><span class="c"># projet</span>
-package.json
-wxt.config.ts          <span class="c">manifeste : nom, version, clé</span>
-public/icons/          <span class="c">icon16/48/128.png</span>
-entrypoints/popup/
-  index.html
-  main.tsx
-  App.tsx              <span class="c">choisit la vue ouverte</span>
-src/
+      <div class="card">
+<pre class="tree">manifest.json          <span class="c">même key, version 3.0</span>
+popup.html             <span class="c">3 vues + icônes SVG</span>
+css/
+  tokens.css           <span class="c">couleurs clair / sombre</span>
+  base.css             <span class="c">boutons, champs, menus</span>
+  views.css            <span class="c">largeurs 160 / 775 / 310</span>
+js/
+  main.js              <span class="c">démarrage, choix de la vue</span>
+  store.js             <span class="c">listes, mêmes clés</span>
   views/
-    Rubriques.tsx      <span class="c">vue 1 · 160 px</span>
-    Phrases.tsx        <span class="c">vue 2 · 775 px</span>
-    NavigationId.tsx   <span class="c">vue 3 · 310 px</span>
-  ui/                  <span class="c">Button, Field, Menu,
-                        Dialog, UndoBar, Select</span>
-  state/store.ts       <span class="c">Zustand : listes, vue</span>
+    rubriques.js
+    phrases.js
+    navigation-id.js
+  ui/
+    dialog.js          <span class="c">&lt;dialog&gt; natif</span>
+    undo.js            <span class="c">barre « Annuler »</span>
   core/
-    search.ts          <span class="c">fuzzyMatch, normalizeText</span>
-    voice.ts           <span class="c">reconnaissance vocale</span>
-    copy.ts            <span class="c">HTML → texte à coller</span>
-    navId.ts           <span class="c">recherche + phrase ID</span>
-  data/idMenus.ts      <span class="c">catalogue A…I (ex id.js)</span>
-  io/
-    storage.ts         <span class="c">lecture/écriture, mêmes clés</span>
-    importExport.ts    <span class="c">JSON + sauvegarde hebdo</span>
-  styles.css           <span class="c">jetons clair / sombre</span>
-tests/</pre>
-      <div class="phase" style="align-self:start">
-        <span class="num">Correspondance</span><h3>Ancien → nouveau</h3>
+    search.js          <span class="c">recherche approchée</span>
+    voice.js           <span class="c">reconnaissance vocale</span>
+    copy.js            <span class="c">texte à coller</span>
+    backup.js          <span class="c">import, export, hebdo</span>
+  data/id-menus.js     <span class="c">catalogue A…I</span>
+lib/Sortable.min.js
+fonts/manrope.woff2
+icons/</pre>
+      </div>
+      <div class="card phase">
+        <span class="num">Ancien → nouveau</span>
         <ul>
-          <li><code>popup.html</code> → <code>entrypoints/popup/</code> + <code>views/</code></li>
-          <li><code>script.js</code> → <code>state/</code>, <code>io/</code>, <code>core/search.ts</code>, <code>core/voice.ts</code>, <code>core/copy.ts</code></li>
-          <li><code>id.js</code> → <code>data/idMenus.ts</code> + <code>core/navId.ts</code> + <code>NavigationId.tsx</code></li>
-          <li><code>styles.css</code> → <code>src/styles.css</code> (jetons) + classes Tailwind</li>
-          <li><code>js/Sortable.min.js</code> → <code>@dnd-kit</code> via npm</li>
-          <li><code>manifest.json</code> → <code>wxt.config.ts</code>, <b>même <code>key</code></b> pour garder le même identifiant d'extension et donc les données</li>
+          <li><code>styles.css</code> → <code>css/tokens.css</code>, <code>base.css</code>, <code>views.css</code></li>
+          <li><code>script.js</code> → <code>store.js</code>, <code>views/rubriques.js</code>, <code>views/phrases.js</code>, <code>core/*</code></li>
+          <li><code>id.js</code> → <code>data/id-menus.js</code> + <code>views/navigation-id.js</code></li>
+          <li><code>js/Sortable.min.js</code> → <code>lib/Sortable.min.js</code></li>
+          <li>Font Awesome (Internet) → icônes SVG dans <code>popup.html</code></li>
+          <li><code>manifest.json</code> garde sa <code>key</code> : même identifiant d'extension, donc mêmes données</li>
         </ul>
+        <div class="files">Publication : zipper le dossier et l'envoyer sur le Chrome Web Store</div>
       </div>
     </div>
   </section>
@@ -477,78 +481,76 @@ tests/</pre>
   <section aria-labelledby="h-plan">
     <div class="sec-head">
       <div><div class="eyebrow">Plan</div><h2 id="h-plan">Déroulé en six étapes</h2></div>
-      <p>La v2.5 reste en place sur <code>main</code> jusqu'à la fin. Chaque étape se teste avec <code>npm run dev</code>, qui ouvre Chrome avec l'extension chargée.</p>
+      <p>Chaque étape se teste en rechargeant l'extension dans <code>chrome://extensions</code> (mode développeur, «&nbsp;Charger l'extension non empaquetée&nbsp;»). La v2.5 reste sur <code>main</code> jusqu'à la fin.</p>
     </div>
     <div class="phases">
-      <article class="phase">
-        <span class="num">Étape 1</span><h3>Socle</h3>
+      <article class="card phase">
+        <span class="num">ÉTAPE 1</span><h3>Style</h3>
         <ul>
-          <li>Créer le projet WXT + React + TypeScript + Tailwind.</li>
-          <li>Reprendre nom, version, icônes et <code>key</code> du manifeste.</li>
-          <li>Fixer les largeurs 160 / 775 / 310&nbsp;px par vue.</li>
+          <li>Écrire <code>tokens.css</code>, <code>base.css</code>, <code>views.css</code> d'après la maquette.</li>
+          <li>Garder 150 / 765 / 300&nbsp;px + 5&nbsp;px de marge.</li>
+          <li>Ajouter la police dans <code>fonts/</code>.</li>
         </ul>
-        <div class="files">package.json · wxt.config.ts</div>
+        <div class="files">css/ · fonts/</div>
       </article>
-      <article class="phase">
-        <span class="num">Étape 2</span><h3>Données et logique</h3>
+      <article class="card phase">
+        <span class="num">ÉTAPE 2</span><h3>Structure HTML</h3>
         <ul>
-          <li><code>storage.ts</code> lit les clés actuelles (<code>listes</code>, <code>theme</code>…), y compris l'ancien format.</li>
-          <li>Porter recherche, copie, catalogue ID, import/fusion.</li>
-          <li>Tests Vitest sur ces fonctions avant tout affichage.</li>
+          <li>Refaire <code>popup.html</code> : en-tête, contenu, pied par vue.</li>
+          <li>Icônes SVG, suppression de Font Awesome.</li>
+          <li>Feuilles de style dans <code>&lt;head&gt;</code>, balise invalide retirée.</li>
         </ul>
-        <div class="files">src/io · src/core · src/data · tests</div>
+        <div class="files">popup.html</div>
       </article>
-      <article class="phase">
-        <span class="num">Étape 3</span><h3>Composants de base</h3>
+      <article class="card phase">
+        <span class="num">ÉTAPE 3</span><h3>Découpage du code</h3>
         <ul>
-          <li>Jetons de couleur clair / sombre de la maquette.</li>
-          <li>Button, Field, Select, Menu «&nbsp;⋯&nbsp;», Dialog, UndoBar.</li>
+          <li>Passer en <code>type="module"</code>, créer <code>store.js</code> et <code>core/</code>.</li>
+          <li>Même comportement qu'avant, mêmes clés <code>localStorage</code>.</li>
         </ul>
-        <div class="files">src/ui · src/styles.css</div>
+        <div class="files">js/</div>
       </article>
-      <article class="phase">
-        <span class="num">Étape 4</span><h3>Les trois vues</h3>
+      <article class="card phase">
+        <span class="num">ÉTAPE 4</span><h3>Les trois vues</h3>
         <ul>
-          <li>Rubriques : liste, recherche, micro, compteur, glisser-déposer.</li>
-          <li>Phrases : édition, copier, corbeille + annuler, tri.</li>
-          <li>Navigation ID : recherche, étapes 1-2-3, résultat copié.</li>
+          <li>Rubriques : compteur, «&nbsp;⋯&nbsp;», micro, filet doré.</li>
+          <li>Phrases : numéro-poignée, Copier / Copié, corbeille.</li>
+          <li>Navigation ID : parcours 1-2-3, carte résultat.</li>
         </ul>
-        <div class="files">src/views</div>
+        <div class="files">js/views/</div>
       </article>
-      <article class="phase">
-        <span class="num">Étape 5</span><h3>Réglages et sauvegarde</h3>
+      <article class="card phase">
+        <span class="num">ÉTAPE 5</span><h3>Dialogues et annulation</h3>
         <ul>
-          <li>Menu Importer / Exporter / Thème.</li>
-          <li>Sauvegarde hebdomadaire qui se déclenche vraiment.</li>
-          <li>Texte d'introduction ID modifiable dans un dialogue.</li>
+          <li><code>&lt;dialog&gt;</code> à la place de <code>prompt/confirm/alert</code>.</li>
+          <li>Menus en <code>popover</code>. Barre «&nbsp;Annuler&nbsp;» après suppression.</li>
         </ul>
-        <div class="files">src/io · Rubriques.tsx</div>
+        <div class="files">js/ui/</div>
       </article>
-      <article class="phase">
-        <span class="num">Étape 6</span><h3>Recette et bascule</h3>
+      <article class="card phase">
+        <span class="num">ÉTAPE 6</span><h3>Recette et publication</h3>
         <ul>
-          <li>Charger <code>dist/</code> par-dessus la v2.5 : les listes existantes doivent apparaître.</li>
+          <li>Charger par-dessus la v2.5 : les listes doivent apparaître.</li>
           <li>Tester clair/sombre, voix, import d'un ancien export.</li>
-          <li>Version 3.0, <code>npm run zip</code> pour le Web Store.</li>
+          <li>Version 3.0, zip, envoi sur le Web Store.</li>
         </ul>
-        <div class="files">dist/ · .output/*.zip</div>
+        <div class="files">manifest.json</div>
       </article>
     </div>
   </section>
 
   <!-- =================== BUGS =================== -->
   <section aria-labelledby="h-bugs">
-    <div class="sec-head"><div><div class="eyebrow">Relevé dans le code actuel</div><h2 id="h-bugs">Bugs à corriger pendant la refonte</h2></div></div>
+    <div class="sec-head"><div><div class="eyebrow">Relevé dans le code actuel</div><h2 id="h-bugs">Bugs corrigés au passage</h2></div></div>
     <div class="table-wrap">
       <table class="t">
         <thead><tr><th>Où</th><th>Problème</th><th>Correction</th></tr></thead>
         <tbody>
-          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> La sauvegarde automatique hebdomadaire ne se lance jamais : elle est branchée sur <code>DOMContentLoaded</code> à l'intérieur d'un autre <code>DOMContentLoaded</code>, déjà passé.</td><td>Appeler <code>exportBackupIfNeeded()</code> directement à l'initialisation.</td></tr>
-          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> La rubrique ouverte est retrouvée par son nom : avec deux rubriques du même nom, on ajoute ou supprime dans la mauvaise.</td><td>Mémoriser l'index de la rubrique ouverte.</td></tr>
-          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> Un nouveau <code>Sortable</code> est créé à chaque rafraîchissement de la liste des rubriques.</td><td>Détruire l'instance précédente, comme pour les phrases.</td></tr>
-          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> Un <code>alert()</code> bloque l'ouverture si le navigateur n'a pas la reconnaissance vocale.</td><td>Masquer le bouton micro à la place.</td></tr>
-          <tr><td class="mono">id.js</td><td><span class="pill bug">bug</span> Même souci de <code>DOMContentLoaded</code> imbriqué pour le texte d'introduction (sans effet visible grâce à la valeur par défaut).</td><td>Lire la valeur directement.</td></tr>
-          <tr><td class="mono">popup.html</td><td><span class="pill bug">bug</span> Balise invalide et <code>id="settingsBtn"</code> en double ; feuille de style chargée en fin de page.</td><td>Disparaissent avec le nouveau <code>index.html</code> généré par WXT.</td></tr>
+          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> La sauvegarde automatique hebdomadaire ne se lance jamais : elle attend un <code>DOMContentLoaded</code> déjà passé.</td><td>Appel direct au démarrage, dans <code>core/backup.js</code>.</td></tr>
+          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> La rubrique ouverte est retrouvée par son nom : avec deux rubriques du même nom, on modifie la mauvaise.</td><td>Mémoriser son index.</td></tr>
+          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> Un nouveau <code>Sortable</code> est créé à chaque rafraîchissement des rubriques.</td><td>Une seule instance.</td></tr>
+          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> Un <code>alert()</code> bloque l'ouverture si la reconnaissance vocale manque.</td><td>Masquer le micro.</td></tr>
+          <tr><td class="mono">popup.html</td><td><span class="pill bug">bug</span> Balise invalide, <code>id="settingsBtn"</code> en double, style chargé en fin de page.</td><td>Réglé à l'étape 2.</td></tr>
         </tbody>
       </table>
     </div>
@@ -557,15 +559,12 @@ tests/</pre>
   <!-- =================== CONSERVÉ =================== -->
   <section aria-labelledby="h-keep">
     <div class="sec-head"><div><div class="eyebrow">Compatibilité</div><h2 id="h-keep">Ce qui ne bouge pas</h2></div>
-      <p>Les données restent dans <code>localStorage</code> avec les mêmes clés. La <code>key</code> du manifeste est conservée, donc l'identifiant de l'extension ne change pas et ces données restent lisibles. Les anciens exports JSON s'importent toujours.</p></div>
-    <ul class="keep">
-      <li><code>listes</code> : listes, rubriques, phrases</li>
-      <li><code>selectedList</code> : dernière liste ouverte</li>
-      <li><code>theme</code> : clair ou sombre</li>
-      <li><code>customIntroText</code> : phrase d'introduction ID</li>
-      <li><code>lastExportDate</code> : date de la dernière sauvegarde</li>
-      <li>Tailles des fenêtres : 160 / 775 / 310&nbsp;px</li>
-      <li><code>key</code> du manifeste : même identifiant d'extension</li>
+      <p>Rien à migrer. Les anciens exports JSON s'importent toujours.</p></div>
+    <ul class="grid">
+      <li><b>Tailles des fenêtres</b><span>160 / 775 / 310&nbsp;px</span></li>
+      <li><b><code>key</code> du manifeste</b><span>même identifiant d'extension</span></li>
+      <li><b><code>listes</code>, <code>selectedList</code></b><span>listes, rubriques, phrases, dernière liste</span></li>
+      <li><b><code>theme</code>, <code>customIntroText</code>, <code>lastExportDate</code></b><span>thème, intro ID, dernière sauvegarde</span></li>
     </ul>
   </section>
 </div>
@@ -582,51 +581,50 @@ tests/</pre>
   bL.onclick=function(){setTheme(false)}; bD.onclick=function(){setTheme(true)};
   try{ if(localStorage.getItem('zt-mock-theme')==='dark') setTheme(true); }catch(e){}
 
-  // Copier -> Copié
+  function copyText(t){ try{ navigator.clipboard.writeText(t).catch(function(){}); }catch(e){} }
+
   document.querySelectorAll('.v2 .copy').forEach(function(b){
     b.addEventListener('click',function(){
-      var txt=b.closest('.ph').querySelector('.txt').innerText;
-      if(navigator.clipboard) navigator.clipboard.writeText(txt).catch(function(){});
+      copyText(b.closest('.ph').querySelector('.txt').innerText);
       b.classList.add('done'); b.innerHTML='<svg class="ico"><use href="#i-check"/></svg>Copié';
       setTimeout(function(){ b.classList.remove('done'); b.innerHTML='<svg class="ico"><use href="#i-copy"/></svg>Copier'; },1500);
     });
   });
 
-  // Supprimer + annuler
   var undoBar=document.getElementById('undoBar'), last=null, t=null;
   document.querySelectorAll('.v2 .del').forEach(function(b){
     b.addEventListener('click',function(){
-      var ph=b.closest('.ph'); last=ph; ph.hidden=true; undoBar.hidden=false;
+      last=b.closest('.ph'); last.hidden=true; undoBar.hidden=false;
       clearTimeout(t); t=setTimeout(function(){ undoBar.hidden=true; },5000);
     });
   });
   document.getElementById('undoBtn').onclick=function(){ if(last) last.hidden=false; undoBar.hidden=true; };
 
-  // Menus de la vue 1
-  var rubMenu=document.getElementById('rubMenu'), cogMenu=document.getElementById('cogMenu');
+  var rubMenu=document.getElementById('rubMenu'), cogMenu=document.getElementById('cogMenu'), v1=document.getElementById('v1');
   document.querySelectorAll('.v1 .more').forEach(function(b){
     b.addEventListener('click',function(e){
       e.stopPropagation(); cogMenu.hidden=true;
-      var li=b.closest('li'); rubMenu.style.top=(li.offsetTop+li.offsetHeight-2)+'px'; rubMenu.hidden=false;
+      var li=b.closest('li'), r=li.getBoundingClientRect(), o=v1.getBoundingClientRect();
+      rubMenu.style.top=(r.bottom-o.top+2)+'px'; rubMenu.hidden=false;
     });
   });
   document.getElementById('cogBtn').addEventListener('click',function(e){ e.stopPropagation(); rubMenu.hidden=true; cogMenu.hidden=!cogMenu.hidden; });
   document.addEventListener('click',function(){ rubMenu.hidden=true; cogMenu.hidden=true; });
 
-  // Micro
   var mic=document.getElementById('micBtn');
   mic.addEventListener('click',function(){ mic.classList.toggle('is-on'); });
 
-  // Filtre des rubriques
   document.getElementById('m-search').addEventListener('input',function(){
     var q=this.value.toLowerCase();
-    document.querySelectorAll('#rubList li').forEach(function(li){ li.hidden = q && li.textContent.toLowerCase().indexOf(q)<0; });
+    document.querySelectorAll('#rubList li').forEach(function(li){ li.hidden = !!q && li.textContent.toLowerCase().indexOf(q)<0; });
+  });
+  document.getElementById('m-phsearch').addEventListener('input',function(){
+    var q=this.value.toLowerCase();
+    document.querySelectorAll('#phList .ph').forEach(function(p){ p.hidden = !!q && p.querySelector('.txt').textContent.toLowerCase().indexOf(q)<0; });
   });
 
-  // Recopier (Navigation ID)
   document.getElementById('navCopy').addEventListener('click',function(){
-    var txt='Je vous invite à suivre le chemin suivant :\n• Menu ID\n• A: Comptoir\n• M: Rappel\n• U: Renouvellement';
-    if(navigator.clipboard) navigator.clipboard.writeText(txt).catch(function(){});
+    copyText('Je vous invite à suivre le chemin suivant :\n• Menu ID\n• A: Comptoir\n• M: Rappel\n• U: Renouvellement');
   });
 })();
 </script>
