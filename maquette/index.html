@@ -1,0 +1,535 @@
+<title>Refonte ZenText</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=JetBrains+Mono:wght@500;600&display=swap">
+<style>
+/* ============ Page (présentation de la maquette) ============ */
+:root{
+  --pg-bg:#EEF1F5; --pg-surface:#FFFFFF; --pg-ink:#18223A; --pg-muted:#5B6579;
+  --pg-line:#D9DEE7; --pg-accent:#2F57C9; --pg-accent-soft:#E3EAFB; --pg-warn:#B4540F; --pg-warn-soft:#FBEBDD;
+  --pg-display:"Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --pg-body:"Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --pg-mono:"JetBrains Mono", ui-monospace, Consolas, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --pg-bg:#0F1522; --pg-surface:#172033; --pg-ink:#E6EAF2; --pg-muted:#98A2B6;
+    --pg-line:#28324A; --pg-accent:#86A5F5; --pg-accent-soft:#1D2A4B; --pg-warn:#F0A468; --pg-warn-soft:#3A2717;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --pg-bg:#0F1522; --pg-surface:#172033; --pg-ink:#E6EAF2; --pg-muted:#98A2B6;
+  --pg-line:#28324A; --pg-accent:#86A5F5; --pg-accent-soft:#1D2A4B; --pg-warn:#F0A468; --pg-warn-soft:#3A2717;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--pg-bg);color:var(--pg-ink);font:15px/1.55 var(--pg-body)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:24px;padding-block:40px 64px}
+@media (max-width:600px){.wrap{padding-inline:16px}}
+h1,h2,h3{font-family:var(--pg-display);text-wrap:balance;margin:0}
+h1{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:24px;font-weight:700;margin-bottom:6px}
+h3{font-size:17px;font-weight:700}
+.eyebrow{font:600 12px/1 var(--pg-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--pg-accent)}
+.lede{color:var(--pg-muted);max-width:68ch;margin:10px 0 0}
+section{margin-top:48px}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:end;gap:12px;margin-bottom:18px}
+.sec-head p{margin:0;color:var(--pg-muted);max-width:62ch}
+code,.mono{font-family:var(--pg-mono);font-size:.88em}
+.seg{display:inline-flex;border:1px solid var(--pg-line);border-radius:8px;background:var(--pg-surface);padding:3px;gap:2px}
+.seg button{border:0;background:none;color:var(--pg-muted);font:600 13px var(--pg-body);padding:6px 12px;border-radius:6px;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--pg-accent-soft);color:var(--pg-accent)}
+.seg button:focus-visible{outline:2px solid var(--pg-accent);outline-offset:1px}
+
+/* Plateau des fenêtres */
+.stage{display:flex;flex-wrap:wrap;gap:36px 40px;align-items:flex-start}
+.win{display:flex;flex-direction:column;gap:10px;max-width:100%}
+.win-label{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-size:13px}
+.win-label b{font-family:var(--pg-display);font-size:15px}
+.dim{font:500 12px var(--pg-mono);color:var(--pg-muted)}
+.scroller{max-width:100%;overflow-x:auto;padding:0 0 6px}
+.popup{border-radius:10px;box-shadow:0 1px 0 rgba(0,0,0,.04),0 12px 32px -12px rgba(20,30,60,.35);outline:1px solid var(--pg-line);overflow:hidden;width:max-content}
+.ruler{position:relative;height:14px;margin-top:2px}
+.ruler::before{content:"";position:absolute;left:0;right:0;top:6px;border-top:1px dashed var(--pg-muted);opacity:.6}
+.ruler span{position:absolute;left:50%;top:0;transform:translateX(-50%);background:var(--pg-bg);padding:0 6px;font:500 11px var(--pg-mono);color:var(--pg-muted)}
+.win-notes{margin:0;padding-left:18px;color:var(--pg-muted);font-size:13.5px;max-width:420px}
+.win-notes li+li{margin-top:3px}
+
+/* Plan */
+.phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.phase{background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:10px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px}
+.phase .num{font:600 12px var(--pg-mono);color:var(--pg-accent)}
+.phase ul{margin:0;padding-left:18px;font-size:14px}
+.phase li+li{margin-top:4px}
+.phase .files{margin-top:auto;padding-top:8px;border-top:1px solid var(--pg-line);font:500 12px var(--pg-mono);color:var(--pg-muted)}
+table.t{border-collapse:collapse;width:100%;min-width:640px;background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:10px;overflow:hidden;font-size:14px}
+.t th,.t td{text-align:left;padding:10px 14px;border-bottom:1px solid var(--pg-line);vertical-align:top}
+.t th{font:600 12px var(--pg-mono);text-transform:uppercase;letter-spacing:.06em;color:var(--pg-muted);background:var(--pg-bg)}
+.t tr:last-child td{border-bottom:0}
+.pill{display:inline-block;font:600 11px var(--pg-mono);padding:2px 8px;border-radius:99px;white-space:nowrap}
+.pill.bug{background:var(--pg-warn-soft);color:var(--pg-warn)}
+.pill.ok{background:var(--pg-accent-soft);color:var(--pg-accent)}
+.table-wrap{overflow-x:auto}
+.keep{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none}
+.keep li{background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:8px;padding:10px 12px;font-size:14px}
+.keep li code{color:var(--pg-accent)}
+
+/* ============ Extension : jeu de jetons proposé (styles.css v3) ============ */
+.zt{
+  --bg:#F3F5F8; --surface:#FFFFFF; --surface-2:#EDF0F5; --ink:#1B2437; --muted:#667085;
+  --line:#DCE1EA; --accent:#2F57C9; --accent-ink:#FFFFFF; --accent-soft:#E6ECFB;
+  --ok:#1F8A4C; --ok-soft:#E1F3E8; --danger:#C0392B; --danger-soft:#FBE7E4; --hl:#FFF1B8;
+  --r:8px; --r-sm:6px;
+  --font:"Segoe UI", system-ui, -apple-system, Roboto, sans-serif;
+  --mono:Consolas, "Cascadia Mono", ui-monospace, monospace;
+  background:var(--bg);color:var(--ink);font:13px/1.45 var(--font);
+  -webkit-font-smoothing:antialiased;
+}
+.zt[data-zt-theme="dark"]{
+  color-scheme:dark;
+  --bg:#141922; --surface:#1C2330; --surface-2:#232B3A; --ink:#E4E8F0; --muted:#8E98AB;
+  --line:#2C3546; --accent:#7F9CF2; --accent-ink:#0F1522; --accent-soft:#243154;
+  --ok:#5CC98A; --ok-soft:#173826; --danger:#F0877A; --danger-soft:#3B1D1A; --hl:#4A4018;
+}
+.zt *{box-sizing:border-box}
+.zt button{font:inherit;color:inherit;cursor:pointer}
+.zt :focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+.zt .ico{width:14px;height:14px;flex:none;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.zt .ibtn{display:inline-grid;place-items:center;width:24px;height:24px;border:0;border-radius:var(--r-sm);background:transparent;color:var(--muted)}
+.zt .ibtn:hover{background:var(--surface-2);color:var(--ink)}
+.zt .ibtn.is-on{background:var(--danger-soft);color:var(--danger)}
+.zt .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;height:28px;padding:0 10px;border-radius:var(--r-sm);border:1px solid var(--line);background:var(--surface);font-weight:600;font-size:12px}
+.zt .btn:hover{background:var(--surface-2)}
+.zt .btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.zt .btn.primary:hover{filter:brightness(1.08)}
+.zt .btn.ghost{border-color:transparent;background:transparent;color:var(--muted)}
+.zt .btn.ghost:hover{background:var(--surface-2);color:var(--ink)}
+.zt .field{display:flex;align-items:center;gap:4px;height:28px;padding:0 4px 0 7px;border:1px solid var(--line);border-radius:var(--r-sm);background:var(--surface);color:var(--muted)}
+.zt .field:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-soft)}
+.zt .field input{flex:1;min-width:0;border:0;background:none;outline:0;font:inherit;color:var(--ink);padding:0}
+.zt .field input::placeholder{color:var(--muted)}
+.zt .select{appearance:none;width:100%;height:28px;padding:0 22px 0 8px;border:1px solid var(--line);border-radius:var(--r-sm);color:var(--ink);font:inherit;font-weight:600;
+  background:var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%23667085' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 7px center}
+.zt .brand{display:flex;align-items:center;gap:6px;font-weight:700;font-size:14px;letter-spacing:-.01em}
+.zt .brand i{display:inline-grid;place-items:center;width:18px;height:18px;border-radius:5px;background:var(--accent);color:var(--accent-ink);font:700 11px var(--font);font-style:normal}
+
+/* --- Vue 1 : Rubriques (150 px + 2×5 px = 160 px, comme aujourd'hui) --- */
+.v1{width:150px;padding:5px;box-sizing:content-box;display:flex;flex-direction:column;gap:6px}
+.v1 .top{display:flex;align-items:center;justify-content:space-between;height:26px}
+.v1 .top .acts{display:flex;gap:0}
+.v1 .row{display:flex;gap:4px}
+.v1 .row .select{flex:1}
+.v1 .row .btn{width:28px;padding:0}
+.v1 .rub{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:2px;max-height:340px;overflow:auto}
+.v1 .rub li{position:relative;display:flex;align-items:center;gap:4px;height:30px;padding:0 4px 0 8px;border-radius:var(--r-sm);cursor:pointer;background:var(--surface);border:1px solid transparent}
+.v1 .rub li:hover{border-color:var(--line)}
+.v1 .rub li .n{flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:600}
+.v1 .rub li .c{font:600 10px var(--mono);color:var(--muted);font-variant-numeric:tabular-nums}
+.v1 .rub li .more{display:none;width:20px;height:20px}
+.v1 .rub li:hover .c{display:none}
+.v1 .rub li:hover .more{display:inline-grid}
+.v1 .rub li.hl{background:var(--hl);border-color:transparent}
+.v1 .rub li.hl .c{display:none}
+.v1 .foot{display:flex;align-items:center;justify-content:space-between;padding-top:4px;border-top:1px solid var(--line)}
+.v1 .foot small{font:10px var(--mono);color:var(--muted)}
+.v1 .menu{position:absolute;right:4px;top:28px;z-index:3;width:128px;padding:4px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:0 8px 20px -6px rgba(0,0,0,.25)}
+.v1 .menu button{display:flex;align-items:center;gap:7px;width:100%;height:26px;padding:0 7px;border:0;border-radius:5px;background:none;text-align:left;font-size:12px}
+.v1 .menu button:hover{background:var(--surface-2)}
+.v1 .menu hr{border:0;border-top:1px solid var(--line);margin:3px 0}
+.v1 .menu .danger{color:var(--danger)}
+
+/* --- Vue 2 : Phrases (765 px + 2×5 px = 775 px, comme aujourd'hui) --- */
+.v2{width:765px;padding:5px;box-sizing:content-box;display:flex;flex-direction:column;gap:6px}
+.v2 .bar{display:flex;align-items:center;gap:8px;height:36px;padding:0 4px}
+.v2 .crumb{display:flex;align-items:baseline;gap:6px;flex:1;min-width:0}
+.v2 .crumb span{color:var(--muted);font-size:12px}
+.v2 .crumb h1{margin:0;font:700 17px var(--font);letter-spacing:-.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.v2 .crumb em{font:600 11px var(--mono);font-style:normal;color:var(--muted)}
+.v2 .bar .field{width:190px}
+.v2 .list{display:flex;flex-direction:column;gap:6px;max-height:480px;overflow:auto;padding:1px}
+.v2 .ph{display:grid;grid-template-columns:18px 1fr auto;align-items:start;gap:6px;padding:8px 8px 8px 4px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line)}
+.v2 .ph:hover{border-color:color-mix(in srgb,var(--accent) 35%,var(--line))}
+.v2 .grip{color:var(--muted);opacity:.45;cursor:grab;padding-top:3px;display:grid;place-items:center}
+.v2 .ph:hover .grip{opacity:1}
+.v2 .txt{font-size:13.5px;line-height:1.55;outline:0;padding:1px 2px;border-radius:4px;white-space:pre-wrap}
+.v2 .txt:focus{background:var(--surface-2)}
+.v2 .txt a{color:var(--accent)}
+.v2 .acts{display:flex;gap:2px;align-items:center}
+.v2 .copy{height:26px;padding:0 9px;border-radius:var(--r-sm);border:1px solid var(--accent);background:var(--accent-soft);color:var(--accent);font-weight:600;font-size:12px;display:inline-flex;align-items:center;gap:5px;min-width:78px;justify-content:center}
+.v2 .copy.done{border-color:var(--ok);background:var(--ok-soft);color:var(--ok)}
+.v2 .del:hover{background:var(--danger-soft);color:var(--danger)}
+.v2 .add{height:34px;border:1px dashed var(--line);border-radius:var(--r);background:transparent;color:var(--muted);font-weight:600;display:flex;align-items:center;justify-content:center;gap:6px}
+.v2 .add:hover{color:var(--accent);border-color:var(--accent);background:var(--accent-soft)}
+.v2 .undo{display:flex;align-items:center;gap:10px;justify-content:space-between;height:32px;padding:0 6px 0 12px;border-radius:var(--r);background:var(--ink);color:var(--bg);font-size:12px}
+.v2 .undo button{border:0;background:none;color:var(--bg);font-weight:700;text-decoration:underline;padding:4px 6px}
+
+/* --- Vue 3 : Navigation ID (300 px + 2×5 px = 310 px, comme aujourd'hui) --- */
+.v3{width:300px;padding:5px;box-sizing:content-box;display:flex;flex-direction:column;gap:8px}
+.v3 .top{display:flex;align-items:center;gap:4px;height:28px}
+.v3 .top h1{flex:1;margin:0;font:700 14px var(--font)}
+.v3 .sug{position:relative}
+.v3 .sug ul{list-style:none;margin:4px 0 0;padding:4px;border-radius:var(--r);background:var(--surface);border:1px solid var(--line);box-shadow:0 8px 20px -8px rgba(0,0,0,.25)}
+.v3 .sug li{padding:6px 7px;border-radius:5px;font-size:12px;cursor:pointer;display:flex;flex-direction:column;gap:1px}
+.v3 .sug li small{color:var(--muted);font-size:11px}
+.v3 .sug li.on,.v3 .sug li:hover{background:var(--accent-soft)}
+.v3 .sug mark{background:none;color:var(--accent);font-weight:700}
+.v3 .steps{display:flex;flex-direction:column;gap:6px}
+.v3 .step{display:grid;grid-template-columns:18px 1fr;align-items:center;gap:6px}
+.v3 .step b{display:grid;place-items:center;width:18px;height:18px;border-radius:50%;font:700 10px var(--mono);background:var(--surface-2);color:var(--muted)}
+.v3 .step.set b{background:var(--accent);color:var(--accent-ink)}
+.v3 .out{border-radius:var(--r);background:var(--surface);border:1px solid var(--line);overflow:hidden}
+.v3 .out p{margin:0;padding:9px 10px 4px;color:var(--muted);font-size:12px}
+.v3 .path{list-style:none;margin:0;padding:2px 10px 10px;display:flex;flex-direction:column;gap:3px;font-size:13px}
+.v3 .path li{display:flex;gap:7px;align-items:baseline}
+.v3 .path li span{font:600 11px var(--mono);color:var(--accent);min-width:14px}
+.v3 .out footer{display:flex;align-items:center;justify-content:space-between;padding:6px 6px 6px 10px;border-top:1px solid var(--line);background:var(--surface-2);font-size:11.5px;color:var(--ok);font-weight:600}
+.v3 .out footer .btn{height:24px}
+</style>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.3-4.3"/></symbol>
+  <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
+  <symbol id="i-cog" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></symbol>
+  <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2zM9 4v14M15 6v14"/></symbol>
+  <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+  <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="18" r="1"/></symbol>
+  <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12M6 10l6 6 6-6M5 20h14"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 20V8M6 14l6-6 6 6M5 4h14"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+</svg>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Phrase – TP · extension Chrome · v2.5 → v3.0</div>
+    <h1>Refonte de ZenText</h1>
+    <p class="lede">Nouvelle structure et nouveau style pour les trois fenêtres de l'extension. Les largeurs ne changent pas : 160&nbsp;px pour les rubriques, 775&nbsp;px pour les phrases, 310&nbsp;px pour la Navigation ID. La hauteur reste automatique, comme aujourd'hui. Les données enregistrées sont reprises telles quelles.</p>
+  </header>
+
+  <!-- =================== MAQUETTE =================== -->
+  <section aria-labelledby="h-maq">
+    <div class="sec-head">
+      <div>
+        <div class="eyebrow">Maquette · échelle 1:1</div>
+        <h2 id="h-maq">Les trois fenêtres</h2>
+        <p>Les boutons de la maquette réagissent : copier, supprimer puis annuler, menu «&nbsp;⋯&nbsp;», micro.</p>
+      </div>
+      <div class="seg" role="group" aria-label="Thème de l'extension">
+        <button type="button" id="zt-light" aria-pressed="true">Clair</button>
+        <button type="button" id="zt-dark" aria-pressed="false">Sombre</button>
+      </div>
+    </div>
+
+    <div class="stage">
+      <!-- Vue 1 -->
+      <div class="win">
+        <div class="win-label"><b>1 · Rubriques</b><span class="dim">160 px</span></div>
+        <div class="popup">
+          <div class="zt v1" id="v1">
+            <div class="top">
+              <div class="brand"><i>Z</i>ZenText</div>
+              <div class="acts">
+                <button class="ibtn" type="button" title="Navigation ID"><svg class="ico"><use href="#i-map"/></svg></button>
+                <button class="ibtn" type="button" title="Réglages" id="cogBtn"><svg class="ico"><use href="#i-cog"/></svg></button>
+              </div>
+            </div>
+            <div class="row">
+              <select class="select" id="m-list" aria-label="Liste"><option>Hotline</option><option>Formation</option><option>Relances</option></select>
+              <button class="btn" type="button" title="Nouvelle liste"><svg class="ico"><use href="#i-plus"/></svg></button>
+            </div>
+            <label class="field">
+              <svg class="ico"><use href="#i-search"/></svg>
+              <input id="m-search" placeholder="Rechercher" aria-label="Rechercher une rubrique">
+              <button class="ibtn" type="button" id="micBtn" title="Recherche vocale"><svg class="ico"><use href="#i-mic"/></svg></button>
+            </label>
+            <div style="position:relative">
+              <ul class="rub" id="rubList">
+                <li><span class="n">Accueil appel</span><span class="c">4</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+                <li><span class="n">Mot de passe</span><span class="c">6</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+                <li class="hl"><span class="n">Télétransmission</span><span class="c">5</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+                <li><span class="n">Imprimante</span><span class="c">3</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+                <li><span class="n">Lecteur Vitale</span><span class="c">7</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+                <li><span class="n">Sauvegarde</span><span class="c">2</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+                <li><span class="n">Mise à jour</span><span class="c">4</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+                <li><span class="n">Fin d'appel</span><span class="c">3</span><button class="ibtn more" type="button" aria-label="Actions"><svg class="ico"><use href="#i-dots"/></svg></button></li>
+              </ul>
+              <div class="menu" id="rubMenu" hidden>
+                <button type="button"><svg class="ico"><use href="#i-pen"/></svg>Renommer</button>
+                <hr>
+                <button type="button" class="danger"><svg class="ico"><use href="#i-trash"/></svg>Supprimer</button>
+              </div>
+              <div class="menu" id="cogMenu" hidden style="top:-4px">
+                <button type="button"><svg class="ico"><use href="#i-down"/></svg>Importer</button>
+                <button type="button"><svg class="ico"><use href="#i-up"/></svg>Exporter</button>
+                <hr>
+                <button type="button"><svg class="ico"><use href="#i-moon"/></svg>Thème sombre</button>
+              </div>
+            </div>
+            <button class="btn primary" type="button"><svg class="ico"><use href="#i-plus"/></svg>Rubrique</button>
+            <div class="foot"><small>v3.0</small><small>sauvegardé 22/09</small></div>
+          </div>
+        </div>
+        <div class="ruler"><span>150 + 2×5</span></div>
+        <ul class="win-notes">
+          <li>En-tête : nom, accès Navigation ID, menu Réglages (import, export, thème).</li>
+          <li>Micro intégré au champ de recherche. La rubrique reconnue passe en jaune.</li>
+          <li>Nombre de phrases à droite. Au survol, bouton «&nbsp;⋯&nbsp;» (renommer, supprimer). Le clic droit marche toujours.</li>
+        </ul>
+      </div>
+
+      <!-- Vue 3 -->
+      <div class="win">
+        <div class="win-label"><b>3 · Navigation ID</b><span class="dim">310 px</span></div>
+        <div class="popup">
+          <div class="zt v3" id="v3">
+            <div class="top">
+              <button class="ibtn" type="button" title="Retour"><svg class="ico"><use href="#i-back"/></svg></button>
+              <h1>Navigation ID</h1>
+              <button class="ibtn" type="button" title="Modifier la phrase d'introduction"><svg class="ico"><use href="#i-pen"/></svg></button>
+            </div>
+            <div class="sug">
+              <label class="field"><svg class="ico"><use href="#i-search"/></svg><input id="m-nav" value="renouv" aria-label="Rechercher un menu"></label>
+              <ul>
+                <li class="on"><span><mark>Renouv</mark>ellement</span><small>A Comptoir › M Rappel › U</small></li>
+              </ul>
+            </div>
+            <div class="steps">
+              <div class="step set"><b>1</b><select class="select" id="m-mod" aria-label="Module"><option>A : Comptoir</option></select></div>
+              <div class="step set"><b>2</b><select class="select" id="m-opt" aria-label="Option"><option>M : Rappel</option></select></div>
+              <div class="step set"><b>3</b><select class="select" id="m-sub" aria-label="Sous-option"><option>U : Renouvellement</option></select></div>
+            </div>
+            <div class="out">
+              <p>Je vous invite à suivre le chemin suivant :</p>
+              <ol class="path">
+                <li><span>•</span>Menu ID</li>
+                <li><span>A</span>Comptoir</li>
+                <li><span>M</span>Rappel</li>
+                <li><span>U</span>Renouvellement</li>
+              </ol>
+              <footer><span>✓ Copié dans le presse-papiers</span><button class="btn" type="button" id="navCopy"><svg class="ico"><use href="#i-copy"/></svg>Recopier</button></footer>
+            </div>
+          </div>
+        </div>
+        <div class="ruler"><span>300 + 2×5</span></div>
+        <ul class="win-notes">
+          <li>Recherche en premier : les suggestions montrent le chemin complet et le texte trouvé.</li>
+          <li>Les trois listes deviennent des étapes numérotées 1-2-3 : on voit ce qui reste à choisir.</li>
+          <li>Le résultat s'affiche comme la phrase collée, avec la confirmation de copie et un bouton pour recopier.</li>
+        </ul>
+      </div>
+
+      <!-- Vue 2 -->
+      <div class="win" style="flex-basis:100%">
+        <div class="win-label"><b>2 · Phrases d'une rubrique</b><span class="dim">775 px</span></div>
+        <div class="scroller">
+          <div class="popup">
+            <div class="zt v2" id="v2">
+              <div class="bar">
+                <button class="ibtn" type="button" title="Retour aux rubriques"><svg class="ico"><use href="#i-back"/></svg></button>
+                <div class="crumb"><span>Hotline ›</span><h1>Télétransmission</h1><em>5 phrases</em></div>
+                <label class="field"><svg class="ico"><use href="#i-search"/></svg><input id="m-phsearch" placeholder="Filtrer les phrases" aria-label="Filtrer les phrases"></label>
+                <button class="btn primary" type="button"><svg class="ico"><use href="#i-plus"/></svg>Phrase</button>
+              </div>
+              <div class="list" id="phList">
+                <div class="ph"><span class="grip"><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">Bonjour, je vois que les lots de télétransmission du jour ne sont pas partis. Pouvez-vous me confirmer que le lecteur Vitale est bien branché et allumé ?</div><div class="acts"><button class="copy" type="button"><svg class="ico"><use href="#i-copy"/></svg>Copier</button><button class="ibtn del" type="button" title="Supprimer"><svg class="ico"><use href="#i-trash"/></svg></button></div></div>
+                <div class="ph"><span class="grip"><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">Les rejets SCOR se consultent dans le suivi des lots. Ouvrez le lot concerné, puis cliquez sur « Détail des rejets » pour voir le motif pour chaque facture.</div><div class="acts"><button class="copy" type="button"><svg class="ico"><use href="#i-copy"/></svg>Copier</button><button class="ibtn del" type="button" title="Supprimer"><svg class="ico"><use href="#i-trash"/></svg></button></div></div>
+                <div class="ph"><span class="grip"><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">Je relance l'envoi depuis mon poste. Merci de laisser le logiciel ouvert quelques minutes.
+Si le lot reste en attente, je vous rappelle avant 17 h.</div><div class="acts"><button class="copy" type="button"><svg class="ico"><use href="#i-copy"/></svg>Copier</button><button class="ibtn del" type="button" title="Supprimer"><svg class="ico"><use href="#i-trash"/></svg></button></div></div>
+                <div class="ph"><span class="grip"><svg class="ico"><use href="#i-grip"/></svg></span><div class="txt" contenteditable="true">La procédure complète est disponible ici : <a href="#">https://aide.exemple.fr/teletransmission</a></div><div class="acts"><button class="copy" type="button"><svg class="ico"><use href="#i-copy"/></svg>Copier</button><button class="ibtn del" type="button" title="Supprimer"><svg class="ico"><use href="#i-trash"/></svg></button></div></div>
+              </div>
+              <div class="undo" id="undoBar" hidden><span>Phrase supprimée.</span><button type="button" id="undoBtn">Annuler</button></div>
+              <button class="add" type="button"><svg class="ico"><use href="#i-plus"/></svg>Ajouter une phrase</button>
+            </div>
+          </div>
+          <div class="ruler" style="width:775px"><span>765 + 2×5</span></div>
+        </div>
+        <ul class="win-notes" style="max-width:720px">
+          <li>Barre du haut : retour, fil d'Ariane (liste › rubrique), nombre de phrases, filtre, bouton «&nbsp;+ Phrase&nbsp;».</li>
+          <li>Chaque phrase a sa poignée de glisser-déposer, son bouton Copier (devient «&nbsp;Copié&nbsp;» en vert 1,5&nbsp;s) et sa corbeille.</li>
+          <li>Le bouton «&nbsp;Supprimer&nbsp;» global, qui demandait de sélectionner une phrase d'abord, disparaît. La suppression se fait par phrase et peut être annulée.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- =================== AVANT / APRÈS =================== -->
+  <section aria-labelledby="h-diff">
+    <div class="sec-head"><div><div class="eyebrow">Structure</div><h2 id="h-diff">Ce qui change dans chaque fenêtre</h2></div></div>
+    <div class="table-wrap">
+      <table class="t">
+        <thead><tr><th>Élément</th><th>Aujourd'hui (v2.5)</th><th>Proposé (v3.0)</th></tr></thead>
+        <tbody>
+          <tr><td>Icônes</td><td>Font Awesome 6 beta chargé depuis un CDN, plus un SVG de 5 chemins pour la carte</td><td>Sprite SVG local de 15 icônes : pas de réseau, affichage immédiat</td></tr>
+          <tr><td>Couleurs, thème</td><td>Couleurs écrites en dur, ~40 règles <code>[data-theme="dark"]</code> une par une</td><td>~15 variables CSS, redéfinies une seule fois pour le sombre</td></tr>
+          <tr><td>Mise en page</td><td>Marges fixes (<code>margin-left: 255px</code>, <code>70px</code>…) pour centrer les boutons</td><td>Flex et grid avec <code>gap</code> : rien ne se décale si un libellé change</td></tr>
+          <tr><td>Saisie de noms</td><td><code>prompt()</code>, <code>confirm()</code>, <code>alert()</code> du navigateur</td><td>Petit panneau dans la fenêtre (champ + Valider / Annuler)</td></tr>
+          <tr><td>Supprimer une phrase</td><td>Cliquer la phrase, puis le bouton global, sans annulation</td><td>Corbeille sur la phrase, barre «&nbsp;Annuler&nbsp;» pendant 5&nbsp;s</td></tr>
+          <tr><td>Actions sur rubrique / liste</td><td>Clic droit uniquement</td><td>Bouton «&nbsp;⋯&nbsp;» au survol et clic droit</td></tr>
+          <tr><td>Retour de copie</td><td>Aucun</td><td>«&nbsp;Copié&nbsp;» en vert sur le bouton, message dans la Navigation ID</td></tr>
+          <tr><td>Largeurs</td><td>160 / 775 / 310&nbsp;px</td><td>160 / 775 / 310&nbsp;px (inchangées)</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- =================== PLAN =================== -->
+  <section aria-labelledby="h-plan">
+    <div class="sec-head">
+      <div><div class="eyebrow">Plan</div><h2 id="h-plan">Déroulé en cinq étapes</h2></div>
+      <p>Chaque étape laisse l'extension utilisable et fait l'objet d'un commit séparé, testable en rechargeant l'extension dans <code>chrome://extensions</code>.</p>
+    </div>
+    <div class="phases">
+      <article class="phase">
+        <span class="num">Étape 1</span><h3>Fondations CSS</h3>
+        <ul>
+          <li>Réécrire <code>styles.css</code> autour des variables (clair et sombre).</li>
+          <li>Police système Segoe UI, taille 13&nbsp;px, échelle 11 / 12 / 13 / 14 / 17.</li>
+          <li>Garder <code>#interface1/2/3</code> à 150 / 765 / 300&nbsp;px + 5&nbsp;px de marge.</li>
+          <li>Charger la feuille de style dans <code>&lt;head&gt;</code> (évite le flash sans style).</li>
+        </ul>
+        <div class="files">styles.css · popup.html</div>
+      </article>
+      <article class="phase">
+        <span class="num">Étape 2</span><h3>Structure HTML et icônes</h3>
+        <ul>
+          <li>En-tête / contenu / pied pour chaque vue, comme la maquette.</li>
+          <li>Remplacer Font Awesome par un sprite SVG inline.</li>
+          <li>Supprimer la balise invalide <code>&lt;class="menu-btn" id="settingsBtn"&gt;</code> (id en double).</li>
+          <li>Garder les mêmes <code>id</code> utilisés par les scripts quand c'est possible.</li>
+        </ul>
+        <div class="files">popup.html · icons/</div>
+      </article>
+      <article class="phase">
+        <span class="num">Étape 3</span><h3>Composants</h3>
+        <ul>
+          <li>Rubrique : compteur de phrases + bouton «&nbsp;⋯&nbsp;».</li>
+          <li>Phrase : poignée, Copier avec retour visuel, corbeille.</li>
+          <li>Navigation ID : étapes 1-2-3, suggestions avec chemin, carte résultat.</li>
+          <li>Micro dans le champ de recherche, état «&nbsp;écoute&nbsp;» visible.</li>
+        </ul>
+        <div class="files">script.js · id.js</div>
+      </article>
+      <article class="phase">
+        <span class="num">Étape 4</span><h3>Dialogues et annulation</h3>
+        <ul>
+          <li>Un seul composant de dialogue interne remplace <code>prompt/confirm/alert</code>.</li>
+          <li>Suppression d'une phrase ou d'une rubrique avec barre «&nbsp;Annuler&nbsp;».</li>
+          <li>Menu Réglages : Importer, Exporter, Thème, dans le même style.</li>
+        </ul>
+        <div class="files">script.js · popup.html</div>
+      </article>
+      <article class="phase">
+        <span class="num">Étape 5</span><h3>Corrections et recette</h3>
+        <ul>
+          <li>Corriger les bugs listés plus bas.</li>
+          <li>Vérifier clair / sombre, glisser-déposer, import d'un ancien export, voix.</li>
+          <li>Passer <code>manifest.json</code> en version 3.0.</li>
+        </ul>
+        <div class="files">script.js · id.js · manifest.json</div>
+      </article>
+    </div>
+  </section>
+
+  <!-- =================== BUGS =================== -->
+  <section aria-labelledby="h-bugs">
+    <div class="sec-head"><div><div class="eyebrow">Relevé dans le code actuel</div><h2 id="h-bugs">Bugs à corriger pendant la refonte</h2></div></div>
+    <div class="table-wrap">
+      <table class="t">
+        <thead><tr><th>Où</th><th>Problème</th><th>Correction</th></tr></thead>
+        <tbody>
+          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> La sauvegarde automatique hebdomadaire ne se lance jamais : elle est branchée sur <code>DOMContentLoaded</code> à l'intérieur d'un autre <code>DOMContentLoaded</code>, déjà passé.</td><td>Appeler <code>exportBackupIfNeeded()</code> directement à l'initialisation.</td></tr>
+          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> La rubrique ouverte est retrouvée par son nom : avec deux rubriques du même nom, on ajoute ou supprime dans la mauvaise.</td><td>Mémoriser l'index de la rubrique ouverte.</td></tr>
+          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> Un nouveau <code>Sortable</code> est créé à chaque rafraîchissement de la liste des rubriques.</td><td>Détruire l'instance précédente, comme pour les phrases.</td></tr>
+          <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> Un <code>alert()</code> bloque l'ouverture si le navigateur n'a pas la reconnaissance vocale.</td><td>Masquer le bouton micro à la place.</td></tr>
+          <tr><td class="mono">id.js</td><td><span class="pill bug">bug</span> Même souci de <code>DOMContentLoaded</code> imbriqué pour le texte d'introduction (sans effet visible grâce à la valeur par défaut).</td><td>Lire la valeur directement.</td></tr>
+          <tr><td class="mono">popup.html</td><td><span class="pill bug">bug</span> Balise invalide et <code>id="settingsBtn"</code> en double ; feuille de style chargée en fin de page.</td><td>Nettoyés à l'étape 2.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- =================== CONSERVÉ =================== -->
+  <section aria-labelledby="h-keep">
+    <div class="sec-head"><div><div class="eyebrow">Compatibilité</div><h2 id="h-keep">Ce qui ne bouge pas</h2></div>
+      <p>Les données restent dans <code>localStorage</code> avec les mêmes clés. Rien à migrer, les anciens exports JSON s'importent toujours.</p></div>
+    <ul class="keep">
+      <li><code>listes</code> : listes, rubriques, phrases</li>
+      <li><code>selectedList</code> : dernière liste ouverte</li>
+      <li><code>theme</code> : clair ou sombre</li>
+      <li><code>customIntroText</code> : phrase d'introduction ID</li>
+      <li><code>lastExportDate</code> : date de la dernière sauvegarde</li>
+      <li>Tailles des fenêtres : 160 / 775 / 310&nbsp;px</li>
+    </ul>
+  </section>
+</div>
+
+<script>
+(function(){
+  var frames=[document.getElementById('v1'),document.getElementById('v2'),document.getElementById('v3')];
+  var bL=document.getElementById('zt-light'), bD=document.getElementById('zt-dark');
+  function setTheme(dark){
+    frames.forEach(function(f){ if(dark) f.setAttribute('data-zt-theme','dark'); else f.removeAttribute('data-zt-theme'); });
+    bL.setAttribute('aria-pressed',String(!dark)); bD.setAttribute('aria-pressed',String(dark));
+    try{ localStorage.setItem('zt-mock-theme', dark?'dark':'light'); }catch(e){}
+  }
+  bL.onclick=function(){setTheme(false)}; bD.onclick=function(){setTheme(true)};
+  try{ if(localStorage.getItem('zt-mock-theme')==='dark') setTheme(true); }catch(e){}
+
+  // Copier -> Copié
+  document.querySelectorAll('.v2 .copy').forEach(function(b){
+    b.addEventListener('click',function(){
+      var txt=b.closest('.ph').querySelector('.txt').innerText;
+      if(navigator.clipboard) navigator.clipboard.writeText(txt).catch(function(){});
+      b.classList.add('done'); b.innerHTML='<svg class="ico"><use href="#i-check"/></svg>Copié';
+      setTimeout(function(){ b.classList.remove('done'); b.innerHTML='<svg class="ico"><use href="#i-copy"/></svg>Copier'; },1500);
+    });
+  });
+
+  // Supprimer + annuler
+  var undoBar=document.getElementById('undoBar'), last=null, t=null;
+  document.querySelectorAll('.v2 .del').forEach(function(b){
+    b.addEventListener('click',function(){
+      var ph=b.closest('.ph'); last=ph; ph.hidden=true; undoBar.hidden=false;
+      clearTimeout(t); t=setTimeout(function(){ undoBar.hidden=true; },5000);
+    });
+  });
+  document.getElementById('undoBtn').onclick=function(){ if(last) last.hidden=false; undoBar.hidden=true; };
+
+  // Menus de la vue 1
+  var rubMenu=document.getElementById('rubMenu'), cogMenu=document.getElementById('cogMenu');
+  document.querySelectorAll('.v1 .more').forEach(function(b){
+    b.addEventListener('click',function(e){
+      e.stopPropagation(); cogMenu.hidden=true;
+      var li=b.closest('li'); rubMenu.style.top=(li.offsetTop+li.offsetHeight-2)+'px'; rubMenu.hidden=false;
+    });
+  });
+  document.getElementById('cogBtn').addEventListener('click',function(e){ e.stopPropagation(); rubMenu.hidden=true; cogMenu.hidden=!cogMenu.hidden; });
+  document.addEventListener('click',function(){ rubMenu.hidden=true; cogMenu.hidden=true; });
+
+  // Micro
+  var mic=document.getElementById('micBtn');
+  mic.addEventListener('click',function(){ mic.classList.toggle('is-on'); });
+
+  // Filtre des rubriques
+  document.getElementById('m-search').addEventListener('input',function(){
+    var q=this.value.toLowerCase();
+    document.querySelectorAll('#rubList li').forEach(function(li){ li.hidden = q && li.textContent.toLowerCase().indexOf(q)<0; });
+  });
+
+  // Recopier (Navigation ID)
+  document.getElementById('navCopy').addEventListener('click',function(){
+    var txt='Je vous invite à suivre le chemin suivant :\n• Menu ID\n• A: Comptoir\n• M: Rappel\n• U: Renouvellement';
+    if(navigator.clipboard) navigator.clipboard.writeText(txt).catch(function(){});
+  });
+})();
+</script>
