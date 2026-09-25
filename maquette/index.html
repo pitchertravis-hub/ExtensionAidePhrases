@@ -60,7 +60,7 @@ code,.mono{font-family:var(--pg-mono);font-size:.88em}
 .win-notes li+li{margin-top:3px}
 
 /* Plan */
-.phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px}
+.phases{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:14px}
 .phase{background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:10px;padding:18px 18px 16px;display:flex;flex-direction:column;gap:8px}
 .phase .num{font:600 12px var(--pg-mono);color:var(--pg-accent)}
 .phase ul{margin:0;padding-left:18px;font-size:14px}
@@ -77,6 +77,15 @@ table.t{border-collapse:collapse;width:100%;min-width:640px;background:var(--pg-
 .keep{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;margin:0;padding:0;list-style:none}
 .keep li{background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:8px;padding:10px 12px;font-size:14px}
 .keep li code{color:var(--pg-accent)}
+
+
+.answer{background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:10px;padding:16px 20px;max-width:820px}
+.answer p{margin:0}.answer p+p{margin-top:10px;color:var(--pg-muted)}
+.t tr.pick td{background:var(--pg-accent-soft)}
+.tree-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);gap:16px}
+@media (max-width:800px){.tree-grid{grid-template-columns:1fr}}
+.tree{margin:0;overflow-x:auto;background:var(--pg-surface);border:1px solid var(--pg-line);border-radius:10px;padding:16px 18px;font:500 12.5px/1.6 var(--pg-mono);color:var(--pg-ink)}
+.tree .c{color:var(--pg-muted)}
 
 /* ============ Extension : jeu de jetons proposé (styles.css v3) ============ */
 .zt{
@@ -211,7 +220,7 @@ table.t{border-collapse:collapse;width:100%;min-width:640px;background:var(--pg-
 
 <div class="wrap">
   <header>
-    <div class="eyebrow">Phrase – TP · extension Chrome · v2.5 → v3.0</div>
+    <div class="eyebrow">Phrase – TP · extension Chrome · v2.5 → v3.0 · WXT + React</div>
     <h1>Refonte de ZenText</h1>
     <p class="lede">Nouvelle structure et nouveau style pour les trois fenêtres de l'extension. Les largeurs ne changent pas : 160&nbsp;px pour les rubriques, 775&nbsp;px pour les phrases, 310&nbsp;px pour la Navigation ID. La hauteur reste automatique, comme aujourd'hui. Les données enregistrées sont reprises telles quelles.</p>
   </header>
@@ -369,7 +378,7 @@ Si le lot reste en attente, je vous rappelle avant 17 h.</div><div class="acts">
       <table class="t">
         <thead><tr><th>Élément</th><th>Aujourd'hui (v2.5)</th><th>Proposé (v3.0)</th></tr></thead>
         <tbody>
-          <tr><td>Icônes</td><td>Font Awesome 6 beta chargé depuis un CDN, plus un SVG de 5 chemins pour la carte</td><td>Sprite SVG local de 15 icônes : pas de réseau, affichage immédiat</td></tr>
+          <tr><td>Icônes</td><td>Font Awesome 6 beta chargé depuis un CDN, plus un SVG de 5 chemins pour la carte</td><td>Icônes intégrées au paquet (lucide) : pas de réseau, affichage immédiat</td></tr>
           <tr><td>Couleurs, thème</td><td>Couleurs écrites en dur, ~40 règles <code>[data-theme="dark"]</code> une par une</td><td>~15 variables CSS, redéfinies une seule fois pour le sombre</td></tr>
           <tr><td>Mise en page</td><td>Marges fixes (<code>margin-left: 255px</code>, <code>70px</code>…) pour centrer les boutons</td><td>Flex et grid avec <code>gap</code> : rien ne se décale si un libellé change</td></tr>
           <tr><td>Saisie de noms</td><td><code>prompt()</code>, <code>confirm()</code>, <code>alert()</code> du navigateur</td><td>Petit panneau dans la fenêtre (champ + Valider / Annuler)</td></tr>
@@ -382,60 +391,147 @@ Si le lot reste en attente, je vous rappelle avant 17 h.</div><div class="acts">
     </div>
   </section>
 
+  <!-- =================== TECHNO =================== -->
+  <section aria-labelledby="h-tech">
+    <div class="sec-head">
+      <div><div class="eyebrow">Technologie</div><h2 id="h-tech">npm dans une extension Chrome ?</h2></div>
+    </div>
+    <div class="answer">
+      <p><strong>Oui, mais seulement pour construire l'extension.</strong> npm et Node ne tournent pas dans Chrome. On les utilise sur votre PC : <code>npm run build</code> assemble le code et les bibliothèques en fichiers <code>.js</code>, <code>.css</code> et <code>.html</code> ordinaires, dans un dossier <code>dist/</code>. C'est ce dossier qu'on charge dans <code>chrome://extensions</code> ou qu'on publie sur le Chrome Web Store.</p>
+      <p>Une contrainte du Manifest V3 va dans ce sens : une extension ne peut pas charger de script depuis Internet. Tout doit être dans le paquet. Un outil de build règle ça automatiquement, et fait aussi disparaître le lien vers Font Awesome.</p>
+    </div>
+
+    <div class="table-wrap" style="margin-top:18px">
+      <table class="t">
+        <thead><tr><th>Option</th><th>Ce que c'est</th><th>Pour</th><th>Contre</th></tr></thead>
+        <tbody>
+          <tr><td><b>A · JavaScript sans build</b></td><td>Comme aujourd'hui, découpé en modules ES (<code>import</code>)</td><td>Rien à installer. On modifie un fichier, on recharge.</td><td>Pas de composants ni de typage. Les trois vues restent gérées à la main dans le DOM, source des bugs actuels.</td></tr>
+          <tr><td><b>B · Vite + TypeScript, sans framework</b></td><td>Build npm, code découpé et typé</td><td>Paquet très léger, vérification des types.</td><td>L'affichage reste écrit à la main : beaucoup de code pour les listes, menus et dialogues.</td></tr>
+          <tr class="pick"><td><b>C · WXT + React + TypeScript</b> <span class="pill ok">recommandé</span></td><td>WXT : outil de build fait pour les extensions, basé sur Vite</td><td>Même pile que ProdALC (React 19, Zustand, Tailwind 4, lucide). Rechargement auto en développement, manifeste généré, commande <code>zip</code> pour le Web Store.</td><td>Il faut Node 20+ et une étape de build. Le popup pèse ~150 Ko au lieu de ~65 Ko, sans effet visible à l'ouverture.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 style="margin-top:26px">Pile retenue (option C)</h3>
+    <ul class="keep" style="margin-top:10px">
+      <li><b>WXT</b> : build, manifeste V3, <code>npm run dev</code> ouvre Chrome avec l'extension chargée</li>
+      <li><b>React 19 + TypeScript</b> : une vue = un composant</li>
+      <li><b>Zustand</b> : un seul état (listes, vue ouverte), sauvegardé automatiquement</li>
+      <li><b>Tailwind 4</b> : les jetons de couleur de la maquette, clair et sombre</li>
+      <li><b>lucide-react</b> : icônes intégrées au paquet</li>
+      <li><b>@dnd-kit/sortable</b> : glisser-déposer, remplace <code>Sortable.min.js</code></li>
+      <li><b>Radix Dialog</b> : dialogues accessibles, remplacent <code>prompt/confirm</code></li>
+      <li><b>Vitest</b> : tests sur la fusion d'import, la recherche et la génération du chemin ID</li>
+    </ul>
+  </section>
+
+  <!-- =================== ARBORESCENCE =================== -->
+  <section aria-labelledby="h-tree">
+    <div class="sec-head">
+      <div><div class="eyebrow">Restructuration</div><h2 id="h-tree">Nouvelle organisation du code</h2></div>
+      <p>Aujourd'hui, <code>script.js</code> fait tout : données, affichage, voix, import, thème. Il est découpé par rôle, et le catalogue des menus ID de <code>id.js</code> devient un fichier de données à part.</p>
+    </div>
+    <div class="tree-grid">
+<pre class="tree"><span class="c"># projet</span>
+package.json
+wxt.config.ts          <span class="c">manifeste : nom, version, clé</span>
+public/icons/          <span class="c">icon16/48/128.png</span>
+entrypoints/popup/
+  index.html
+  main.tsx
+  App.tsx              <span class="c">choisit la vue ouverte</span>
+src/
+  views/
+    Rubriques.tsx      <span class="c">vue 1 · 160 px</span>
+    Phrases.tsx        <span class="c">vue 2 · 775 px</span>
+    NavigationId.tsx   <span class="c">vue 3 · 310 px</span>
+  ui/                  <span class="c">Button, Field, Menu,
+                        Dialog, UndoBar, Select</span>
+  state/store.ts       <span class="c">Zustand : listes, vue</span>
+  core/
+    search.ts          <span class="c">fuzzyMatch, normalizeText</span>
+    voice.ts           <span class="c">reconnaissance vocale</span>
+    copy.ts            <span class="c">HTML → texte à coller</span>
+    navId.ts           <span class="c">recherche + phrase ID</span>
+  data/idMenus.ts      <span class="c">catalogue A…I (ex id.js)</span>
+  io/
+    storage.ts         <span class="c">lecture/écriture, mêmes clés</span>
+    importExport.ts    <span class="c">JSON + sauvegarde hebdo</span>
+  styles.css           <span class="c">jetons clair / sombre</span>
+tests/</pre>
+      <div class="phase" style="align-self:start">
+        <span class="num">Correspondance</span><h3>Ancien → nouveau</h3>
+        <ul>
+          <li><code>popup.html</code> → <code>entrypoints/popup/</code> + <code>views/</code></li>
+          <li><code>script.js</code> → <code>state/</code>, <code>io/</code>, <code>core/search.ts</code>, <code>core/voice.ts</code>, <code>core/copy.ts</code></li>
+          <li><code>id.js</code> → <code>data/idMenus.ts</code> + <code>core/navId.ts</code> + <code>NavigationId.tsx</code></li>
+          <li><code>styles.css</code> → <code>src/styles.css</code> (jetons) + classes Tailwind</li>
+          <li><code>js/Sortable.min.js</code> → <code>@dnd-kit</code> via npm</li>
+          <li><code>manifest.json</code> → <code>wxt.config.ts</code>, <b>même <code>key</code></b> pour garder le même identifiant d'extension et donc les données</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
   <!-- =================== PLAN =================== -->
   <section aria-labelledby="h-plan">
     <div class="sec-head">
-      <div><div class="eyebrow">Plan</div><h2 id="h-plan">Déroulé en cinq étapes</h2></div>
-      <p>Chaque étape laisse l'extension utilisable et fait l'objet d'un commit séparé, testable en rechargeant l'extension dans <code>chrome://extensions</code>.</p>
+      <div><div class="eyebrow">Plan</div><h2 id="h-plan">Déroulé en six étapes</h2></div>
+      <p>La v2.5 reste en place sur <code>main</code> jusqu'à la fin. Chaque étape se teste avec <code>npm run dev</code>, qui ouvre Chrome avec l'extension chargée.</p>
     </div>
     <div class="phases">
       <article class="phase">
-        <span class="num">Étape 1</span><h3>Fondations CSS</h3>
+        <span class="num">Étape 1</span><h3>Socle</h3>
         <ul>
-          <li>Réécrire <code>styles.css</code> autour des variables (clair et sombre).</li>
-          <li>Police système Segoe UI, taille 13&nbsp;px, échelle 11 / 12 / 13 / 14 / 17.</li>
-          <li>Garder <code>#interface1/2/3</code> à 150 / 765 / 300&nbsp;px + 5&nbsp;px de marge.</li>
-          <li>Charger la feuille de style dans <code>&lt;head&gt;</code> (évite le flash sans style).</li>
+          <li>Créer le projet WXT + React + TypeScript + Tailwind.</li>
+          <li>Reprendre nom, version, icônes et <code>key</code> du manifeste.</li>
+          <li>Fixer les largeurs 160 / 775 / 310&nbsp;px par vue.</li>
         </ul>
-        <div class="files">styles.css · popup.html</div>
+        <div class="files">package.json · wxt.config.ts</div>
       </article>
       <article class="phase">
-        <span class="num">Étape 2</span><h3>Structure HTML et icônes</h3>
+        <span class="num">Étape 2</span><h3>Données et logique</h3>
         <ul>
-          <li>En-tête / contenu / pied pour chaque vue, comme la maquette.</li>
-          <li>Remplacer Font Awesome par un sprite SVG inline.</li>
-          <li>Supprimer la balise invalide <code>&lt;class="menu-btn" id="settingsBtn"&gt;</code> (id en double).</li>
-          <li>Garder les mêmes <code>id</code> utilisés par les scripts quand c'est possible.</li>
+          <li><code>storage.ts</code> lit les clés actuelles (<code>listes</code>, <code>theme</code>…), y compris l'ancien format.</li>
+          <li>Porter recherche, copie, catalogue ID, import/fusion.</li>
+          <li>Tests Vitest sur ces fonctions avant tout affichage.</li>
         </ul>
-        <div class="files">popup.html · icons/</div>
+        <div class="files">src/io · src/core · src/data · tests</div>
       </article>
       <article class="phase">
-        <span class="num">Étape 3</span><h3>Composants</h3>
+        <span class="num">Étape 3</span><h3>Composants de base</h3>
         <ul>
-          <li>Rubrique : compteur de phrases + bouton «&nbsp;⋯&nbsp;».</li>
-          <li>Phrase : poignée, Copier avec retour visuel, corbeille.</li>
-          <li>Navigation ID : étapes 1-2-3, suggestions avec chemin, carte résultat.</li>
-          <li>Micro dans le champ de recherche, état «&nbsp;écoute&nbsp;» visible.</li>
+          <li>Jetons de couleur clair / sombre de la maquette.</li>
+          <li>Button, Field, Select, Menu «&nbsp;⋯&nbsp;», Dialog, UndoBar.</li>
         </ul>
-        <div class="files">script.js · id.js</div>
+        <div class="files">src/ui · src/styles.css</div>
       </article>
       <article class="phase">
-        <span class="num">Étape 4</span><h3>Dialogues et annulation</h3>
+        <span class="num">Étape 4</span><h3>Les trois vues</h3>
         <ul>
-          <li>Un seul composant de dialogue interne remplace <code>prompt/confirm/alert</code>.</li>
-          <li>Suppression d'une phrase ou d'une rubrique avec barre «&nbsp;Annuler&nbsp;».</li>
-          <li>Menu Réglages : Importer, Exporter, Thème, dans le même style.</li>
+          <li>Rubriques : liste, recherche, micro, compteur, glisser-déposer.</li>
+          <li>Phrases : édition, copier, corbeille + annuler, tri.</li>
+          <li>Navigation ID : recherche, étapes 1-2-3, résultat copié.</li>
         </ul>
-        <div class="files">script.js · popup.html</div>
+        <div class="files">src/views</div>
       </article>
       <article class="phase">
-        <span class="num">Étape 5</span><h3>Corrections et recette</h3>
+        <span class="num">Étape 5</span><h3>Réglages et sauvegarde</h3>
         <ul>
-          <li>Corriger les bugs listés plus bas.</li>
-          <li>Vérifier clair / sombre, glisser-déposer, import d'un ancien export, voix.</li>
-          <li>Passer <code>manifest.json</code> en version 3.0.</li>
+          <li>Menu Importer / Exporter / Thème.</li>
+          <li>Sauvegarde hebdomadaire qui se déclenche vraiment.</li>
+          <li>Texte d'introduction ID modifiable dans un dialogue.</li>
         </ul>
-        <div class="files">script.js · id.js · manifest.json</div>
+        <div class="files">src/io · Rubriques.tsx</div>
+      </article>
+      <article class="phase">
+        <span class="num">Étape 6</span><h3>Recette et bascule</h3>
+        <ul>
+          <li>Charger <code>dist/</code> par-dessus la v2.5 : les listes existantes doivent apparaître.</li>
+          <li>Tester clair/sombre, voix, import d'un ancien export.</li>
+          <li>Version 3.0, <code>npm run zip</code> pour le Web Store.</li>
+        </ul>
+        <div class="files">dist/ · .output/*.zip</div>
       </article>
     </div>
   </section>
@@ -452,7 +548,7 @@ Si le lot reste en attente, je vous rappelle avant 17 h.</div><div class="acts">
           <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> Un nouveau <code>Sortable</code> est créé à chaque rafraîchissement de la liste des rubriques.</td><td>Détruire l'instance précédente, comme pour les phrases.</td></tr>
           <tr><td class="mono">script.js</td><td><span class="pill bug">bug</span> Un <code>alert()</code> bloque l'ouverture si le navigateur n'a pas la reconnaissance vocale.</td><td>Masquer le bouton micro à la place.</td></tr>
           <tr><td class="mono">id.js</td><td><span class="pill bug">bug</span> Même souci de <code>DOMContentLoaded</code> imbriqué pour le texte d'introduction (sans effet visible grâce à la valeur par défaut).</td><td>Lire la valeur directement.</td></tr>
-          <tr><td class="mono">popup.html</td><td><span class="pill bug">bug</span> Balise invalide et <code>id="settingsBtn"</code> en double ; feuille de style chargée en fin de page.</td><td>Nettoyés à l'étape 2.</td></tr>
+          <tr><td class="mono">popup.html</td><td><span class="pill bug">bug</span> Balise invalide et <code>id="settingsBtn"</code> en double ; feuille de style chargée en fin de page.</td><td>Disparaissent avec le nouveau <code>index.html</code> généré par WXT.</td></tr>
         </tbody>
       </table>
     </div>
@@ -461,7 +557,7 @@ Si le lot reste en attente, je vous rappelle avant 17 h.</div><div class="acts">
   <!-- =================== CONSERVÉ =================== -->
   <section aria-labelledby="h-keep">
     <div class="sec-head"><div><div class="eyebrow">Compatibilité</div><h2 id="h-keep">Ce qui ne bouge pas</h2></div>
-      <p>Les données restent dans <code>localStorage</code> avec les mêmes clés. Rien à migrer, les anciens exports JSON s'importent toujours.</p></div>
+      <p>Les données restent dans <code>localStorage</code> avec les mêmes clés. La <code>key</code> du manifeste est conservée, donc l'identifiant de l'extension ne change pas et ces données restent lisibles. Les anciens exports JSON s'importent toujours.</p></div>
     <ul class="keep">
       <li><code>listes</code> : listes, rubriques, phrases</li>
       <li><code>selectedList</code> : dernière liste ouverte</li>
@@ -469,6 +565,7 @@ Si le lot reste en attente, je vous rappelle avant 17 h.</div><div class="acts">
       <li><code>customIntroText</code> : phrase d'introduction ID</li>
       <li><code>lastExportDate</code> : date de la dernière sauvegarde</li>
       <li>Tailles des fenêtres : 160 / 775 / 310&nbsp;px</li>
+      <li><code>key</code> du manifeste : même identifiant d'extension</li>
     </ul>
   </section>
 </div>
