@@ -46,14 +46,16 @@ kbd { font: 600 10px var(--mono); padding: 0 5px; border-radius: 4px; border: 1p
 
 /* Colonne rubriques */
 .side { grid-area: side; display: flex; flex-direction: column; gap: 10px; padding: 12px 8px 10px; border-right: 1px solid var(--line); min-height: 0; }
-.listrow { display: flex; gap: 4px; }
-.listrow select {
+.listrow, .rubrow { display: flex; gap: 4px; }
+.rubrow { display: none; }
+.listrow select, .rubrow select {
   appearance: none; flex: 1; min-width: 0; height: 32px; padding: 0 26px 0 10px; border: 1px solid var(--line); border-radius: 8px;
   font: inherit; font-weight: 800; color: var(--ink); cursor: pointer; text-overflow: ellipsis;
   background: var(--surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='10' viewBox='0 0 24 24' fill='none' stroke='%237A8090' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") no-repeat right 9px center;
 }
-.listrow select option { background: var(--surface); color: var(--ink); }
-.listrow .ibtn { height: 32px; }
+.listrow select option, .rubrow select option { background: var(--surface); color: var(--ink); }
+.listrow .ibtn, .rubrow .ibtn { height: 32px; }
+.rubrow select { font-weight: 700; }
 .nav { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1px; overflow-y: auto; min-height: 0; }
 .nav li { position: relative; flex: none; }
 .nav .item { width: 100%; display: flex; align-items: center; gap: 8px; height: 32px; padding: 0 8px 0 10px; border: 0; border-radius: 7px; background: none; text-align: left; font-weight: 700; color: var(--ink-2); }
@@ -190,11 +192,9 @@ dialog input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--ac
   .tabs button { flex: 1; min-width: 0; padding: 0 6px; }
   .search { order: 3; flex-basis: 100%; }
   .side { border-right: 0; border-bottom: 1px solid var(--line); padding: 8px 10px; flex-direction: row; align-items: center; gap: 8px; }
-  .listrow { flex: none; width: 150px; }
-  .nav { flex-direction: row; overflow-x: auto; overflow-y: hidden; gap: 4px; scrollbar-width: none; }
-  .nav .item { height: 28px; padding: 0 10px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); white-space: nowrap; }
-  .nav .item .n { overflow: visible; }
-  .nav .item .c, .nav .sep, .nav .more, .side .add { display: none !important; }
+  .listrow { flex: 2 1 0; min-width: 0; }
+  .rubrow { display: flex; flex: 3 1 0; min-width: 0; }
+  .nav, .side .add { display: none !important; }
   .sort { display: none; }
   .cols { grid-template-columns: 1fr; }
   .col ul { max-height: 150px; }
