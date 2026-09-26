@@ -9,6 +9,7 @@ import { escapeHtml } from '../core/text.js';
 const $ = (id) => document.getElementById(id);
 const select = $('listSelect');
 const nav = $('nav');
+const rubSelect = $('rubSelect');
 const listMenu = $('listMenu');
 const rubMenu = $('rubMenu');
 let menuIndex = -1;
@@ -60,7 +61,23 @@ function renderSide() {
     h += `<li class="r" data-r="${i}"><button class="item" type="button" data-r="${i}" aria-current="${onPh && state.mode === 'rub' && state.rub === i}" title="${escapeHtml(r.name)}"><span class="n">${escapeHtml(r.name)}</span><span class="c">${r.phrases.length}</span></button><button class="ibtn more" type="button" aria-label="Actions sur la rubrique">${icon('dots')}</button></li>`;
   });
   nav.innerHTML = h;
+  renderRubSelect(rubs, onPh);
   nav.querySelector('[aria-current="true"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+}
+
+// Menu déroulant des rubriques, utilisé dans le panneau étroit (ancrage).
+function renderRubSelect(rubs, onPh) {
+  rubSelect.textContent = '';
+  if (state.list) {
+    rubSelect.append(new Option(`★ Favoris (${favCount()})`, 'fav'));
+    rubs.forEach((r, i) => rubSelect.append(new Option(`${r.name} (${r.phrases.length})`, String(i))));
+    rubSelect.append(new Option('+ Nouvelle rubrique…', 'new'));
+  }
+  const cur = state.mode === 'fav' ? 'fav' : String(state.rub);
+  if (!onPh) rubSelect.prepend(new Option(state.q ? 'Recherche en cours…' : '—', '', true, true));
+  else rubSelect.value = rubs.length || state.mode === 'fav' ? cur : 'new';
+  rubSelect.disabled = !state.list;
+  $('rubMenuBtn').disabled = !(onPh && state.mode === 'rub' && rubs.length);
 }
 
 // ---------- Listes ----------
@@ -170,6 +187,17 @@ export function initSidebar() {
   });
   bindMenu(rubMenu, (act) => (act === 'rename' ? renameRubrique(menuIndex) : deleteRubrique(menuIndex)));
   $('addRubBtn').addEventListener('click', addRubrique);
+
+  rubSelect.addEventListener('change', () => {
+    const v = rubSelect.value;
+    if (v === 'fav') openRubrique(0, 'fav');
+    else if (v === 'new') addRubrique().finally(render);
+    else if (v !== '') openRubrique(Number(v));
+  });
+  $('rubMenuBtn').addEventListener('click', (e) => {
+    menuIndex = state.rub;
+    openMenu(rubMenu, { anchor: e.currentTarget });
+  });
 
   if (window.Sortable) {
     sortable = new Sortable(nav, {
