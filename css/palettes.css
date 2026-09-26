@@ -113,6 +113,75 @@
 [data-layout="col"] .side .add { border-color: var(--rail-line); color: var(--rail-muted); }
 [data-layout="col"] .side .add:hover { border-color: var(--brand-bright); color: #F4F1EA; }
 
+/* ---------- Thèmes de saison ---------- */
+.slogo { display: none; width: 32px; height: 32px; margin: -4px -2px; flex: none; filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .25)); }
+[data-palette="halloween"] .mono-z, [data-palette="noel"] .mono-z { display: none; }
+[data-palette="halloween"] .slogo.pumpkin, [data-palette="noel"] .slogo.tree { display: block; }
+
+[data-palette="halloween"] {
+  --bg: #F8F4EF; --surface: #FFFFFF; --sunken: #F0EAE3; --ink: #1E1424; --ink-2: #433849; --muted: #81768A; --line: #E8E0D8; --line-strong: #D8CCC0;
+  --accent: #D8600E; --accent-soft: #FDE7D3; --gold: #D8600E; --gold-soft: #FDE7D3;
+  --brand-grad: linear-gradient(135deg, #FF9A3C, #E0620F); --brand-on: #1B1026; --brand-tp: #D8600E; --brand-bright: #FFAE5C;
+  --rail: #1B1026; --rail-hi: rgba(255, 154, 60, .16);
+}
+[data-palette="halloween"][data-theme="dark"] {
+  --bg: #120B19; --surface: #1B1224; --sunken: #24182F; --ink: #F2EBF5; --ink-2: #D0C4D8; --muted: #9A8CA6; --line: #2E2140; --line-strong: #3C2C52;
+  --accent: #FF9A3C; --accent-soft: #3A2112; --gold: #FF9A3C; --gold-soft: #3A2112; --brand-tp: #FF9A3C; --rail: #0E0715;
+}
+[data-palette="halloween"] .top { background-image: radial-gradient(circle at 92% -40%, rgba(255, 154, 60, .25), transparent 45%); }
+[data-palette="halloween"] .mhead { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 90 40' fill='%23E8680F' fill-opacity='.45'%3E%3Cpath d='M10 14c3-4 6-5 8-2 1-2 3-2 4 0 2-3 5-2 8 2-3-1-5 0-6 3-1-1-3-1-4 1-1-2-3-2-4-1-1-3-3-4-6-3z'/%3E%3Cpath d='M58 24c4-5 8-6 10-2 1-2 4-2 5 0 3-4 7-3 10 2-4-1-7 0-8 4-1-2-4-2-5 1-1-3-4-3-5-1-1-4-4-5-7-4z'/%3E%3Cpath d='M38 6c2-3 4-3 5-1 1-1 2-1 3 0 1-2 3-2 5 1-2 0-3 0-4 2 0-1-2-1-2 0-1-1-2-1-3 0 0-2-2-2-4-2z'/%3E%3C/svg%3E") no-repeat right 110px top 6px / 100px 44px; }
+[data-palette="halloween"] .main { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%238A7F90' stroke-opacity='.45' stroke-width='1.2'%3E%3Cpath d='M100 100 0 0M100 100 20 0M100 100 55 0M100 100 0 20M100 100 0 55'/%3E%3Cpath d='M100 78c-10-4-14-12-12-22-10 3-18-1-22-10-8 6-18 6-26 0'/%3E%3Cpath d='M100 52c-18-6-24-18-22-32-14 4-28 0-36-12-10 6-24 4-32-6'/%3E%3C/svg%3E") no-repeat right bottom / 120px 120px; }
+[data-palette="halloween"] .ph.sel { box-shadow: 0 0 0 3px var(--accent-soft), 0 0 22px -6px var(--accent); }
+
+[data-palette="noel"] {
+  --bg: #F5F7F4; --surface: #FFFFFF; --sunken: #ECF0EB; --ink: #13241E; --ink-2: #33473F; --muted: #6F807A; --line: #DDE4DD; --line-strong: #C8D3CA;
+  --accent: #C22F39; --accent-soft: #FBE4E5; --gold: #C22F39; --gold-soft: #FBE4E5;
+  --brand-grad: linear-gradient(135deg, #E0474F, #B02A33); --brand-on: #FFFFFF; --brand-tp: #C22F39; --brand-bright: #F7C948;
+  --rail: #0F3B2E; --rail-hi: rgba(247, 201, 72, .16);
+}
+[data-palette="noel"][data-theme="dark"] {
+  --bg: #0A1712; --surface: #11221B; --sunken: #172C23; --ink: #EAF2EE; --ink-2: #C3D3CB; --muted: #86998F; --line: #1F372D; --line-strong: #2A463A;
+  --accent: #FF6B72; --accent-soft: #3A1719; --gold: #FF6B72; --gold-soft: #3A1719; --brand-tp: #FF6B72; --rail: #082A20;
+}
+/* Flocons sur le bandeau et guirlande lumineuse dessous */
+[data-palette="noel"] .top { position: relative; background-image: radial-gradient(rgba(15, 59, 46, .12) 1px, transparent 1.4px), radial-gradient(rgba(194, 47, 57, .1) 1px, transparent 1.4px); background-size: 26px 26px, 17px 17px; background-position: 0 0, 9px 11px; }
+[data-palette="noel"][data-layout="band"] .top { background-image: radial-gradient(rgba(255, 255, 255, .5) 1px, transparent 1.4px), radial-gradient(rgba(255, 255, 255, .3) 1px, transparent 1.4px); border-bottom: 0; }
+[data-palette="noel"] .top::after {
+  content: ""; position: absolute; left: 0; right: 0; bottom: -9px; height: 10px; z-index: 3; pointer-events: none;
+  background:
+    radial-gradient(circle at 50% 60%, #FF4D4D 0 3px, transparent 3.6px) 0 0 / 60px 10px repeat-x,
+    radial-gradient(circle at 50% 60%, #F7C948 0 3px, transparent 3.6px) 15px 0 / 60px 10px repeat-x,
+    radial-gradient(circle at 50% 60%, #4CC38A 0 3px, transparent 3.6px) 30px 0 / 60px 10px repeat-x,
+    radial-gradient(circle at 50% 60%, #5AA9FF 0 3px, transparent 3.6px) 45px 0 / 60px 10px repeat-x;
+}
+[data-palette="noel"] .main { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100' fill='none' stroke='%238FA39A' stroke-opacity='.35' stroke-width='3' stroke-linecap='round'%3E%3Cpath d='M50 8v84M13.6 29l72.8 42M13.6 71l72.8-42'/%3E%3Cpath d='M50 8l-8 8m8-8 8 8M50 92l-8-8m8 8 8-8M13.6 29l11 3m-11-3 3 11M86.4 71l-11-3m11 3-3-11M13.6 71l3-11m-3 11 11-3M86.4 29l-3 11m3-11-11 3'/%3E%3C/svg%3E") no-repeat right 12px bottom 12px / 110px 110px; }
+@media (max-width: 619px) {
+  [data-palette="halloween"] .mhead { background: none; }
+}
+
+/* Fuchsia pop : rose vif et prune, logo cœur, cœurs et paillettes, coins plus ronds. */
+[data-palette="fuchsia"] {
+  --bg: #FFF4FA; --surface: #FFFFFF; --sunken: #FDE7F3; --ink: #2B0F22; --ink-2: #57314B; --muted: #9C7590; --line: #F7DCEC; --line-strong: #EFC3DD;
+  --accent: #D81B7F; --accent-soft: #FFE0F0; --gold: #D81B7F; --gold-soft: #FFE0F0;
+  --brand-grad: linear-gradient(135deg, #FF5FAE, #E0288A); --brand-on: #FFFFFF; --brand-tp: #D81B7F; --brand-bright: #FF8CC6;
+  --rail: #5A1646; --rail-hi: rgba(255, 90, 170, .2);
+}
+[data-palette="fuchsia"][data-theme="dark"] {
+  --bg: #1A0A15; --surface: #26101F; --sunken: #321629; --ink: #FFEAF5; --ink-2: #EBC5DA; --muted: #B08BA2; --line: #41203A; --line-strong: #552A4B;
+  --accent: #FF5FAE; --accent-soft: #45142F; --gold: #FF5FAE; --gold-soft: #45142F; --brand-tp: #FF5FAE; --rail: #3E0D30;
+}
+[data-palette="fuchsia"] .mono-z { display: none; }
+[data-palette="fuchsia"] .slogo.heart { display: block; }
+[data-palette="fuchsia"] .top { background-image: radial-gradient(circle at 12% 120%, rgba(255, 95, 174, .25), transparent 40%), radial-gradient(circle at 88% -30%, rgba(255, 95, 174, .25), transparent 40%); }
+[data-palette="fuchsia"] .mhead { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 44' fill='%23FF5FAE' fill-opacity='.5'%3E%3Cpath d='M14 30C4 23 2 17 6 13c3-3 7-2 8 1 1-3 5-4 8-1 4 4 2 10-8 17z'/%3E%3Cpath d='M60 18c-6-4-7-8-5-10 2-2 4-1 5 1 1-2 3-3 5-1 2 2 1 6-5 10z'/%3E%3Cpath d='M92 38c-8-6-10-11-7-14 3-3 6-2 7 1 1-3 4-4 7-1 3 3 1 8-7 14z'/%3E%3C/svg%3E") no-repeat right 110px top 4px / 100px 40px; }
+[data-palette="fuchsia"] .main { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 110' fill='%23FF5FAE' fill-opacity='.35'%3E%3Cpath d='M80 10c2 12 6 16 18 18-12 2-16 6-18 18-2-12-6-16-18-18 12-2 16-6 18-18z'/%3E%3Cpath d='M40 50c1.5 8 4 10.5 12 12-8 1.5-10.5 4-12 12-1.5-8-4-10.5-12-12 8-1.5 10.5-4 12-12z'/%3E%3Cpath d='M95 70c1 6 3 8 9 9-6 1-8 3-9 9-1-6-3-8-9-9 6-1 8-3 9-9z'/%3E%3Ccircle cx='20' cy='30' r='2.5'/%3E%3Ccircle cx='60' cy='95' r='2'/%3E%3Ccircle cx='110' cy='45' r='2'/%3E%3C/svg%3E") no-repeat right 12px bottom 12px / 110px 100px; }
+[data-palette="fuchsia"] .ph.sel { box-shadow: 0 0 0 3px var(--accent-soft), 0 6px 20px -8px var(--accent); }
+[data-palette="fuchsia"] :is(.ph, .search, .tabs, .nav .item, .listrow select, .rubrow select, .btn, .side .add, .ticket, .col, .pop) { border-radius: 14px; }
+[data-palette="fuchsia"] .tabs button { border-radius: 11px; }
+@media (max-width: 619px) {
+  [data-palette="fuchsia"] .mhead { background: none; }
+}
+
 /* ---------- Menu Apparence ---------- */
 .look { width: 330px; padding: 10px; }
 .look .cap { margin: 4px 2px 7px; }
