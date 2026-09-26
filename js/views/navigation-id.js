@@ -1,8 +1,7 @@
-// Onglet Navigation ID : trois colonnes cliquables et chemins récents.
+// Onglet Navigation ID : trois colonnes cliquables.
 import { MODULES } from '../data/id-menus.js';
 import { store, DEFAULT_INTRO } from '../store.js';
 import { state, onRender, copyText, icon } from '../state.js';
-import { stats } from '../core/stats.js';
 import { escapeHtml } from '../core/text.js';
 import { foldText } from '../ui/phrase-text.js';
 import { askText } from '../ui/dialog.js';
@@ -44,21 +43,13 @@ function sentence(p) {
   return [store.intro, ...lines(p)].join('\n');
 }
 
-function labelOf(p) {
-  const { opt, sub } = resolve(p);
-  return sub || (opt ? nameOf(opt) : '');
-}
-
 async function copyPath() {
   copied = await copyText(sentence(path));
-  const { opt } = resolve(path);
-  const complete = opt && (!subsOf(opt) || path[2]);
-  if (complete) stats.pushRecent([...path]);
   renderId();
   showToast(copied ? 'Chemin copié' : 'Copie impossible');
 }
 
-// Choisit un chemin complet (depuis la recherche ou les récents) et le copie.
+// Choisit un chemin complet (depuis la recherche) et le copie.
 export function openPath(p) {
   path = [p[0] || '', p[1] || '', p[2] || ''];
   if (resolve(path).opt) copyPath();
@@ -95,11 +86,6 @@ function renderId() {
   const { mod, opt } = resolve(path);
   const subs = subsOf(opt);
   let h = '';
-  if (stats.recent.length) {
-    h += `<div><div class="cap" style="margin-bottom:6px">Récents</div><div class="chips">${stats.recent
-      .map((p, i) => `<button class="chip" type="button" data-rec="${i}" title="${escapeHtml(labelOf(p))}"><span>${p.filter(Boolean).join('›')}</span>${escapeHtml(labelOf(p))}</button>`)
-      .join('')}</div></div>`;
-  }
   h += '<div class="cols">';
   h += column('1 · Module', 0, Object.entries(MODULES).map(([k, m]) => [k, m.name]), path[0], '');
   h += column('2 · Option', 1, mod ? Object.entries(mod.options).map(([k, o]) => [k, nameOf(o), !!subsOf(o)]) : [], path[1], 'Choisissez un module.');
@@ -136,8 +122,6 @@ export function initNavigation() {
       else renderId();
       return;
     }
-    const r = e.target.closest('[data-rec]');
-    if (r) { openPath(stats.recent[Number(r.dataset.rec)]); return; }
     if (e.target.closest('[data-act="copy"]')) copyPath();
   });
 

@@ -1,8 +1,11 @@
-// Favoris, nombre de copies et chemins ID récents. Stockés à part pour ne
+// Favoris et nombre de copies. Stockés à part pour ne
 // pas changer le format des listes (exports et anciennes versions intacts).
 import { htmlToText } from './text.js';
 
-const KEYS = { favs: 'zt-favs', used: 'zt-used', recent: 'zt-id-recent' };
+const KEYS = { favs: 'zt-favs', used: 'zt-used' };
+
+// Les chemins ID récents ne sont plus affichés : on efface l'ancienne sauvegarde.
+try { localStorage.removeItem('zt-id-recent'); } catch {}
 
 function read(key, fallback) {
   try { return JSON.parse(localStorage.getItem(key)) ?? fallback; } catch { return fallback; }
@@ -22,12 +25,10 @@ export function phraseId(html) {
 export const stats = {
   favs: read(KEYS.favs, {}),
   used: read(KEYS.used, {}),
-  recent: read(KEYS.recent, []),
 
   reload() {
     this.favs = read(KEYS.favs, {});
     this.used = read(KEYS.used, {});
-    this.recent = read(KEYS.recent, []);
   },
 
   isFav(html) {
@@ -57,11 +58,5 @@ export const stats = {
     if (a === b) return;
     if (this.favs[a]) { this.favs[b] = 1; delete this.favs[a]; write(KEYS.favs, this.favs); }
     if (this.used[a]) { this.used[b] = (this.used[b] || 0) + this.used[a]; delete this.used[a]; write(KEYS.used, this.used); }
-  },
-
-  pushRecent(path) {
-    const key = path.join('|');
-    this.recent = [path, ...this.recent.filter((p) => p.join('|') !== key)].slice(0, 5);
-    write(KEYS.recent, this.recent);
   },
 };
