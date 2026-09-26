@@ -25,7 +25,8 @@ kbd { font: 600 10px var(--mono); padding: 0 5px; border-radius: 4px; border: 1p
 .btn.solid { background: var(--solid); border-color: var(--solid); color: var(--solid-ink); }
 .btn.solid:hover { opacity: .88; }
 .btn.danger { background: var(--danger); border-color: var(--danger); color: #fff; }
-.mono-z { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 6px; background: var(--solid); color: var(--mono-ink); font: 800 12px var(--font); }
+.mono-z { display: inline-grid; place-items: center; width: 28px; height: 24px; border-radius: 6px; background: var(--solid); color: var(--mono-ink); font: 800 11.5px var(--font); letter-spacing: .02em; }
+.bname .tp { color: var(--gold); }
 
 /* ---------- Grille ---------- */
 .app { height: 100%; display: grid; grid-template: "top top" auto "side main" 1fr "foot foot" auto / 200px minmax(0, 1fr); min-height: 0; }

@@ -1,4 +1,4 @@
-# ZenText · Phrase - TP
+# TPhrase
 
 Extension Chrome : phrases prêtes à copier, rangées par listes et rubriques, et générateur de chemins de menus du logiciel ID.
 
@@ -20,7 +20,7 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
 
 | Touche | Action |
 |---|---|
-| `Alt+Z` | Ouvrir ZenText (modifiable dans `chrome://extensions/shortcuts`) |
+| `Alt+Z` | Ouvrir TPhrase (modifiable dans `chrome://extensions/shortcuts`) |
 | `/` | Aller dans la recherche |
 | `↑` `↓` | Choisir une phrase |
 | `Entrée` | Copier la phrase choisie |
@@ -49,7 +49,7 @@ Chrome 116 ou plus récent est nécessaire (panneau latéral).
 Menu **Réglages** (icône curseurs, en haut à droite) :
 - **Exporter JSON** : sauvegarde complète, à réimporter telle quelle.
 - **Exporter CSV** : colonnes `Liste ; Rubrique ; Ordre ; Phrase`, s'ouvre directement dans Excel.
-- **Importer** : accepte un `.json` (export ZenText, y compris de la v2.5) ou un `.csv` avec les mêmes colonnes. Les données sont ajoutées aux vôtres, rien n'est effacé, les phrases déjà présentes ne sont pas dupliquées.
+- **Importer** : accepte un `.json` (export TPhrase ou ZenText, y compris de la v2.5) ou un `.csv` avec les mêmes colonnes. Les données sont ajoutées aux vôtres, rien n'est effacé, les phrases déjà présentes ne sont pas dupliquées.
 
 Une sauvegarde JSON est aussi téléchargée automatiquement à l'ouverture si la dernière date de plus de 7 jours.
 

@@ -117,7 +117,7 @@ function csvToLists(text) {
   return lists;
 }
 
-// Lit un fichier .json (export ZenText) ou .csv et renvoie les listes.
+// Lit un fichier .json (export TPhrase ou ZenText) ou .csv et renvoie les listes.
 export async function readImportFile(file) {
   const text = await file.text();
   const isJson = /\.json$/i.test(file.name) || /^\s*[{[]/.test(text);
