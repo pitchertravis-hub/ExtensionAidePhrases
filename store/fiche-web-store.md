@@ -6,7 +6,8 @@ dans l'ordre des onglets.
 ## 0. Avant de commencer
 
 - Compte développeur Chrome Web Store (inscription unique de 5 $).
-- Le zip **Web Store** (`TPhrase-x.y-webstore.zip`) : sans `key` ni `update_url`, sans `outils/`.
+- Le zip **Web Store** (`NE-PAS-INSTALLER_TPhrase-x.y_pour-Chrome-Web-Store.zip`) : sans `key` ni `update_url`, sans `outils/`.
+  Il ne se charge jamais dans Chrome : il créerait une autre extension, vide.
   Le zip de test, lui, est refusé.
 - La page `docs/confidentialite.html` en ligne à une adresse publique (voir § 3).
 - Les images du dossier `store/` : `capture-1-phrases.png`, `capture-2-rediger.png`,
