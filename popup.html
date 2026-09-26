@@ -1,142 +1,137 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Phrases - TP</title>
-	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
-
+  <meta charset="UTF-8">
+  <title>ZenText</title>
+  <script src="js/theme.js"></script>
+  <link rel="stylesheet" href="css/tokens.css">
+  <link rel="stylesheet" href="css/app.css">
+  <script src="lib/Sortable.min.js" defer></script>
+  <script type="module" src="js/main.js"></script>
 </head>
 <body>
-    <!-- Interface 1 -->
-    <div id="interface1">
-	
-        <h2>ZenText</h2>
-				    
-        <select id="listSelect">
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+    <symbol id="i-mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></symbol>
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6"/><path d="m20 20-4.3-4.3"/></symbol>
+    <symbol id="i-dots" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.2"/><circle cx="12" cy="12" r="1.2"/><circle cx="19" cy="12" r="1.2"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h10M18 7h2M4 17h4M12 17h8"/><circle cx="16" cy="7" r="2"/><circle cx="10" cy="17" r="2"/></symbol>
+    <symbol id="i-compass" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5z"/></symbol>
+    <symbol id="i-back" viewBox="0 0 24 24"><path d="M15 18l-6-6 6-6"/></symbol>
+    <symbol id="i-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 5 5 9-10"/></symbol>
+    <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 12a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2l1-12M9 7V4h6v3"/></symbol>
+    <symbol id="i-grip" viewBox="0 0 24 24"><circle cx="9" cy="6" r="1"/><circle cx="15" cy="6" r="1"/><circle cx="9" cy="12" r="1"/><circle cx="15" cy="12" r="1"/><circle cx="9" cy="18" r="1"/><circle cx="15" cy="18" r="1"/></symbol>
+    <symbol id="i-pen" viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16v4zM13 7l4 4"/></symbol>
+    <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12M6 10l6 6 6-6M5 20h14"/></symbol>
+    <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 20V8M6 14l6-6 6 6M5 4h14"/></symbol>
+    <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></symbol>
+    <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+    <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  </svg>
 
-        </select>
-		
-		<button id="addListBtn"><i class="fas fa-plus"></i></button>
-		<span id="openInterface3">
-			<svg width="64px" height="64px" viewBox="0 0 128.00 128.00" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" role="img" class="iconify iconify--noto" preserveAspectRatio="xMidYMid meet" fill="#000000">
-				<path d="M116 4H12c-4.42 0-8 3.58-8 8v104c0 4.42 3.58 8 8 8h104c4.42 0 8-3.58 8-8V12c0-4.42-3.58-8-8-8z" fill="#243ea8"></path>
-				<path d="M109.7 4H11.5A7.555 7.555 0 0 0 4 11.5v97.9c-.01 4.14 3.34 7.49 7.48 7.5H109.6c4.14.01 7.49-3.34 7.5-7.48V11.5c.09-4.05-3.13-7.41-7.18-7.5h-.22z" fill="#4765bd"></path>
-				<path d="M39.7 12.9c0-2.3-1.6-3-10.8-2.7c-7.7.3-11.5 1.2-13.8 4s-2.9 8.5-3 15.3c0 4.8 0 9.3 2.5 9.3c3.4 0 3.4-7.9 6.2-12.3c5.4-8.7 18.9-10.6 18.9-13.6z" opacity=".3" fill="#fafafa"></path>
-				<g fill="#fafafa">
-				<path d="M29.19 36.87h10.35v54.89H29.19V36.87z"></path>
-				<path d="M52.04 36.87h18.55c5.72 0 10.71 1.15 14.95 3.45c4.24 2.3 7.51 5.52 9.81 9.66c2.3 4.14 3.45 8.92 3.45 14.34s-1.15 10.2-3.45 14.34c-2.3 4.14-5.57 7.36-9.81 9.66s-9.23 3.45-14.95 3.45H52.04v-54.9zm18.09 45.08c5.93 0 10.45-1.57 13.57-4.71c3.12-3.14 4.68-7.45 4.68-12.92s-1.56-9.78-4.68-12.92c-3.12-3.14-7.64-4.71-13.57-4.71h-7.74v35.27h7.74z"></path>
-				</g>
-			</svg>
-		</span>
+  <!-- Vue 1 · Rubriques (160 px) -->
+  <section id="view-rubriques" class="view v1">
+    <header class="top">
+      <div class="brand"><span class="mono-z">Z</span>ZenText</div>
+      <div class="acts">
+        <button class="ibtn" type="button" id="openNav" title="Navigation ID"><svg class="ico"><use href="#i-compass"/></svg></button>
+        <button class="ibtn" type="button" id="settingsBtn" title="Réglages"><svg class="ico"><use href="#i-sliders"/></svg></button>
+      </div>
+    </header>
 
-		
-		<button id="start"><i class="fa fa-microphone"></i></button>
-		<div id="output"style="display: none; margin-top:5px; padding:2px; border:1px solid #ccc;"></div>
-		<input type="text" id="searchBar" placeholder="Rechercher rubrique">
-
-		<div id="contextMenu1" class="context-menu" style="display: none;, ">
-			<ul>
-			<li id="editlist">Modifier</li>
-			<li id="deletelist">Supprimer</li>
-			</ul>
-		</div>
-             
-		<ul id="rubriqueList"></ul>
-		
-		<div id="contextMenu" class="context-menu" style="display: none;">
-			<ul>
-			<li id="editRubrique">Modifier</li>
-			<li id="deleteRubrique">Supprimer</li>
-			</ul>
-		</div>
-        
-        <button id="addRubriqueBtn"><i class="fas fa-plus"></i> Rubrique</button>
-		
-		<!-- Menu -->
-		<div class="menu-container">
-			<i id="settingsBtn" class="fas fa-cog"></i>
-			<class="menu-btn" id="settingsBtn">
-		
-			
-			
-			<div class="dropdown-content" id="settingsMenu">
-			<button id="importBtn">Import</button>
-			<button id="exportBtn">Export</button>
-			</div>
-					
-			<button id="dark-mode-toggle">
-			<i class="sun-icon">☀️</i>
-			<i class="moon-icon">🌙</i>
-			</button>
-		
-		</div>
-		
-		<footer class="footer">Version 2.5</footer>
-	
-	</div>
-		
-    <!-- Interface 2 -->
-	<div id="interface2" class="hidden">
-        <h1 id="rubriqueTitle"></h1>
-        
-        <div id="phraseList"></div>
-		
-		<button id="backBtn">Retour</button>
-        <button id="addPhraseBtn"><i class="fas fa-plus"></i> Phrase</button>
-		<button id="globalDeleteButton">Supprimer</button>
-		
-	</div>
-	
-	<!-- Interface 3 -->
-	<div id="interface3" class="hidden">
-	
-		<button id="backBtn2"> <i class="fas fa-times" style="color: red;"></i></button>
-		
-        <h3>Navigation ID</h3>
-        
-	<div class="search-container">
-		<input type="text" id="searchInput" placeholder="Rechercher..." />
-		<button id="changeIntroBtn" title="Modifier le texte d’introduction">📝</button>
-	</div>
-
-	<div id="resultsContainer"></div>
-
-        <select id="module">
-            <option value="">Sélectionner</option>
-            <option value="A">A : Comptoir</option>
-            <option value="B">B : Gestion Stock</option>
-            <option value="C">C : Données</option>
-            <option value="D">D : Suivi Administratif</option>
-            <option value="E">E : Configuration</option>
-            <option value="F">F : BDD Médic</option>
-            <option value="G">G : Utilitaires / Listes</option>
-            <option value="H">H : Service Suivi Patient</option>
-            <option value="I">I : Location</option>
-        </select>
-        
-		<div id="optionContainer" style="display: none;">
-		<select id="option">
-			<option value="">Sélectionner</option>
-		</select>
-		</div>
-
-		<div id="subOptionContainer" style="display: none;">
-		<select id="subOption">
-			<option value="">Sélectionner</option>
-		</select>
-		</div>
-		
-        <div class="result" id="result"></div>		
-		
+    <div class="blk">
+      <span class="cap">Liste</span>
+      <div class="row">
+        <select class="select" id="listSelect" aria-label="Liste"></select>
+        <button class="btn sq" type="button" id="listMenuBtn" title="Actions sur la liste"><svg class="ico"><use href="#i-dots"/></svg></button>
+      </div>
     </div>
 
-    <script src="script.js"></script>
-	<script src="id.js"></script>
-	<script src="js/Sortable.min.js"></script>
-	<link rel="stylesheet" href="styles.css"> 
-	
-	
-</body>
+    <label class="field">
+      <svg class="ico"><use href="#i-search"/></svg>
+      <input id="searchBar" placeholder="Rechercher" aria-label="Rechercher une rubrique" autocomplete="off">
+      <button class="ibtn" type="button" id="micBtn" title="Recherche vocale"><svg class="ico"><use href="#i-mic"/></svg></button>
+    </label>
 
+    <div class="head"><span class="cap">Rubriques</span><span class="cap" id="rubCount"></span></div>
+    <ul class="rub" id="rubriqueList"></ul>
+    <p class="empty" id="rubEmpty" hidden></p>
+
+    <button class="btn solid" type="button" id="addRubriqueBtn"><svg class="ico"><use href="#i-plus"/></svg>Rubrique</button>
+    <footer class="foot"><small id="backupInfo"></small><small id="version"></small></footer>
+  </section>
+
+  <!-- Vue 2 · Phrases (775 px) -->
+  <section id="view-phrases" class="view v2" hidden>
+    <header class="bar">
+      <button class="ibtn" type="button" id="backBtn" title="Retour aux rubriques"><svg class="ico"><use href="#i-back"/></svg></button>
+      <div class="title"><span class="cap" id="phListName"></span><h1><span id="rubriqueTitle"></span><em id="phCount"></em></h1></div>
+      <label class="field"><svg class="ico"><use href="#i-search"/></svg><input id="phraseFilter" placeholder="Filtrer les phrases" aria-label="Filtrer les phrases" autocomplete="off"></label>
+      <button class="btn solid" type="button" id="addPhraseBtn"><svg class="ico"><use href="#i-plus"/></svg>Phrase</button>
+    </header>
+    <div class="list" id="phraseList"></div>
+    <p class="empty" id="phEmpty" hidden></p>
+    <button class="add" type="button" id="addPhraseBtn2"><svg class="ico"><use href="#i-plus"/></svg>Ajouter une phrase</button>
+  </section>
+
+  <!-- Vue 3 · Navigation ID (310 px) -->
+  <section id="view-nav" class="view v3" hidden>
+    <header class="top">
+      <button class="ibtn" type="button" id="backBtn2" title="Retour"><svg class="ico"><use href="#i-back"/></svg></button>
+      <h1>Navigation ID</h1>
+      <button class="ibtn" type="button" id="changeIntroBtn" title="Modifier la phrase d'introduction"><svg class="ico"><use href="#i-pen"/></svg></button>
+    </header>
+    <div class="sug">
+      <label class="field"><svg class="ico"><use href="#i-search"/></svg><input id="navSearch" placeholder="Rechercher un menu" aria-label="Rechercher un menu" autocomplete="off"></label>
+      <ul id="navResults" role="listbox" hidden></ul>
+    </div>
+    <ol class="path-steps">
+      <li id="stepModule"><b>1</b><select class="select" id="module" aria-label="Module"></select></li>
+      <li id="stepOption" hidden><b>2</b><select class="select" id="option" aria-label="Option"></select></li>
+      <li id="stepSub" hidden><b>3</b><select class="select" id="subOption" aria-label="Sous-option"></select></li>
+    </ol>
+    <div class="ticket" id="navResult" hidden>
+      <p id="navIntro"></p>
+      <ol id="navPath"></ol>
+      <footer><span id="navStatus"></span><button class="btn" type="button" id="navCopy"><svg class="ico"><use href="#i-copy"/></svg>Recopier</button></footer>
+    </div>
+  </section>
+
+  <!-- Menus -->
+  <div class="pop" id="listMenu" popover>
+    <button type="button" data-act="new"><svg class="ico"><use href="#i-plus"/></svg>Nouvelle liste</button>
+    <button type="button" data-act="rename"><svg class="ico"><use href="#i-pen"/></svg>Renommer</button>
+    <hr>
+    <button type="button" data-act="delete" class="danger"><svg class="ico"><use href="#i-trash"/></svg>Supprimer</button>
+  </div>
+  <div class="pop" id="rubMenu" popover>
+    <button type="button" data-act="rename"><svg class="ico"><use href="#i-pen"/></svg>Renommer</button>
+    <hr>
+    <button type="button" data-act="delete" class="danger"><svg class="ico"><use href="#i-trash"/></svg>Supprimer</button>
+  </div>
+  <div class="pop" id="settingsMenu" popover>
+    <button type="button" data-act="import"><svg class="ico"><use href="#i-down"/></svg>Importer</button>
+    <button type="button" data-act="export-json"><svg class="ico"><use href="#i-up"/></svg>Exporter JSON</button>
+    <button type="button" data-act="export-csv"><svg class="ico"><use href="#i-table"/></svg>Exporter CSV</button>
+    <hr>
+    <button type="button" data-act="theme"><svg class="ico"><use href="#i-moon"/></svg><span>Thème sombre</span></button>
+  </div>
+
+  <!-- Dialogue (renommer, confirmer, informer) -->
+  <dialog id="dialog">
+    <form method="dialog">
+      <h2 id="dlgTitle"></h2>
+      <p id="dlgText"></p>
+      <input id="dlgInput" autocomplete="off">
+      <div class="dlg-acts">
+        <button class="btn" value="cancel" id="dlgCancel" formnovalidate>Annuler</button>
+        <button class="btn solid" value="ok" id="dlgOk">OK</button>
+      </div>
+    </form>
+  </dialog>
+
+  <div class="toast" id="toast" hidden><span id="toastText"></span><button type="button" id="toastAction"></button></div>
+  <input type="file" id="fileInput" accept=".json,.csv,application/json,text/csv" hidden>
+</body>
 </html>
