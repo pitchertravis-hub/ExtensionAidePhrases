@@ -99,6 +99,10 @@ export function applyLookFromStorage(key, value) {
 
 export function openLookMenu(anchor) {
   sync();
+  // Même hauteur pour les deux onglets, bornée à la hauteur visible, pour que rien ne dépasse en changeant d'onglet.
+  const room = Math.min(window.innerHeight, document.body.clientHeight || window.innerHeight) - 8;
+  menu.style.maxHeight = `${room}px`;
+  menu.style.height = `${Math.min(room, 600)}px`;
   openMenu(menu, { anchor });
 }
 
