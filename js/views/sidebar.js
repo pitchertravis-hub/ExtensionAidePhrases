@@ -80,6 +80,56 @@ function renderRubSelect(rubs, onPh) {
   $('rubMenuBtn').disabled = !(onPh && state.mode === 'rub' && rubs.length);
 }
 
+// ---------- Défilement de la colonne ----------
+// Molette et barre de défilement gérées par l'extension : dans la fenêtre de
+// l'extension, Chrome ne les transmet pas toujours à cette liste.
+const bar = $('navBar');
+const thumb = bar.querySelector('.thumb');
+
+function updateScrollbar() {
+  const { scrollTop, scrollHeight, clientHeight } = nav;
+  const max = scrollHeight - clientHeight;
+  bar.hidden = max <= 1 || !clientHeight;
+  if (bar.hidden) return;
+  const h = Math.max(30, (clientHeight * clientHeight) / scrollHeight);
+  thumb.style.height = `${h}px`;
+  thumb.style.transform = `translateY(${(scrollTop / max) * (clientHeight - h)}px)`;
+}
+
+function initScrollbar() {
+  nav.addEventListener('wheel', (e) => {
+    if (e.ctrlKey || !e.deltaY || nav.scrollHeight <= nav.clientHeight) return;
+    const unit = e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? nav.clientHeight : 1;
+    e.preventDefault();
+    nav.scrollTop += e.deltaY * unit;
+  }, { passive: false });
+  nav.addEventListener('scroll', updateScrollbar);
+  new ResizeObserver(updateScrollbar).observe(nav);
+  new MutationObserver(updateScrollbar).observe(nav, { childList: true });
+
+  let drag = null;
+  bar.addEventListener('pointerdown', (e) => {
+    if (e.button !== 0) return;
+    e.preventDefault();
+    const ratio = (nav.scrollHeight - nav.clientHeight) / (nav.clientHeight - thumb.offsetHeight);
+    if (e.target !== thumb) {
+      // Clic sur le rail : le curseur vient sous la souris, puis on peut glisser.
+      const top = e.clientY - bar.getBoundingClientRect().top - thumb.offsetHeight / 2;
+      nav.scrollTop = top * ratio;
+    }
+    drag = { y: e.clientY, start: nav.scrollTop, ratio };
+    bar.setPointerCapture(e.pointerId);
+    bar.classList.add('drag');
+  });
+  bar.addEventListener('pointermove', (e) => {
+    if (drag) nav.scrollTop = drag.start + (e.clientY - drag.y) * drag.ratio;
+  });
+  const stop = () => { drag = null; bar.classList.remove('drag'); };
+  bar.addEventListener('pointerup', stop);
+  bar.addEventListener('pointercancel', stop);
+  bar.addEventListener('lostpointercapture', stop);
+}
+
 // ---------- Listes ----------
 const uniqueName = (existing) => (v) => (existing.includes(v) ? `« ${v} » existe déjà.` : v ? '' : 'Saisissez un nom.');
 
@@ -188,14 +238,7 @@ export function initSidebar() {
   bindMenu(rubMenu, (act) => (act === 'rename' ? renameRubrique(menuIndex) : deleteRubrique(menuIndex)));
   $('addRubBtn').addEventListener('click', addRubrique);
 
-  // Molette : on fait défiler la colonne nous-mêmes. Dans la fenêtre de
-  // l'extension, Chrome ne transmet pas toujours la molette à cette liste.
-  nav.addEventListener('wheel', (e) => {
-    if (e.ctrlKey || !e.deltaY || nav.scrollHeight <= nav.clientHeight) return;
-    const unit = e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? nav.clientHeight : 1;
-    e.preventDefault();
-    nav.scrollTop += e.deltaY * unit;
-  }, { passive: false });
+  initScrollbar();
 
   rubSelect.addEventListener('change', () => {
     const v = rubSelect.value;
