@@ -35,7 +35,6 @@
     <symbol id="i-table" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M9 10v10"/></symbol>
     <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
-    <symbol id="i-rubs" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M9 4v16M5.5 8h1M5.5 11h1M5.5 14h1"/></symbol>
     <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></symbol>
     <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16a5 5 0 0 0 5-5c0-4-4-7.2-9-7.2z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="14.5" cy="7" r="1"/></symbol>
     <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></symbol>
@@ -44,7 +43,6 @@
 
   <div class="app" id="app">
     <header class="top">
-      <button class="ibtn side-toggle" type="button" id="sideToggle" title="Afficher les rubriques" aria-expanded="false"><svg class="ico"><use href="#i-rubs"/></svg></button>
       <div class="brand"><span class="mono-z">TP</span><svg class="slogo pumpkin" viewBox="0 0 64 64" aria-hidden="true"><path d="M31 14c0-5 2-8 6-10l2 3c-3 2-4 4-4 7z" fill="#3E7B2C"/><path d="M36 9c4-3 9-3 12 0-4 1-7 2-10 4z" fill="#5AA33F"/><ellipse cx="18" cy="37" rx="13" ry="20" fill="#E8680F"/><ellipse cx="46" cy="37" rx="13" ry="20" fill="#E8680F"/><ellipse cx="25" cy="37" rx="12" ry="21" fill="#F5821F"/><ellipse cx="39" cy="37" rx="12" ry="21" fill="#F5821F"/><ellipse cx="32" cy="37" rx="10" ry="21.5" fill="#FF9A3C"/><text x="32" y="44" text-anchor="middle" font-family="Manrope, Segoe UI, sans-serif" font-weight="800" font-size="19" fill="#2A140A">TP</text></svg><svg class="slogo tree" viewBox="0 0 64 64" aria-hidden="true"><path d="M32 3 47 22h-6l11 15h-7l12 16H7l12-16h-7l11-15h-6z" fill="#35A86F"/><path d="M32 3 47 22h-6l11 15h-7l12 16H32z" fill="#2A8E5C"/><rect x="28" y="53" width="8" height="8" rx="1.5" fill="#7A4A26"/><circle cx="32" cy="4" r="3.6" fill="#F7C948"/><circle cx="19" cy="47" r="2.4" fill="#E0474F"/><circle cx="46" cy="46" r="2.4" fill="#F7C948"/><circle cx="41" cy="30" r="2" fill="#5AA9FF"/><circle cx="23" cy="31" r="2" fill="#F7C948"/><text x="32" y="46" text-anchor="middle" font-family="Manrope, Segoe UI, sans-serif" font-weight="800" font-size="17" fill="#FFF6D8">TP</text></svg><svg class="slogo heart" viewBox="0 0 64 64" aria-hidden="true"><defs><linearGradient id="tpHeart" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FF7DBE"/><stop offset="1" stop-color="#E0288A"/></linearGradient></defs><path d="M32 58C10 43 3 32 5 21 7 11 15 6 23 7c4 .5 7 3 9 6 2-3 5-5.5 9-6 8-1 16 4 18 14 2 11-5 22-27 37z" fill="url(#tpHeart)"/><path d="M16 15c3-3 7-3 9-1" stroke="#fff" stroke-opacity=".6" stroke-width="3" stroke-linecap="round" fill="none"/><text x="32" y="38" text-anchor="middle" font-family="Manrope, Segoe UI, sans-serif" font-weight="800" font-size="18" fill="#FFFFFF">TP</text></svg><svg class="slogo cross" viewBox="0 0 64 64" aria-hidden="true"><path d="M22 4h20v18h18v20H42v18H22V42H4V22h18z" fill="#1FA463"/><text x="32" y="39" text-anchor="middle" font-family="Manrope, Segoe UI, sans-serif" font-weight="800" font-size="15" fill="#FFFFFF">TP</text></svg><svg class="slogo neon" viewBox="0 0 64 64" aria-hidden="true"><rect x="5" y="9" width="54" height="46" rx="10" fill="#1A0B33" stroke="#2BD2FF" stroke-width="3"/><text x="32" y="41" text-anchor="middle" font-family="Manrope, Segoe UI, sans-serif" font-weight="800" font-size="22" fill="#FF3CAC">TP</text></svg><span class="bname"><span class="tp">TP</span>hrase</span></div>
       <label class="search">
         <svg class="ico"><use href="#i-search"/></svg>
@@ -75,7 +73,6 @@
       <button class="add" type="button" id="addRubBtn"><svg class="ico"><use href="#i-plus"/></svg>Rubrique</button>
       <div class="side-grip" id="sideGrip" title="Glisser pour changer la largeur (double-clic : largeur d'origine)"></div>
     </aside>
-    <div class="side-edge" id="sideEdge" aria-hidden="true"></div>
 
     <main class="main">
       <section class="pane" id="tabPh">
@@ -173,17 +170,12 @@
         <div class="cap">Motif de fond</div>
         <div class="tiles pats" id="lookPats" data-a="pattern"></div>
         <div class="cap">Colonne des rubriques</div>
-        <div class="seg" data-a="side">
-          <button type="button" data-v="show">Toujours visible</button>
-          <button type="button" data-v="auto">Repliée</button>
-        </div>
         <div class="wrow">
           <span>Largeur</span>
           <input type="range" id="sideRange" min="150" max="320" step="5" aria-label="Largeur de la colonne des rubriques">
           <output id="sideVal">200 px</output>
           <button type="button" class="ibtn" id="sideReset" title="Largeur d'origine (200 px)"><svg class="ico"><use href="#i-reset"/></svg></button>
         </div>
-        <p class="note">Repliée : la colonne est cachée. Elle s'ouvre quand la souris touche le bord gauche de la fenêtre, ou avec le bouton <b>Rubriques</b> en haut à gauche, et se replie quand la souris part.</p>
       </section>
     </div>
   </div>

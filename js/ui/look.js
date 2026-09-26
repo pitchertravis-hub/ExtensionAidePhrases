@@ -1,6 +1,6 @@
 // Menu Apparence, en deux onglets :
 // - Couleurs : palette, couleurs Perso, bandeau en dégradé, disposition et mode ;
-// - Affichage : taille du texte, densité, coins, police, motif de fond, colonne des rubriques.
+// - Affichage : taille du texte, densité, coins, police, motif de fond, largeur de la colonne des rubriques.
 // Le choix est gardé dans localStorage et appliqué avant l'affichage par theme.js.
 import { openMenu } from './menu.js';
 
@@ -150,7 +150,6 @@ export function initLook() {
     sync();
   });
   initSideGrip();
-  initSideAuto();
 }
 
 // Bord droit de la colonne des rubriques : glisser pour changer sa largeur, double-clic pour revenir à 200 px.
@@ -182,41 +181,4 @@ function initSideGrip() {
     grip.addEventListener('pointercancel', end);
   });
   grip.addEventListener('dblclick', () => setAffichage({ sideW: 200 }));
-}
-
-// Colonne « Repliée » : cachée ; elle s'ouvre quand la souris touche le bord gauche de la fenêtre
-// (zone #sideEdge) ou avec le bouton Rubriques, et se replie dès que la souris part (y compris hors
-// de la fenêtre), sauf pendant une liste déroulante ou un menu ⋯ ouvert.
-function initSideAuto() {
-  const side = document.querySelector('.side');
-  const edge = document.getElementById('sideEdge');
-  const toggle = document.getElementById('sideToggle');
-  let inside = false, picking = false, timer = 0;
-  const set = (open) => {
-    clearTimeout(timer);
-    side.classList.toggle('open', open);
-    toggle.setAttribute('aria-expanded', String(open));
-  };
-  const later = (open, ms) => { clearTimeout(timer); timer = setTimeout(() => set(open), ms); };
-  const maybeClose = () => { if (!inside && !picking) later(false, 250); };
-  const over = (el) => el && (side.contains(el) || el === edge || toggle.contains(el));
-
-  edge.addEventListener('pointerenter', () => { inside = true; later(true, 60); });
-  side.addEventListener('pointerenter', () => { inside = true; clearTimeout(timer); });
-  side.addEventListener('pointerleave', (e) => { if (!over(e.relatedTarget)) { inside = false; maybeClose(); } });
-  toggle.addEventListener('click', () => { const open = !side.classList.contains('open'); inside = open; set(open); });
-  // Filets de sécurité : souris ailleurs dans la fenêtre, hors de la fenêtre, ou fenêtre quittée.
-  document.addEventListener('pointermove', (e) => {
-    if (side.classList.contains('open') && !over(e.target)) { inside = false; maybeClose(); }
-  });
-  document.documentElement.addEventListener('pointerleave', () => { inside = false; maybeClose(); });
-  window.addEventListener('blur', () => { inside = false; picking = false; set(false); });
-  // Un clic sur une rubrique : on la montre et on replie.
-  side.addEventListener('click', (e) => { if (e.target.closest('.nav .item') && root.dataset.side === 'auto') { inside = false; later(false, 150); } });
-  side.querySelectorAll('select').forEach((sel) => {
-    sel.addEventListener('pointerdown', () => { picking = true; });
-    sel.addEventListener('change', () => { picking = false; maybeClose(); });
-    sel.addEventListener('blur', () => { picking = false; maybeClose(); });
-  });
-  ['listMenu', 'rubMenu'].forEach((id) => document.getElementById(id)?.addEventListener('toggle', (e) => { if (e.newState === 'closed') maybeClose(); }));
 }

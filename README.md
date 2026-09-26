@@ -16,9 +16,7 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
 - **Apparence** (Réglages → Apparence), en deux onglets :
   **Couleurs** : thèmes prêts, ou **Perso** avec deux couleurs au choix (bandeau et accent) et un dégradé optionnel ; le reste du thème, clair et sombre, en est déduit.
   **Affichage** : taille du texte, densité (compacte pour voir plus de phrases), coins, 17 polices, 11 motifs de fond,
-  et colonne des rubriques **toujours visible** ou **repliée** : cachée, elle s'ouvre quand la souris touche le bord gauche de la fenêtre
-  (ou avec le bouton Rubriques en haut à gauche) et se replie quand la souris part.
-  Sa largeur se règle avec le curseur du menu ou en glissant son bord droit.
+  et largeur de la colonne des rubriques. Elle se règle avec le curseur du menu ou en glissant son bord droit.
 - **Deux formats** : fenêtre 780 × 560 (clic sur l'icône) ou **panneau latéral** qui reste ouvert
   (Réglages → Ancrer sur le côté).
 
@@ -68,7 +66,7 @@ css/tokens.css          couleurs clair / sombre, police
 css/app.css             mise en page (large ≥ 620 px, étroite en dessous)
 css/palettes.css        palettes du menu Apparence
 css/look.css            fenêtre du menu Apparence
-css/affichage.css       réglages d'affichage (taille, densité, coins, police, motif, colonne)
+css/affichage.css       réglages d'affichage (taille, densité, coins, police, motif, largeur de la colonne)
 css/fonts.css           polices proposées (fichiers dans fonts/)
 js/theme.js             thème et format avant l'affichage
 js/main.js              démarrage, recherche, clavier, réglages

@@ -91,12 +91,12 @@ function tpApplyPerso(json) {
 // Réglages d'affichage (css/affichage.css) : un attribut sur <html> par réglage, absent = d'origine.
 // Appelée ici au démarrage et par le menu Apparence (js/ui/look.js).
 function tpApplyAffichage(json) {
-  var TP_AFFICHAGE = { size: 'm', dens: 'normal', corners: 'normal', font: 'manrope', pattern: 'none', grad: '', side: 'show', sideW: 200 };
+  var TP_AFFICHAGE = { size: 'm', dens: 'normal', corners: 'normal', font: 'manrope', pattern: 'none', grad: '', sideW: 200 };
   var cfg = {}, k;
   for (k in TP_AFFICHAGE) cfg[k] = TP_AFFICHAGE[k];
   try { if (json) { var c = JSON.parse(json); for (k in cfg) if (c[k] != null && typeof c[k] === typeof cfg[k]) cfg[k] = c[k]; } } catch (e) {}
   var root = document.documentElement;
-  ['size', 'dens', 'corners', 'font', 'pattern', 'side'].forEach(function (key) {
+  ['size', 'dens', 'corners', 'font', 'pattern'].forEach(function (key) {
     if (cfg[key] === TP_AFFICHAGE[key]) delete root.dataset[key]; else root.dataset[key] = cfg[key];
   });
   if (/^#[0-9a-f]{6}$/i.test(cfg.grad)) { root.dataset.grad = ''; root.style.setProperty('--rail2', cfg.grad); }
