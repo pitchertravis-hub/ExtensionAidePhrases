@@ -1,26 +1,19 @@
-// Vue 3 · Navigation ID : construit la phrase « chemin à suivre » dans le logiciel ID.
+// Onglet Navigation ID : trois colonnes cliquables et chemins récents.
 import { MODULES } from '../data/id-menus.js';
 import { store, DEFAULT_INTRO } from '../store.js';
-import { show, copyToClipboard, icon } from '../app.js';
-import { normalizeText, escapeHtml } from '../core/text.js';
+import { state, onRender, copyText, icon } from '../state.js';
+import { stats } from '../core/stats.js';
+import { escapeHtml } from '../core/text.js';
+import { foldText } from '../ui/phrase-text.js';
 import { askText } from '../ui/dialog.js';
+import { showToast } from '../ui/toast.js';
 
-const $ = (id) => document.getElementById(id);
-const moduleSel = $('module');
-const optionSel = $('option');
-const subSel = $('subOption');
-const searchEl = $('navSearch');
-const resultsEl = $('navResults');
-const resultEl = $('navResult');
-const statusEl = $('navStatus');
+const box = document.getElementById('idBox');
+let path = ['', '', '']; // module, option, sous-option
+let copied = null; // true / false après une copie
 
 const nameOf = (opt) => (typeof opt === 'string' ? opt : opt.name);
-
-function fill(sel, entries, placeholder) {
-  sel.textContent = '';
-  sel.append(new Option(placeholder, ''));
-  for (const [key, label] of entries) sel.append(new Option(`${key} · ${label}`, key));
-}
+const subsOf = (opt) => (opt && typeof opt === 'object' ? opt.sub_options : null);
 
 function sortKeys(keys) {
   return keys.sort((a, b) => {
@@ -31,160 +24,129 @@ function sortKeys(keys) {
   });
 }
 
-function updateOptions() {
-  const mod = MODULES[moduleSel.value];
-  fill(optionSel, mod ? Object.entries(mod.options).map(([k, o]) => [k, nameOf(o)]) : [], 'Choisir une option');
-  updateSubOptions();
+function resolve(p) {
+  const mod = MODULES[p[0]];
+  const opt = mod?.options[p[1]];
+  const sub = subsOf(opt)?.[p[2]];
+  return { mod, opt, sub };
 }
 
-function updateSubOptions() {
-  const opt = MODULES[moduleSel.value]?.options[optionSel.value];
-  const subs = opt && typeof opt === 'object' ? opt.sub_options : null;
-  fill(subSel, subs ? sortKeys(Object.keys(subs)).map((k) => [k, subs[k]]) : [], 'Choisir une sous-option');
-  update();
+function lines(p) {
+  const { mod, opt, sub } = resolve(p);
+  const out = ['• Menu ID'];
+  if (mod) out.push(`• ${p[0]}: ${mod.name}`);
+  if (opt) out.push(`• ${p[1]}: ${nameOf(opt)}`);
+  if (sub) out.push(`• ${p[2]}: ${sub}`);
+  return out;
 }
 
-function steps() {
-  const mod = MODULES[moduleSel.value];
-  const opt = mod?.options[optionSel.value];
-  const sub = opt?.sub_options?.[subSel.value];
-  const path = [];
-  if (mod) path.push([moduleSel.value, mod.name]);
-  if (opt) path.push([optionSel.value, nameOf(opt)]);
-  if (sub) path.push([subSel.value, sub]);
-  return { mod, opt, path };
+function sentence(p) {
+  return [store.intro, ...lines(p)].join('\n');
 }
 
-function sentence(path) {
-  return [store.intro, '• Menu ID', ...path.map(([k, n]) => `• ${k}: ${n}`)].join('\n');
+function labelOf(p) {
+  const { opt, sub } = resolve(p);
+  return sub || (opt ? nameOf(opt) : '');
 }
 
-async function copyResult() {
-  const { path } = steps();
-  const ok = await copyToClipboard(sentence(path));
-  statusEl.parentElement.classList.toggle('err', !ok);
-  statusEl.innerHTML = ok ? `${icon('check')} Copié` : 'Copie impossible';
+async function copyPath() {
+  copied = await copyText(sentence(path));
+  const { opt } = resolve(path);
+  const complete = opt && (!subsOf(opt) || path[2]);
+  if (complete) stats.pushRecent([...path]);
+  renderId();
+  showToast(copied ? 'Chemin copié' : 'Copie impossible');
 }
 
-// Met à jour les étapes et, dès qu'une option est choisie, copie la phrase.
-function update() {
-  const { mod, opt, path } = steps();
-  $('stepModule').classList.toggle('set', !!mod);
-  $('stepOption').hidden = !mod;
-  $('stepOption').classList.toggle('set', !!opt);
-  $('stepSub').hidden = !(opt && typeof opt === 'object' && opt.sub_options);
-  $('stepSub').classList.toggle('set', !!subSel.value);
-
-  resultEl.hidden = !opt;
-  if (!opt) return;
-  $('navIntro').textContent = store.intro;
-  const ol = $('navPath');
-  ol.innerHTML = '<li><span>•</span>Menu ID</li>';
-  for (const [k, n] of path) {
-    const li = document.createElement('li');
-    li.innerHTML = `<span>${escapeHtml(k)}</span>`;
-    li.append(n);
-    ol.append(li);
-  }
-  copyResult();
+// Choisit un chemin complet (depuis la recherche ou les récents) et le copie.
+export function openPath(p) {
+  path = [p[0] || '', p[1] || '', p[2] || ''];
+  if (resolve(path).opt) copyPath();
+  else renderId();
 }
 
-// ---------- Recherche ----------
-const INDEX = [];
-for (const [mk, mod] of Object.entries(MODULES)) {
-  for (const [ok, opt] of Object.entries(mod.options)) {
-    const subs = typeof opt === 'object' ? opt.sub_options : null;
-    INDEX.push({ label: nameOf(opt), path: `${mk} ${mod.name} › ${ok}`, mk, ok, sk: '', subs: !!subs });
-    if (subs) {
-      for (const [sk, sub] of Object.entries(subs)) {
-        INDEX.push({ label: sub, path: `${mk} ${mod.name} › ${ok} ${nameOf(opt)} › ${sk}`, mk, ok, sk });
+// Recherche dans les options et sous-options (pour la barre du haut).
+export function searchId(query, limit = 6) {
+  const out = [];
+  if (!query) return out;
+  for (const [mk, mod] of Object.entries(MODULES)) {
+    for (const [ok, opt] of Object.entries(mod.options)) {
+      if (foldText(nameOf(opt)).includes(query)) out.push({ path: [mk, ok, ''], label: nameOf(opt) });
+      const subs = subsOf(opt);
+      if (subs) {
+        for (const [sk, sub] of Object.entries(subs)) {
+          if (foldText(sub).includes(query)) out.push({ path: [mk, ok, sk], label: sub });
+        }
       }
     }
   }
+  return out.slice(0, limit);
 }
 
-let matches = [];
-let active = 0;
-
-function highlight(label, query) {
-  const i = label.toLowerCase().indexOf(query.toLowerCase());
-  if (!query || i < 0) return escapeHtml(label);
-  return escapeHtml(label.slice(0, i)) + `<mark>${escapeHtml(label.slice(i, i + query.length))}</mark>` + escapeHtml(label.slice(i + query.length));
+function column(title, level, entries, current, emptyText) {
+  const items = entries.length
+    ? `<ul>${entries.map(([k, label, more]) => `<li><button type="button" data-l="${level}" data-k="${escapeHtml(k)}" aria-current="${current === k}"><span>${escapeHtml(k)}</span>${escapeHtml(label)}${more ? ' ›' : ''}</button></li>`).join('')}</ul>`
+    : `<div class="none">${emptyText}</div>`;
+  return `<div class="col"><h4>${title}</h4>${items}</div>`;
 }
 
-function renderResults() {
-  const raw = searchEl.value.trim();
-  const q = normalizeText(raw);
-  resultsEl.hidden = !q;
-  if (!q) return;
-  matches = INDEX.filter((e) => normalizeText(e.label).includes(q) || normalizeText(`${e.sk || e.ok}${e.label}`) === q).slice(0, 40);
-  active = 0;
-  resultsEl.textContent = '';
-  if (!matches.length) {
-    resultsEl.innerHTML = '<li class="none">Aucun menu trouvé.</li>';
-    return;
+function renderId() {
+  if (state.tab !== 'id') return;
+  const { mod, opt } = resolve(path);
+  const subs = subsOf(opt);
+  let h = '';
+  if (stats.recent.length) {
+    h += `<div><div class="cap" style="margin-bottom:6px">Récents</div><div class="chips">${stats.recent
+      .map((p, i) => `<button class="chip" type="button" data-rec="${i}" title="${escapeHtml(labelOf(p))}"><span>${p.filter(Boolean).join('›')}</span>${escapeHtml(labelOf(p))}</button>`)
+      .join('')}</div></div>`;
   }
-  matches.forEach((m, i) => {
-    const li = document.createElement('li');
-    li.role = 'option';
-    li.dataset.i = i;
-    li.classList.toggle('on', i === 0);
-    li.innerHTML = `<b>${highlight(m.label, raw)}</b><small>${escapeHtml(m.path)}</small>`;
-    resultsEl.append(li);
-  });
-}
-
-function pick(m) {
-  searchEl.value = '';
-  resultsEl.hidden = true;
-  moduleSel.value = m.mk;
-  updateOptions();
-  optionSel.value = m.ok;
-  updateSubOptions();
-  if (m.sk) {
-    subSel.value = m.sk;
-    update();
+  h += '<div class="cols">';
+  h += column('1 · Module', 0, Object.entries(MODULES).map(([k, m]) => [k, m.name]), path[0], '');
+  h += column('2 · Option', 1, mod ? Object.entries(mod.options).map(([k, o]) => [k, nameOf(o), !!subsOf(o)]) : [], path[1], 'Choisissez un module.');
+  h += column('3 · Sous-option', 2, subs ? sortKeys(Object.keys(subs)).map((k) => [k, subs[k]]) : [], path[2], opt ? 'Pas de sous-option.' : '—');
+  h += '</div>';
+  if (opt) {
+    h += `<div class="ticket"><p></p><ol>${lines(path)
+      .map((l) => {
+        const m = l.match(/^• (\S+): (.*)$/);
+        return m ? `<li><span>${escapeHtml(m[1])}</span>${escapeHtml(m[2])}</li>` : '<li><span>•</span>Menu ID</li>';
+      })
+      .join('')}</ol><footer class="${copied === false ? 'err' : ''}"><span>${copied === false ? 'Copie impossible' : copied ? `${icon('check')} Copié` : ''}</span>
+      <button class="btn" type="button" data-act="copy">${icon('copy')}Recopier</button></footer></div>`;
   }
+  box.innerHTML = h;
+  const intro = box.querySelector('.ticket p');
+  if (intro) intro.textContent = store.intro;
 }
 
 export function initNavigation() {
-  fill(moduleSel, Object.entries(MODULES).map(([k, m]) => [k, m.name]), 'Choisir un module');
-  updateOptions();
+  onRender(renderId);
 
-  moduleSel.addEventListener('change', updateOptions);
-  optionSel.addEventListener('change', updateSubOptions);
-  subSel.addEventListener('change', update);
-  $('navCopy').addEventListener('click', copyResult);
-  $('backBtn2').addEventListener('click', () => show('rubriques'));
-
-  searchEl.addEventListener('input', renderResults);
-  searchEl.addEventListener('keydown', (e) => {
-    if (resultsEl.hidden || !matches.length) return;
-    if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-      e.preventDefault();
-      active = (active + (e.key === 'ArrowDown' ? 1 : -1) + matches.length) % matches.length;
-      resultsEl.querySelectorAll('li').forEach((li, i) => li.classList.toggle('on', i === active));
-      resultsEl.children[active]?.scrollIntoView({ block: 'nearest' });
-    } else if (e.key === 'Enter') {
-      e.preventDefault();
-      pick(matches[active]);
-    } else if (e.key === 'Escape') {
-      e.preventDefault();
-      searchEl.value = '';
-      resultsEl.hidden = true;
+  box.addEventListener('click', (e) => {
+    const b = e.target.closest('[data-l]');
+    if (b) {
+      const level = Number(b.dataset.l);
+      const next = [...path];
+      next[level] = b.dataset.k;
+      for (let j = level + 1; j < 3; j++) next[j] = '';
+      path = next;
+      copied = null;
+      // Comme avant : la phrase est copiée dès qu'une option est choisie.
+      if (level > 0) copyPath();
+      else renderId();
+      return;
     }
-  });
-  resultsEl.addEventListener('click', (e) => {
-    const li = e.target.closest('li[data-i]');
-    if (li) pick(matches[Number(li.dataset.i)]);
+    const r = e.target.closest('[data-rec]');
+    if (r) { openPath(stats.recent[Number(r.dataset.rec)]); return; }
+    if (e.target.closest('[data-act="copy"]')) copyPath();
   });
 
-  $('changeIntroBtn').addEventListener('click', async () => {
+  document.getElementById('introBtn').addEventListener('click', async () => {
     const text = await askText("Phrase d'introduction", store.intro, {
       message: `Texte placé avant le chemin. Par défaut : « ${DEFAULT_INTRO} »`,
     });
     if (!text) return;
     store.intro = text;
-    update();
+    renderId();
   });
 }
