@@ -118,12 +118,7 @@ function card(it, i, q) {
   el.dataset.i = i;
   el.innerHTML = `
     ${canReorder() ? `<span class="grip" title="Glisser pour déplacer">${icon('grip')}</span>` : ''}
-    <div class="body"><div class="txt"></div></div>
-    ${editing ? '' : `<div class="acts">
-      <button class="ibtn star${fav ? ' on' : ''}" type="button" data-a="fav" title="Favori (F)">${icon('star')}</button>
-      <button class="ibtn" type="button" data-a="edit" title="Modifier (E)">${icon('pen')}</button>
-      <button class="ibtn" type="button" data-a="del" title="Supprimer">${icon('trash')}</button>
-    </div><span class="hint">Cliquer pour copier</span>`}`;
+    <div class="body"><div class="txt"></div></div>`;
   const body = el.querySelector('.body');
   const txt = el.querySelector('.txt');
 
@@ -138,7 +133,13 @@ function card(it, i, q) {
     if (q || state.mode === 'fav') meta.push(`<span class="rb">${escapeHtml(`${it.l} › ${store.rubriques(it.l)[it.r].name}`)}</span>`);
     if (used) meta.push(`<span>${icon('clock')} copiée ${used}×</span>`);
     if (fields.length) meta.push(`<span>${fields.length} champ(s) à remplir</span>`);
-    body.insertAdjacentHTML('beforeend', `<div class="meta">${meta.join('')}</div>`);
+    // Barre sous le texte : infos à gauche, boutons à droite.
+    body.insertAdjacentHTML('beforeend', `<div class="row"><div class="meta">${meta.join('')}</div><div class="acts">
+      <span class="hint">Cliquer pour copier</span>
+      <button class="ibtn star${fav ? ' on' : ''}" type="button" data-a="fav" title="Favori (F)">${icon('star')}</button>
+      <button class="ibtn" type="button" data-a="edit" title="Modifier (E)">${icon('pen')}</button>
+      <button class="ibtn del" type="button" data-a="del" title="Supprimer">${icon('trash')}</button>
+    </div></div>`);
   }
 
   if (filling) {

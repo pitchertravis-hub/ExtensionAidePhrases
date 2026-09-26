@@ -91,7 +91,7 @@ kbd { font: 600 10px var(--mono); padding: 0 5px; border-radius: 4px; border: 1p
 .empty { padding: 28px 12px; text-align: center; color: var(--muted); }
 
 /* Carte phrase */
-.ph { position: relative; flex: none; display: grid; grid-template-columns: 1fr auto; gap: 10px; align-items: start; padding: 11px 10px 10px 14px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); cursor: pointer; transition: border-color .12s, background .12s; }
+.ph { position: relative; flex: none; display: block; padding: 11px 10px 6px 14px; border-radius: 10px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); cursor: pointer; transition: border-color .12s, background .12s; }
 .ph:hover { border-color: var(--line-strong); }
 .ph.sel { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
 .ph.flash { background: var(--ok-soft); border-color: var(--ok); }
@@ -104,19 +104,21 @@ kbd { font: 600 10px var(--mono); padding: 0 5px; border-radius: 4px; border: 1p
 .ph .txt:empty::before { content: "Phrase vide"; color: var(--muted); }
 .ph .txt a { color: var(--accent); text-underline-offset: 2px; }
 .ph .txt img { max-width: 100%; height: auto; border-radius: 5px; }
-.ph .meta { display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; margin-top: 5px; font-size: 11px; color: var(--muted); }
-.ph .meta:empty { display: none; }
+.ph .row { display: flex; align-items: center; gap: 8px; min-height: 28px; margin-top: 2px; }
+.ph .meta { flex: 1; min-width: 0; display: flex; flex-wrap: wrap; gap: 4px 10px; align-items: center; font-size: 11px; color: var(--muted); }
 .ph .meta .rb { font-weight: 700; color: var(--accent); }
 .ph .meta .ico { width: 11px; height: 11px; vertical-align: -1px; }
-.ph .acts { display: flex; opacity: 0; transition: opacity .12s; }
+.ph .acts { flex: none; margin-left: auto; display: flex; align-items: center; gap: 2px; opacity: 0; transition: opacity .12s; }
 .ph:hover .acts, .ph.sel .acts, .ph:focus-within .acts { opacity: 1; }
 .ph .star.on { color: var(--gold); }
+.ph .acts .del:hover { background: var(--danger-soft); color: var(--danger); }
 .ph.is-fav .acts { opacity: 1; }
-.ph.is-fav .acts .ibtn:not(.star) { opacity: 0; }
-.ph.is-fav:hover .acts .ibtn, .ph.is-fav.sel .acts .ibtn { opacity: 1; }
-.ph .hint { position: absolute; right: 12px; bottom: 8px; font-size: 11px; font-weight: 700; color: var(--muted); display: none; pointer-events: none; }
-.ph:hover .hint { display: block; }
-.ph:has(.fill) .hint, .ph.editing .hint { display: none !important; }
+.ph.is-fav .acts > :not(.star) { opacity: 0; }
+.ph.is-fav:hover .acts > *, .ph.is-fav.sel .acts > *, .ph.is-fav:focus-within .acts > * { opacity: 1; }
+.ph .hint { margin-right: 6px; font-size: 11px; font-weight: 700; color: var(--muted); pointer-events: none; visibility: hidden; }
+.ph:hover .hint { visibility: visible; }
+.ph:has(.fill) .hint { display: none; }
+.ph.editing { padding-bottom: 10px; }
 .fld { padding: 0 5px; border-radius: 5px; background: var(--gold-soft); color: var(--gold); font-weight: 700; }
 .ph mark { background: var(--gold-soft); color: inherit; border-radius: 3px; padding: 0 1px; }
 
