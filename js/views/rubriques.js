@@ -1,6 +1,6 @@
 // Vue 1 · Listes et rubriques.
 import { store } from '../store.js';
-import { show, icon } from '../app.js';
+import { show, onEnter, icon } from '../app.js';
 import { normalizeText, fuzzyMatch, similarity } from '../core/text.js';
 import { createVoice } from '../core/voice.js';
 import { exportJson, exportCsv, readImportFile, mergeLists } from '../core/backup.js';
@@ -254,6 +254,12 @@ export function initRubriques() {
   $('addRubriqueBtn').addEventListener('click', addRubrique);
   $('openNav').addEventListener('click', () => show('nav'));
   search.addEventListener('input', applySearch);
+  // Comme en v2.5 : la recherche repart de zéro au retour sur la liste.
+  onEnter('rubriques', () => {
+    search.value = '';
+    for (const li of ul.children) li.classList.remove('hl');
+    applySearch();
+  });
 
   // Clic, clavier, clic droit et bouton ⋯ sur une rubrique.
   const openRubMenu = (li, pos) => {

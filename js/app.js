@@ -6,6 +6,7 @@ const views = {
   nav: document.getElementById('view-nav'),
 };
 const leaveHandlers = {};
+const enterHandlers = {};
 
 export let currentView = 'rubriques';
 
@@ -13,10 +14,15 @@ export function onLeave(name, fn) {
   leaveHandlers[name] = fn;
 }
 
+export function onEnter(name, fn) {
+  enterHandlers[name] = fn;
+}
+
 export function show(name) {
   if (name !== currentView) leaveHandlers[currentView]?.();
   for (const [key, el] of Object.entries(views)) el.hidden = key !== name;
   currentView = name;
+  enterHandlers[name]?.();
   window.scrollTo(0, 0);
 }
 

@@ -3,6 +3,9 @@ import { store, normalizeLists } from '../store.js';
 import { toCsv, parseCsv, CSV_HEADER } from './csv.js';
 import { htmlToText, textToHtml, normalizeText } from './text.js';
 
+// Deux phrases sont identiques si leur texte est le même (espaces mis à part).
+const phraseKey = (html) => htmlToText(html).replace(/\s+/g, ' ').trim();
+
 const WEEK_MS = 7 * 24 * 3600 * 1000;
 
 function stamp(date = new Date()) {
@@ -64,9 +67,9 @@ export function mergeLists(imported) {
         target.push(existing);
         stats.rubriques++;
       }
-      const known = new Set(existing.phrases.map((p) => normalizeText(htmlToText(p))));
+      const known = new Set(existing.phrases.map(phraseKey));
       for (const p of r.phrases) {
-        const key = normalizeText(htmlToText(p));
+        const key = phraseKey(p);
         if (!key || known.has(key)) continue;
         existing.phrases.push(p);
         known.add(key);
