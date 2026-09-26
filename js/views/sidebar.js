@@ -188,6 +188,15 @@ export function initSidebar() {
   bindMenu(rubMenu, (act) => (act === 'rename' ? renameRubrique(menuIndex) : deleteRubrique(menuIndex)));
   $('addRubBtn').addEventListener('click', addRubrique);
 
+  // Molette : on fait défiler la colonne nous-mêmes. Dans la fenêtre de
+  // l'extension, Chrome ne transmet pas toujours la molette à cette liste.
+  nav.addEventListener('wheel', (e) => {
+    if (e.ctrlKey || !e.deltaY || nav.scrollHeight <= nav.clientHeight) return;
+    const unit = e.deltaMode === 1 ? 32 : e.deltaMode === 2 ? nav.clientHeight : 1;
+    e.preventDefault();
+    nav.scrollTop += e.deltaY * unit;
+  }, { passive: false });
+
   rubSelect.addEventListener('change', () => {
     const v = rubSelect.value;
     if (v === 'fav') openRubrique(0, 'fav');
