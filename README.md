@@ -16,9 +16,10 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
 - **Rédiger** : on tape ou on dicte un brouillon, **Reformuler** (ou `Ctrl+Entrée`) le corrige et le rend professionnel
   (vouvoiement, formules de politesse). Le résultat se retouche, se copie ou se garde comme phrase dans une rubrique.
   L'IA est celle de Chrome (Prompt API) et tourne sur l'ordinateur : le texte à reformuler n'est pas envoyé sur Internet.
-  Le modèle se télécharge une fois, au premier clic sur Reformuler. L'onglet n'apparaît que si Chrome et l'ordinateur
-  le permettent : Chrome 149 ou plus récent (français pris en charge), Windows 10/11, macOS 13+ ou Linux,
-  22 Go libres sur le disque, et 16 Go de mémoire (4 cœurs) ou une carte graphique de plus de 4 Go.
+  Le modèle se télécharge une fois, au premier clic sur Reformuler. Il faut Chrome 138 ou plus récent
+  (149 pour le français officiel), Windows 10/11, macOS 13+ ou Linux, 22 Go libres sur le disque,
+  et 16 Go de mémoire (4 cœurs) ou une carte graphique de plus de 4 Go. Si l'IA ne peut pas tourner,
+  l'onglet explique pourquoi et ouvre la page de diagnostic de Chrome (`chrome://on-device-internals`).
   La dictée (micro) utilise la reconnaissance vocale de Chrome, qui peut passer par les serveurs de Google.
 - **Apparence** (Réglages → Apparence), en deux onglets :
   **Couleurs** : thèmes prêts, ou **Perso** avec deux couleurs au choix (bandeau et accent) et un dégradé optionnel ; le reste du thème, clair et sombre, en est déduit.

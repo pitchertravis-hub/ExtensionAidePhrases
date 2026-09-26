@@ -15,7 +15,7 @@ Ne reformule pas, ne change ni le sens, ni le ton, ni l'ordre des mots, n'ajoute
 Garde les retours à la ligne. Si le texte est déjà correct, renvoie-le tel quel.
 ${KEEP}`,
   // Correction et ton professionnel, pour l'onglet Rédiger.
-  pro: `Tu réécris des messages pour un usage professionnel en français (clients, partenaires, collègues).
+  pro: `Tu réécris des messages pour un usage professionnel (clients, partenaires, collègues). Réponds toujours en français.
 Corrige toutes les fautes et reformule le texte dans un ton professionnel, courtois et clair, avec vouvoiement.
 Commence par une formule de salutation adaptée et termine par une formule de politesse courte, comme « Cordialement, ».
 Garde tout le sens et toutes les informations du texte, n'invente aucun fait, aucune date, aucun nom.
@@ -25,21 +25,35 @@ ${KEEP}`,
 
 const URL_RE = /https?:\/\/\S+/g;
 const sessions = {};
+// Langues demandées à Chrome : le français (Chrome 149+), sinon sans langue précisée
+// (Chrome 138 à 148 : le modèle répond quand même en français, un peu moins bien).
+let lang = LANG;
 
-// 'available', 'downloadable', 'downloading' ou 'unavailable'.
+export function chromeVersion() {
+  const m = navigator.userAgent.match(/Chrome\/(\d+)/);
+  return m ? Number(m[1]) : 0;
+}
+
+// { status, fr, api } : status vaut 'available', 'downloadable', 'downloading' ou 'unavailable',
+// fr dit si le français est pris en charge, api si Chrome expose l'IA du tout.
 export async function aiStatus() {
-  if (!('LanguageModel' in self)) return 'unavailable';
+  if (!('LanguageModel' in self)) return { status: 'unavailable', fr: false, api: false };
   try {
-    return await LanguageModel.availability(LANG);
-  } catch {
-    return 'unavailable';
+    const fr = await LanguageModel.availability(LANG);
+    if (fr !== 'unavailable') { lang = LANG; return { status: fr, fr: true, api: true }; }
+    const any = await LanguageModel.availability({});
+    lang = {};
+    return { status: any, fr: false, api: true };
+  } catch (e) {
+    console.warn('IA de Chrome :', e);
+    return { status: 'unavailable', fr: false, api: true };
   }
 }
 
 async function session(kind, onProgress) {
   if (sessions[kind]) return sessions[kind];
   const opts = {
-    ...LANG,
+    ...lang,
     initialPrompts: [{ role: 'system', content: PROMPTS[kind] }],
     monitor(m) { m.addEventListener('downloadprogress', (e) => onProgress?.(e.loaded)); },
   };

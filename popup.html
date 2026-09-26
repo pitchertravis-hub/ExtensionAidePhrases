@@ -41,6 +41,7 @@
     <symbol id="i-spell" viewBox="0 0 24 24"><path d="m3 15 4-10 4 10M4.5 11h5M13 17l3 3 5-7"/></symbol>
     <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></symbol>
     <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></symbol>
     <symbol id="i-key" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></symbol>
   </svg>
 
@@ -56,7 +57,7 @@
       <div class="tabs" role="tablist">
         <button type="button" role="tab" id="tabBtnPh" aria-selected="true"><svg class="ico"><use href="#i-text"/></svg>Phrases</button>
         <button type="button" role="tab" id="tabBtnId" aria-selected="false"><svg class="ico"><use href="#i-compass"/></svg><span>Navigation ID</span></button>
-        <button type="button" role="tab" id="tabBtnRd" aria-selected="false" hidden><svg class="ico"><use href="#i-spark"/></svg><span>Rédiger</span></button>
+        <button type="button" role="tab" id="tabBtnRd" aria-selected="false"><svg class="ico"><use href="#i-spark"/></svg><span>Rédiger</span></button>
       </div>
       <button class="ibtn" type="button" id="settingsBtn" title="Réglages"><svg class="ico"><use href="#i-sliders"/></svg></button>
     </header>
@@ -93,6 +94,18 @@
         <div class="mhead">
           <div class="t"><h1>Rédiger avec l'IA</h1><div class="sub">Écrivez comme ça vient : l'IA corrige et rend le texte professionnel.</div></div>
           <span class="local" title="L'IA de Chrome tourne sur cet ordinateur : le texte à reformuler n'est pas envoyé sur Internet."><svg class="ico"><use href="#i-lock"/></svg><span>Sur cet ordinateur</span></span>
+        </div>
+        <div class="rd-note" id="rdNote" hidden>
+          <svg class="ico"><use href="#i-info"/></svg>
+          <div>
+            <strong id="rdNoteTitle"></strong>
+            <p id="rdNoteText"></p>
+            <small id="rdNoteInfo"></small>
+            <span class="acts" id="rdNoteActs">
+              <button class="btn" type="button" id="rdCheck">Revérifier</button>
+              <button class="btn" type="button" id="rdDiag">Diagnostic de Chrome</button>
+            </span>
+          </div>
         </div>
         <div class="work">
           <section class="box">

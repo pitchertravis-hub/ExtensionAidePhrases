@@ -177,6 +177,15 @@ kbd { font: 600 10px var(--mono); padding: 0 5px; border-radius: 4px; border: 1p
 .work .tag { font-size: 11px; font-weight: 700; color: var(--ok); text-align: right; }
 .work .tag.warn { color: var(--danger); }
 .work .btn:disabled, .work .ibtn:disabled { opacity: .45; cursor: default; }
+.rd-note { display: flex; gap: 10px; margin: 0 14px 10px; padding: 10px 12px; border-radius: 10px; background: var(--gold-soft); color: var(--ink-2); font-size: 12.5px; }
+.rd-note[hidden] { display: none; }
+.rd-note > .ico { color: var(--gold); margin-top: 2px; }
+.rd-note > div { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.rd-note strong { color: var(--ink); }
+.rd-note p { margin: 0; }
+.rd-note small { font: 500 10.5px var(--mono); color: var(--muted); }
+.rd-note .acts { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.rd-note .btn { height: 26px; }
 #rdKeepMenu .cap { padding: 7px 9px 5px; }
 #rdKeepMenu button span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 

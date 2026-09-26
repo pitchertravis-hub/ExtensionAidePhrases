@@ -3,7 +3,7 @@
 import { store } from '../store.js';
 import { state, render, rubriques, copyText } from '../state.js';
 import { textToHtml, escapeHtml } from '../core/text.js';
-import { aiStatus, rewriteText } from '../core/ai.js';
+import { aiStatus, rewriteText, chromeVersion } from '../core/ai.js';
 import { createVoice } from '../core/voice.js';
 import { openMenu, bindMenu } from '../ui/menu.js';
 import { inform } from '../ui/dialog.js';
@@ -12,6 +12,7 @@ import { showToast } from '../ui/toast.js';
 const $ = (id) => document.getElementById(id);
 const KEY = 'tp-rediger';   // brouillon et résultat, gardés à la fermeture de la fenêtre
 let busy = false;
+let usable = false;         // l'IA de Chrome peut tourner ici
 
 function load() {
   try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch { return {}; }
@@ -29,15 +30,15 @@ function setTag(text, warn = false) {
 function updateButtons() {
   const hasDraft = !!$('rdDraft').value.trim();
   const hasOut = !!$('rdOut').value.trim();
-  $('rdGo').disabled = busy || !hasDraft;
-  $('rdAgain').disabled = busy || !hasDraft || !hasOut;
+  $('rdGo').disabled = busy || !usable || !hasDraft;
+  $('rdAgain').disabled = busy || !usable || !hasDraft || !hasOut;
   $('rdCopy').disabled = busy || !hasOut;
   $('rdKeep').disabled = busy || !hasOut;
 }
 
 async function run() {
   const text = $('rdDraft').value.trim();
-  if (!text || busy) return;
+  if (!text || busy || !usable) return;
   busy = true;
   const out = $('rdOut');
   const box = out.closest('.box');
@@ -50,9 +51,10 @@ async function run() {
     out.value = res.text;
     if (res.ok) setTag('Reformulé');
     else setTag('Vérifiez les champs {…} et les liens', true);
+    check(); // le modèle vient peut-être d'être téléchargé
   } catch (e) {
     console.warn('Reformulation IA :', e);
-    setTag('La reformulation n’a pas marché. Réessayez.', true);
+    setTag(`La reformulation n’a pas marché (${e.name}). Réessayez.`, true);
   } finally {
     busy = false;
     box.classList.remove('busy');
@@ -105,6 +107,41 @@ function keep(index) {
   });
 }
 
+// Dit pourquoi l'IA ne marche pas ici, ou ce qu'il faut savoir avant de s'en servir.
+function note(title, text, { info = '', actions = true } = {}) {
+  $('rdNote').hidden = !title;
+  $('rdNoteTitle').textContent = title;
+  $('rdNoteText').textContent = text;
+  $('rdNoteInfo').textContent = info;
+  $('rdNoteActs').hidden = !actions;
+}
+
+async function check() {
+  const v = chromeVersion();
+  const st = await aiStatus();
+  usable = st.status !== 'unavailable';
+  const info = `Chrome ${v || '?'} · IA intégrée : ${st.api ? 'présente' : 'absente'} · état : ${st.status}${usable && !st.fr ? ' · français non pris en charge' : ''}`;
+  if (!st.api && v && v < 138) {
+    note('Chrome est trop ancien pour l’IA',
+      `Votre Chrome est en version ${v}. L’IA intégrée demande la version 138 ou plus récente (149 pour le français). Mettez Chrome à jour : menu ⋮ › Aide › À propos de Google Chrome, puis relancez Chrome.`, { info });
+  } else if (!st.api) {
+    note('Chrome n’active pas son IA sur cet ordinateur',
+      'Causes possibles : ordinateur pas assez puissant, Chrome géré par une entreprise ou une école qui a coupé l’IA, ou Chrome sur téléphone. La page Diagnostic de Chrome indique la raison exacte.', { info });
+  } else if (!usable) {
+    note('Cet ordinateur ne peut pas faire tourner l’IA de Chrome',
+      'Il faut Windows 10/11, macOS 13+ ou Linux, 22 Go libres sur le disque, et 16 Go de mémoire (4 cœurs) ou une carte graphique de plus de 4 Go. Libérez de la place sur le disque si besoin, puis cliquez Revérifier.', { info });
+  } else if (!st.fr) {
+    note('Le français n’est pas encore officiel dans votre Chrome',
+      `L’IA marche, mais Chrome ${v} ne gère officiellement le français qu’à partir de la version 149 : les textes peuvent être moins bons. Mettez Chrome à jour pour de meilleurs résultats.`, { info, actions: false });
+  } else if (st.status !== 'available') {
+    note('Première utilisation',
+      'Au premier clic sur Reformuler, Chrome télécharge son IA (plusieurs Go, une seule fois). Ensuite, tout marche même sans Internet.', { info, actions: false });
+  } else {
+    note('');
+  }
+  updateButtons();
+}
+
 export function initRediger() {
   const draft = $('rdDraft');
   const out = $('rdOut');
@@ -113,8 +150,9 @@ export function initRediger() {
   out.value = saved.out ?? '';
   updateButtons();
 
-  // L'onglet n'apparaît que si l'IA de Chrome peut tourner sur cet ordinateur.
-  aiStatus().then((s) => { $('tabBtnRd').hidden = s === 'unavailable'; });
+  check();
+  $('rdCheck').addEventListener('click', check);
+  $('rdDiag').addEventListener('click', () => chrome.tabs.create({ url: 'chrome://on-device-internals' }));
 
   draft.addEventListener('input', () => { save(); updateButtons(); });
   out.addEventListener('input', () => { save(); updateButtons(); });
