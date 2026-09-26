@@ -159,6 +159,29 @@
   [data-palette="halloween"] .mhead { background: none; }
 }
 
+/* Fuchsia pop : rose vif et prune, logo cœur, cœurs et paillettes, coins plus ronds. */
+[data-palette="fuchsia"] {
+  --bg: #FFF4FA; --surface: #FFFFFF; --sunken: #FDE7F3; --ink: #2B0F22; --ink-2: #57314B; --muted: #9C7590; --line: #F7DCEC; --line-strong: #EFC3DD;
+  --accent: #D81B7F; --accent-soft: #FFE0F0; --gold: #D81B7F; --gold-soft: #FFE0F0;
+  --brand-grad: linear-gradient(135deg, #FF5FAE, #E0288A); --brand-on: #FFFFFF; --brand-tp: #D81B7F; --brand-bright: #FF8CC6;
+  --rail: #5A1646; --rail-hi: rgba(255, 90, 170, .2);
+}
+[data-palette="fuchsia"][data-theme="dark"] {
+  --bg: #1A0A15; --surface: #26101F; --sunken: #321629; --ink: #FFEAF5; --ink-2: #EBC5DA; --muted: #B08BA2; --line: #41203A; --line-strong: #552A4B;
+  --accent: #FF5FAE; --accent-soft: #45142F; --gold: #FF5FAE; --gold-soft: #45142F; --brand-tp: #FF5FAE; --rail: #3E0D30;
+}
+[data-palette="fuchsia"] .mono-z { display: none; }
+[data-palette="fuchsia"] .slogo.heart { display: block; }
+[data-palette="fuchsia"] .top { background-image: radial-gradient(circle at 12% 120%, rgba(255, 95, 174, .25), transparent 40%), radial-gradient(circle at 88% -30%, rgba(255, 95, 174, .25), transparent 40%); }
+[data-palette="fuchsia"] .mhead { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 44' fill='%23FF5FAE' fill-opacity='.5'%3E%3Cpath d='M14 30C4 23 2 17 6 13c3-3 7-2 8 1 1-3 5-4 8-1 4 4 2 10-8 17z'/%3E%3Cpath d='M60 18c-6-4-7-8-5-10 2-2 4-1 5 1 1-2 3-3 5-1 2 2 1 6-5 10z'/%3E%3Cpath d='M92 38c-8-6-10-11-7-14 3-3 6-2 7 1 1-3 4-4 7-1 3 3 1 8-7 14z'/%3E%3C/svg%3E") no-repeat right 110px top 4px / 100px 40px; }
+[data-palette="fuchsia"] .main { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 110' fill='%23FF5FAE' fill-opacity='.35'%3E%3Cpath d='M80 10c2 12 6 16 18 18-12 2-16 6-18 18-2-12-6-16-18-18 12-2 16-6 18-18z'/%3E%3Cpath d='M40 50c1.5 8 4 10.5 12 12-8 1.5-10.5 4-12 12-1.5-8-4-10.5-12-12 8-1.5 10.5-4 12-12z'/%3E%3Cpath d='M95 70c1 6 3 8 9 9-6 1-8 3-9 9-1-6-3-8-9-9 6-1 8-3 9-9z'/%3E%3Ccircle cx='20' cy='30' r='2.5'/%3E%3Ccircle cx='60' cy='95' r='2'/%3E%3Ccircle cx='110' cy='45' r='2'/%3E%3C/svg%3E") no-repeat right 12px bottom 12px / 110px 100px; }
+[data-palette="fuchsia"] .ph.sel { box-shadow: 0 0 0 3px var(--accent-soft), 0 6px 20px -8px var(--accent); }
+[data-palette="fuchsia"] :is(.ph, .search, .tabs, .nav .item, .listrow select, .rubrow select, .btn, .side .add, .ticket, .col, .pop) { border-radius: 14px; }
+[data-palette="fuchsia"] .tabs button { border-radius: 11px; }
+@media (max-width: 619px) {
+  [data-palette="fuchsia"] .mhead { background: none; }
+}
+
 /* ---------- Menu Apparence ---------- */
 .look { width: 330px; padding: 10px; }
 .look .cap { margin: 4px 2px 7px; }

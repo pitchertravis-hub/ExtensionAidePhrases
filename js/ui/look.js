@@ -13,6 +13,7 @@ const PALETTES = [
   ['classique', 'Classique bleu', '#161A22', '#23408E'],
   ['halloween', 'Halloween', '#1B1026', '#F5821F'],
   ['noel', 'Noël', '#0F3B2E', '#C22F39'],
+  ['fuchsia', 'Fuchsia pop', '#5A1646', '#FF5FAE'],
 ];
 const KEYS = { palette: 'zt-palette', layout: 'zt-layout', theme: 'theme' };
 
