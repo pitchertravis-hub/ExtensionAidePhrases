@@ -9,14 +9,16 @@ export function openMenu(menu, { anchor, x, y }) {
   menu.showPopover();
   const w = menu.offsetWidth;
   const h = menu.offsetHeight;
+  // Hauteur réellement visible : dans la fenêtre de l'extension, innerHeight peut dépasser le corps (560 px).
+  const vh = Math.min(window.innerHeight, document.body.clientHeight || window.innerHeight);
   if (anchor) {
     const r = anchor.getBoundingClientRect();
     x = r.right - w;
     y = r.bottom + MARGIN;
-    if (y + h > window.innerHeight - MARGIN) y = r.top - h - MARGIN;
+    if (y + h > vh - MARGIN) y = r.top - h - MARGIN;
   }
   const maxX = window.innerWidth - w - MARGIN;
-  const maxY = window.innerHeight - h - MARGIN;
+  const maxY = vh - h - MARGIN;
   menu.style.left = `${Math.max(MARGIN, Math.min(x, maxX))}px`;
   menu.style.top = `${Math.max(MARGIN, Math.min(y, maxY))}px`;
   menu.querySelector('button:not(:disabled)')?.focus({ preventScroll: true });

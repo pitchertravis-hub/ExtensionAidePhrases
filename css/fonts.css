@@ -1,0 +1,24 @@
+/* Polices proposées dans Réglages › Apparence › Affichage (licence OFL, voir fonts/OFL.txt).
+   Sous-ensemble latin seulement ; Chrome ne charge que celle qui est utilisée. */
+@font-face { font-family: "TP DM Sans"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("../fonts/dmsans-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Outfit"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("../fonts/outfit-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Lexend"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("../fonts/lexend-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Atkinson Hyperlegible"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/atkinson-400-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Atkinson Hyperlegible"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fonts/atkinson-700-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Nunito"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("../fonts/nunito-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Quicksand"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../fonts/quicksand-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Fredoka"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../fonts/fredoka-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Comic Neue"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/comicneue-400-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Comic Neue"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fonts/comicneue-700-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Lora"; font-style: normal; font-weight: 400 700; font-display: swap; src: url("../fonts/lora-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Merriweather"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("../fonts/merriweather-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Patrick Hand"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/patrickhand-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Kalam"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/kalam-400-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Kalam"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fonts/kalam-700-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Courier Prime"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/courierprime-400-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Courier Prime"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fonts/courierprime-700-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP JetBrains Mono"; font-style: normal; font-weight: 400 800; font-display: swap; src: url("../fonts/jetbrainsmono-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP IBM Plex Mono"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/ibmplexmono-400-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP IBM Plex Mono"; font-style: normal; font-weight: 500; font-display: swap; src: url("../fonts/ibmplexmono-500-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP IBM Plex Mono"; font-style: normal; font-weight: 700; font-display: swap; src: url("../fonts/ibmplexmono-700-latin.woff2") format("woff2"); }
+@font-face { font-family: "TP Archivo Black"; font-style: normal; font-weight: 400; font-display: swap; src: url("../fonts/archivoblack-latin.woff2") format("woff2"); }

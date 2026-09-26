@@ -1,0 +1,20 @@
+Polices incluses dans TPhrase (sous-ensemble latin, fichiers woff2).
+Toutes sont distribuées sous la SIL Open Font License 1.1 (texte complet : OFL.txt).
+
+Manrope ............... © The Manrope Project Authors
+DM Sans ............... © The DM Sans Project Authors
+Outfit ................ © The Outfit Project Authors
+Atkinson Hyperlegible . © Braille Institute of America
+Lexend ................ © The Lexend Project Authors
+Nunito ................ © The Nunito Project Authors
+Quicksand ............. © The Quicksand Project Authors
+Fredoka ............... © The Fredoka Project Authors
+Comic Neue ............ © The Comic Neue Project Authors
+Lora .................. © The Lora Project Authors
+Merriweather .......... © The Merriweather Project Authors
+Patrick Hand .......... © Patrick Wagesreiter
+Kalam ................. © Indian Type Foundry
+Courier Prime ......... © The Courier Prime Project Authors
+JetBrains Mono ........ © The JetBrains Mono Project Authors
+IBM Plex Mono ......... © IBM Corp.
+Archivo Black ......... © The Archivo Black Project Authors (titres du thème Brutal)

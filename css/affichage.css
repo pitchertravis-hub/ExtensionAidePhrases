@@ -1,0 +1,109 @@
+/* Réglages › Apparence › Affichage : taille du texte, densité, coins, police, motif de fond,
+   bandeau en dégradé et largeur de la colonne des rubriques.
+   html[data-size|data-dens|data-corners|data-font|data-pattern|data-grad], posés par theme.js.
+   Réglage « normal » : aucun attribut, l'affichage d'origine (et celui des palettes) s'applique. */
+
+/* ---------- Taille du texte ---------- */
+[data-size="s"] { --fs: .9; }
+[data-size="l"] { --fs: 1.12; }
+[data-size] body { font-size: calc(13px * var(--fs)); }
+[data-size] .brand { font-size: calc(14px * var(--fs)); }
+[data-size] .search input { font-size: calc(13.5px * var(--fs)); }
+[data-size] .tabs button { font-size: calc(12px * var(--fs)); }
+[data-size] .mhead h1 { font-size: calc(18px * var(--fs)); }
+[data-size] .mhead .sub { font-size: calc(12px * var(--fs)); }
+[data-size] .ph .txt { font-size: calc(13.5px * var(--fs)); }
+[data-size] :is(.ph .meta, .ph .hint, .foot) { font-size: calc(11px * var(--fs)); }
+[data-size] .col li button { font-size: calc(12px * var(--fs)); }
+[data-size] .pop button { font-size: calc(12.5px * var(--fs)); }
+
+/* ---------- Densité ---------- */
+[data-dens="compact"] .top { padding: 6px 12px; }
+[data-dens="compact"] .search { height: 30px; }
+[data-dens="compact"] .tabs button { height: 25px; }
+[data-dens="compact"] .side { gap: 6px; padding-top: 8px; }
+[data-dens="compact"] :is(.listrow select, .rubrow select, .listrow .ibtn, .rubrow .ibtn) { height: 28px; }
+[data-dens="compact"] .nav .item { height: 26px; }
+[data-dens="compact"] .nav .more { top: 1px; width: 24px; height: 24px; }
+[data-dens="compact"] .side .add { height: 28px; }
+[data-dens="compact"] .mhead { padding: 8px 14px 6px; }
+[data-dens="compact"] .scroll { gap: 4px; }
+[data-dens="compact"] .ph { padding: 6px 10px 2px 14px; }
+[data-dens="compact"] .ph .grip { top: 5px; }
+[data-dens="compact"] .ph .txt { line-height: 1.45; }
+[data-dens="compact"] .ph .row { min-height: 22px; margin-top: 0; }
+[data-dens="compact"] .ph .acts .ibtn { height: 22px; }
+[data-dens="compact"] .foot { padding-block: 4px; }
+
+[data-dens="confort"] .top { padding: 12px 14px; }
+[data-dens="confort"] .search { height: 38px; }
+[data-dens="confort"] .nav .item { height: 36px; }
+[data-dens="confort"] .nav .more { top: 5px; }
+[data-dens="confort"] .mhead { padding: 14px 16px 10px; }
+[data-dens="confort"] .scroll { gap: 11px; padding-inline: 16px; }
+[data-dens="confort"] .ph { padding: 15px 12px 9px 16px; }
+[data-dens="confort"] .ph .grip { top: 14px; }
+[data-dens="confort"] .ph .txt { line-height: 1.7; }
+[data-dens="confort"] .ph .row { min-height: 30px; }
+
+/* ---------- Coins (l'emportent sur ceux de la palette) ---------- */
+[data-corners="square"] :is(.ph, .search, .tabs, .tabs button, .nav .item, .nav .more, .listrow select, .rubrow select, .ibtn, .btn, .side .add, .mono-z,
+  .col, .col li button, .ticket, .pop, .pop button, dialog, dialog input, .fill, .fill input, .ph.editing .txt, kbd, .chip, .toast, .fld, .ph mark, .look .seg, .look .seg button, .look .tile, .look .tile .pv) { border-radius: 2px; }
+[data-corners="round"] :is(.ph, .col, .ticket, dialog) { border-radius: 16px; }
+[data-corners="round"] :is(.nav .item, .listrow select, .rubrow select, .side .add, .fill, .ph.editing .txt, .pop, .look .tile .pv) { border-radius: 12px; }
+[data-corners="round"] :is(.tabs, .look .seg) { border-radius: 12px; }
+[data-corners="round"] :is(.tabs button, .look .seg button, .pop button, .col li button) { border-radius: 9px; }
+[data-corners="round"] :is(.search, .btn, .ibtn, .chip, .toast, .fld, .fill input, dialog input) { border-radius: 999px; }
+[data-corners="round"] .fld { padding-inline: 7px; }
+[data-corners="round"] .mono-z { border-radius: 12px; }
+
+/* ---------- Police ---------- */
+[data-font="system"] { --font: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif; }
+[data-font="dmsans"] { --font: "TP DM Sans", "Segoe UI", system-ui, sans-serif; }
+[data-font="outfit"] { --font: "TP Outfit", "Segoe UI", system-ui, sans-serif; }
+[data-font="atkinson"] { --font: "TP Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif; }
+[data-font="lexend"] { --font: "TP Lexend", "Segoe UI", system-ui, sans-serif; }
+[data-font="nunito"] { --font: "TP Nunito", "Segoe UI", system-ui, sans-serif; }
+[data-font="quicksand"] { --font: "TP Quicksand", "Segoe UI", system-ui, sans-serif; }
+[data-font="fredoka"] { --font: "TP Fredoka", "Segoe UI", system-ui, sans-serif; }
+[data-font="comicneue"] { --font: "TP Comic Neue", "Segoe UI", system-ui, sans-serif; }
+[data-font="lora"] { --font: "TP Lora", Georgia, serif; }
+[data-font="merriweather"] { --font: "TP Merriweather", Georgia, serif; }
+[data-font="patrickhand"] { --font: "TP Patrick Hand", "Segoe Print", cursive; }
+[data-font="kalam"] { --font: "TP Kalam", "Segoe Print", cursive; }
+[data-font="courierprime"] { --font: "TP Courier Prime", "Courier New", monospace; }
+[data-font="jetbrainsmono"] { --font: "TP JetBrains Mono", Consolas, monospace; }
+[data-font="ibmplexmono"] { --font: "TP IBM Plex Mono", Consolas, monospace; }
+
+/* ---------- Motif de fond, derrière les phrases ----------
+   Chaque motif pose --pat et --pat-size ; les vignettes du menu Apparence s'en servent aussi. */
+[data-pattern="dots"] { --pat: radial-gradient(var(--line-strong) 1.1px, transparent 1.5px); --pat-size: 14px 14px; }
+[data-pattern="polka"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%23888' fill-opacity='.22'%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Ccircle cx='18' cy='18' r='3'/%3E%3C/svg%3E"); --pat-size: 24px 24px; }
+[data-pattern="lines"] { --pat: repeating-linear-gradient(-45deg, transparent 0 9px, var(--line) 9px 10px); --pat-size: auto; }
+[data-pattern="ruled"] { --pat: repeating-linear-gradient(transparent 0 21px, var(--line) 21px 22px); --pat-size: auto; }
+[data-pattern="grid"] { --pat: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); --pat-size: 18px 18px; }
+[data-pattern="cross"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' fill='none' stroke='%23888' stroke-opacity='.35' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 7v8M7 11h8'/%3E%3C/svg%3E"); --pat-size: 22px 22px; }
+[data-pattern="diamonds"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%23888' stroke-opacity='.35' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3 21 12 12 21 3 12z'/%3E%3C/svg%3E"); --pat-size: 24px 24px; }
+[data-pattern="waves"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='16' fill='none' stroke='%23888' stroke-opacity='.35' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M0 8q10-8 20 0t20 0'/%3E%3C/svg%3E"); --pat-size: 40px 16px; }
+[data-pattern="zigzag"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12' fill='none' stroke='%23888' stroke-opacity='.35' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M0 9l6-6 6 6 6-6 6 6'/%3E%3C/svg%3E"); --pat-size: 24px 12px; }
+[data-pattern="stars"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='%23888' fill-opacity='.22'%3E%3Cpath d='M10 4q1 5 6 6-5 1-6 6-1-5-6-6 5-1 6-6zM30 24q.7 3.3 4 4-3.3.7-4 4-.7-3.3-4-4 3.3-.7 4-4z'/%3E%3C/svg%3E"); --pat-size: 40px 40px; }
+[data-pattern="bubbles"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' fill='none' stroke='%23888' stroke-opacity='.35' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='7'/%3E%3Ccircle cx='34' cy='30' r='10'/%3E%3Ccircle cx='38' cy='8' r='3'/%3E%3Ccircle cx='10' cy='38' r='4'/%3E%3C/svg%3E"); --pat-size: 48px 48px; }
+[data-pattern]:not([data-pattern="none"]) .scroll { background-image: var(--pat); background-size: var(--pat-size); background-attachment: local; }
+
+/* ---------- Palette Perso : bandeau (ou colonne) en dégradé --rail → --rail2 ---------- */
+[data-palette="perso"][data-grad][data-layout="band"] .top { background: linear-gradient(90deg, var(--rail), var(--rail2)); }
+[data-palette="perso"][data-grad][data-layout="col"] .side { background: linear-gradient(180deg, var(--rail), var(--rail2)); }
+[data-palette="perso"][data-grad][data-layout="col"] .nav .more { background: transparent; }
+
+/* ---------- Colonne des rubriques : largeur ---------- */
+.app { grid-template-columns: var(--side-w, 200px) minmax(0, 1fr); }
+.side { position: relative; }
+.side-grip { position: absolute; top: 0; right: -4px; bottom: 0; width: 8px; z-index: 4; cursor: col-resize; touch-action: none; }
+.side-grip::after { content: ""; position: absolute; top: 0; bottom: 0; left: 3px; width: 2px; background: var(--accent); opacity: 0; transition: opacity .12s; }
+.side-grip:hover::after, .side-grip.drag::after { opacity: .6; }
+html.resizing, html.resizing * { cursor: col-resize !important; user-select: none; }
+
+@media (max-width: 619px) {
+  .app { grid-template-columns: minmax(0, 1fr); }
+  .side-grip { display: none; }
+}
