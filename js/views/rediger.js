@@ -134,7 +134,7 @@ export function initRediger() {
       save();
       updateButtons();
     },
-    onState: (on) => { mic.classList.toggle('on', on); mic.title = on ? 'Arrêter la dictée' : 'Dicter'; },
+    onState: (on) => { mic.classList.toggle('on', on); mic.title = on ? 'Arrêter la dictée' : 'Dicter (reconnaissance vocale de Chrome, qui peut passer par les serveurs de Google)'; },
   });
   if (voice) mic.addEventListener('click', () => voice.toggle());
   else mic.hidden = true;

@@ -15,8 +15,11 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
 - **Navigation ID** en trois colonnes, avec les 5 derniers chemins en raccourci.
 - **Rédiger** : on tape ou on dicte un brouillon, **Reformuler** (ou `Ctrl+Entrée`) le corrige et le rend professionnel
   (vouvoiement, formules de politesse). Le résultat se retouche, se copie ou se garde comme phrase dans une rubrique.
-  L'IA est celle de Chrome et tourne sur l'ordinateur : rien n'est envoyé sur Internet. Le modèle se télécharge
-  au premier usage. L'onglet n'apparaît que si Chrome et l'ordinateur le permettent (Chrome 138+, machine compatible).
+  L'IA est celle de Chrome (Prompt API) et tourne sur l'ordinateur : le texte à reformuler n'est pas envoyé sur Internet.
+  Le modèle se télécharge une fois, au premier clic sur Reformuler. L'onglet n'apparaît que si Chrome et l'ordinateur
+  le permettent : Chrome 149 ou plus récent (français pris en charge), Windows 10/11, macOS 13+ ou Linux,
+  22 Go libres sur le disque, et 16 Go de mémoire (4 cœurs) ou une carte graphique de plus de 4 Go.
+  La dictée (micro) utilise la reconnaissance vocale de Chrome, qui peut passer par les serveurs de Google.
 - **Apparence** (Réglages → Apparence), en deux onglets :
   **Couleurs** : thèmes prêts, ou **Perso** avec deux couleurs au choix (bandeau et accent) et un dégradé optionnel ; le reste du thème, clair et sombre, en est déduit.
   **Affichage** : taille du texte, densité (compacte pour voir plus de phrases), coins, 17 polices, 11 motifs de fond,
@@ -47,6 +50,9 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
 1. Zipper le contenu du dossier (sans `.git` ni `README.md`).
 2. Dans le `manifest.json` du zip, retirer les champs `key` et `update_url` : le Web Store les refuse. Il garde lui-même l'identifiant de l'extension.
 3. Envoyer le zip depuis le tableau de bord développeur du Web Store.
+4. Dans la fiche et l'onglet Confidentialité : indiquer que l'extension utilise l'IA intégrée à Chrome, en local,
+   et qu'aucune donnée n'est collectée. L'usage de l'IA doit respecter la
+   [Generative AI Prohibited Use Policy](https://policies.google.com/terms/generative-ai/use-policy) de Google.
 
 Le champ `key` sert au chargement non empaqueté : il garde le même identifiant d'extension, donc les mêmes données enregistrées.
 
