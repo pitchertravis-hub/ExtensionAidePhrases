@@ -21,10 +21,12 @@ function save() {
   try { localStorage.setItem(KEY, JSON.stringify({ draft: $('rdDraft').value, out: $('rdOut').value })); } catch { /* rien à faire */ }
 }
 
-function setTag(text, warn = false) {
+// Sans message particulier, l'étiquette rappelle que l'IA peut se tromper.
+function setTag(text = '', warn = false) {
   const tag = $('rdTag');
-  tag.textContent = text;
+  tag.textContent = text || 'L’IA peut se tromper : relisez avant d’envoyer.';
   tag.classList.toggle('warn', warn);
+  tag.classList.toggle('note', !text);
 }
 
 function updateButtons() {
@@ -34,6 +36,7 @@ function updateButtons() {
   $('rdAgain').disabled = busy || !usable || !hasDraft || !hasOut;
   $('rdCopy').disabled = busy || !hasOut;
   $('rdKeep').disabled = busy || !hasOut;
+  $('rdClear').disabled = busy || (!hasDraft && !hasOut);
 }
 
 async function run() {
@@ -49,7 +52,7 @@ async function run() {
   try {
     const res = await rewriteText(text, (x) => setTag(`Préparation de l’IA… ${Math.round(x * 100)} %`));
     out.value = res.text;
-    if (res.ok) setTag('Reformulé');
+    if (res.ok) setTag('Reformulé · relisez avant d’envoyer');
     else setTag(res.why, true);
     check(); // le modèle vient peut-être d'être téléchargé
   } catch (e) {
@@ -142,12 +145,29 @@ async function check() {
   updateButtons();
 }
 
+// Vide les deux zones ; « Annuler » les remet.
+function clearAll() {
+  const draft = $('rdDraft');
+  const out = $('rdOut');
+  const before = { draft: draft.value, out: out.value };
+  draft.value = out.value = '';
+  setTag();
+  save();
+  updateButtons();
+  draft.focus();
+  showToast('Texte effacé', {
+    actionLabel: 'Annuler',
+    onClick: () => { draft.value = before.draft; out.value = before.out; save(); updateButtons(); },
+  });
+}
+
 export function initRediger() {
   const draft = $('rdDraft');
   const out = $('rdOut');
   const saved = load();
   draft.value = saved.draft ?? '';
   out.value = saved.out ?? '';
+  setTag();
   updateButtons();
 
   check();
@@ -160,6 +180,7 @@ export function initRediger() {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); run(); }
   });
   $('rdGo').addEventListener('click', run);
+  $('rdClear').addEventListener('click', clearAll);
   $('rdAgain').addEventListener('click', run);
   $('rdCopy').addEventListener('click', copyOut);
   $('rdKeep').addEventListener('click', (e) => openKeepMenu(e.currentTarget));

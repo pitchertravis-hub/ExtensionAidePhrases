@@ -92,7 +92,7 @@
       </section>
       <section class="pane" id="tabRd" hidden>
         <div class="mhead">
-          <div class="t"><h1>Rédiger avec l'IA</h1><div class="sub">Écrivez comme ça vient : l'IA corrige et rend le texte professionnel.</div></div>
+          <div class="t"><h1>Rédiger avec l'IA</h1><div class="sub">Écrivez comme ça vient : l'IA corrige et reformule le texte.</div></div>
           <span class="local" title="L'IA de Chrome tourne sur cet ordinateur : le texte à reformuler n'est pas envoyé sur Internet."><svg class="ico"><use href="#i-lock"/></svg><span>Sur cet ordinateur</span></span>
         </div>
         <div class="rd-note" id="rdNote" hidden>
@@ -115,17 +115,17 @@
             </header>
             <textarea class="area" id="rdDraft" placeholder="Tapez ou dictez votre message, sans vous soucier des fautes…"></textarea>
             <footer>
-              <small><kbd>Ctrl</kbd> <kbd>Entrée</kbd></small>
+              <button class="btn" type="button" id="rdClear" title="Effacer votre texte et la version corrigée"><svg class="ico"><use href="#i-trash"/></svg>Effacer</button>
               <span class="sp"></span>
-              <button class="btn solid" type="button" id="rdGo"><svg class="ico"><use href="#i-spark"/></svg>Reformuler</button>
+              <button class="btn solid" type="button" id="rdGo" title="Ctrl + Entrée"><svg class="ico"><use href="#i-spark"/></svg>Reformuler</button>
             </footer>
           </section>
           <section class="box">
             <header>
-              <label class="cap" for="rdOut">Version pro</label>
+              <label class="cap" for="rdOut">Version corrigée</label>
               <span class="tag" id="rdTag"></span>
             </header>
-            <textarea class="area out" id="rdOut" placeholder="La version corrigée et professionnelle apparaîtra ici. Vous pourrez la retoucher avant de la copier."></textarea>
+            <textarea class="area out" id="rdOut" placeholder="La version corrigée apparaîtra ici. Vous pourrez la retoucher avant de la copier."></textarea>
             <footer>
               <button class="ibtn" type="button" id="rdAgain" title="Autre proposition"><svg class="ico"><use href="#i-reset"/></svg></button>
               <span class="sp"></span>

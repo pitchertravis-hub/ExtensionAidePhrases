@@ -54,6 +54,9 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
 3. Dans `chrome://extensions`, cliquer ↻ sur TPhrase.
 
 **Pour la publier sur le Chrome Web Store**
+Tous les textes à coller, les images et la marche à suivre sont dans [`store/fiche-web-store.md`](store/fiche-web-store.md) ;
+la page de confidentialité est [`docs/confidentialite.html`](docs/confidentialite.html).
+
 1. Zipper le contenu du dossier (sans `.git`, `README.md`, `outils/` ni `Mettre a jour TPhrase.bat`).
 2. Dans le `manifest.json` du zip, retirer les champs `key` et `update_url` : le Web Store les refuse. Il garde lui-même l'identifiant de l'extension.
 3. Envoyer le zip depuis le tableau de bord développeur du Web Store.
