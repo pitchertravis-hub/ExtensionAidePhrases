@@ -1,0 +1,5 @@
+# Profils Chrome de test, fichiers système
+prof*/
+.DS_Store
+Thumbs.db
+desktop.ini
