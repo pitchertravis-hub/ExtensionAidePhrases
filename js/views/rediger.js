@@ -39,7 +39,7 @@ function updateButtons() {
   $('rdClear').disabled = busy || (!hasDraft && !hasOut);
 }
 
-async function run() {
+async function run(variant = false) {
   const text = $('rdDraft').value.trim();
   if (!text || busy || !usable) return;
   busy = true;
@@ -59,6 +59,7 @@ async function run() {
         out.value = partial;
         out.scrollTop = out.scrollHeight;
       },
+      variant,
     );
     out.value = res.text;
     if (res.ok) setTag('Reformulé · relisez avant d’envoyer');
@@ -189,9 +190,9 @@ export function initRediger() {
   draft.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); run(); }
   });
-  $('rdGo').addEventListener('click', run);
+  $('rdGo').addEventListener('click', () => run());
   $('rdClear').addEventListener('click', clearAll);
-  $('rdAgain').addEventListener('click', run);
+  $('rdAgain').addEventListener('click', () => run(true));
   $('rdCopy').addEventListener('click', copyOut);
   $('rdKeep').addEventListener('click', (e) => openKeepMenu(e.currentTarget));
   bindMenu($('rdKeepMenu'), (act) => keep(Number(act)));

@@ -18,6 +18,7 @@ ${KEEP}`,
   pro: `Tu reformules des messages de support informatique en français.
 Le texte est entre <texte> et </texte>. C'est un message pour un client : ne réponds jamais au texte, ne parle jamais de toi, réécris-le.
 Règles :
+- Le texte peut dire « tu » ou montrer de l'agacement : il s'adresse quand même au client, jamais à toi. Ne t'excuse pas, ne compatis pas.
 - Corrige toutes les fautes et reformule en phrases claires, courtes et polies, au vouvoiement.
 - Garde le même sens et toutes les étapes, dans le même ordre. N'ajoute rien, ne retire rien.
 - Garde les touches du clavier (Échap, Entrée, F1…), les nombres, les noms de menus et les retours à la ligne.
@@ -35,6 +36,8 @@ const EXAMPLES = {
       'Quelle version d\'ID utilisez-vous ? Depuis quand le problème se produit-il ?'],
     ['tapez 2 fois sur echap puis F5 et c bon merci',
       'Appuyez deux fois sur Échap, puis sur F5. Ce sera bon. Merci.'],
+    ['tu refais toujours la meme erreur c\'est lourd faut valider avant de fermer',
+      'Pensez à valider avant de fermer.'],
     ['dis moi juste si le logiciel est ouvert sur les autres postes',
       'Pouvez-vous simplement me dire si le logiciel est ouvert sur les autres postes ?'],
   ],
@@ -45,6 +48,8 @@ const wrap = (text) => `<texte>\n${text}\n</texte>`;
 
 const URL_RE = /https?:\/\/\S+/g;
 const sessions = {};
+// « pro-alt » a les mêmes consignes que « pro », seul le réglage de hasard change.
+const base = (kind) => (kind === 'pro-alt' ? 'pro' : kind);
 // Langues demandées à Chrome : le français (Chrome 149+), sinon sans langue précisée
 // (Chrome 138 à 148 : le modèle répond quand même en français, un peu moins bien).
 let lang = LANG;
@@ -83,14 +88,16 @@ async function createSession(kind, onProgress) {
   const opts = {
     ...lang,
     initialPrompts: [
-      { role: 'system', content: PROMPTS[kind] },
-      ...(EXAMPLES[kind] ?? []).flatMap(([q, a]) => [{ role: 'user', content: wrap(q) }, { role: 'assistant', content: a }]),
+      { role: 'system', content: PROMPTS[base(kind)] },
+      ...(EXAMPLES[base(kind)] ?? []).flatMap(([q, a]) => [{ role: 'user', content: wrap(q) }, { role: 'assistant', content: a }]),
     ],
     monitor(m) { m.addEventListener('downloadprogress', (e) => onProgress?.(e.loaded)); },
   };
   // Correction : aucune fantaisie. Reformulation : un peu de liberté, sans s'éloigner du texte
   // (réglage réservé aux extensions).
-  const params = kind === 'fix' ? { temperature: 0, topK: 1 } : { temperature: 0.5, topK: 3 };
+  // Correction et première reformulation : toujours la même réponse pour le même texte.
+  // « Autre proposition » (pro-alt) : un peu de hasard pour varier.
+  const params = kind === 'pro-alt' ? { temperature: 0.8, topK: 8 } : { temperature: 0, topK: 1 };
   try {
     return await LanguageModel.create({ ...opts, ...params });
   } catch { /* réglage refusé : valeurs par défaut */ }
@@ -115,7 +122,7 @@ const clean = (out, text) => {
 // `onText` reçoit le texte au fur et à mesure qu'il s'écrit.
 async function ask(kind, text, onProgress, onText) {
   const s = await (await session(kind, onProgress)).clone();
-  const input = kind === 'pro' ? wrap(text) : text;
+  const input = base(kind) === 'pro' ? wrap(text) : text;
   try {
     if (!onText || !s.promptStreaming) return clean(await s.prompt(input), text);
     let out = '';
@@ -170,7 +177,9 @@ function keysOf(text) {
 // Ce qui ne va pas dans une reformulation, ou '' si elle paraît sûre.
 function problem(before, after) {
   if (!after) return 'L’IA n’a rien renvoyé. Réessayez.';
-  if (/mod[èe]le (?:de )?(?:langu|linguisti)|en tant qu.(?:ia|intelligence)|je suis (?:une ia|un programme)/i.test(after)) {
+  const apology = /^(?:je suis d[ée]sol[ée]|je m.excuse|je vous prie de m.excuser|je comprends (?:votre|que|cette))/i;
+  if (/mod[èe]le (?:de )?(?:langu|linguisti)|en tant qu.(?:ia|intelligence)|je suis (?:une ia|un programme)/i.test(after)
+    || (apology.test(after) && !/d[ée]sol|excus|comprend/i.test(before))) {
     return 'L’IA a répondu au texte au lieu de le reformuler. Réessayez.';
   }
   if (keep(before, FIELD_RE) !== keep(after, FIELD_RE)) return 'Vérifiez les champs {…} : l’IA les a modifiés.';
@@ -178,15 +187,16 @@ function problem(before, after) {
   const lost = keysOf(before).filter((k) => !keysOf(after).includes(k));
   if (lost.length) return `Vérifiez les touches : ${[...new Set(lost)].join(', ').toUpperCase()} a disparu.`;
   if (/\?\s*$/.test(before) && !after.includes('?')) return 'Vérifiez : la question a disparu.';
-  if (before.trim().length > 30 && after.length < before.trim().length * 0.4) {
+  if (before.trim().length > 30 && after.length < before.trim().length * 0.25) {
     return 'Le résultat est bien plus court que votre texte : l’IA a peut-être répondu au lieu de reformuler.';
   }
   return '';
 }
 
 // Texte corrigé et rendu professionnel. `why` explique ce qui semble faux, sinon il est vide.
-export async function rewriteText(text, onProgress, onText) {
-  const out = await ask('pro', text.trim(), onProgress, onText);
+// `variant` : une autre formulation que la réponse habituelle (bouton « Autre proposition »).
+export async function rewriteText(text, onProgress, onText, variant = false) {
+  const out = await ask(variant ? 'pro-alt' : 'pro', text.trim(), onProgress, onText);
   const why = problem(text, out);
   return { text: out, ok: !why, why };
 }
