@@ -18,11 +18,24 @@ const PALETTES = [
   ['neon', 'Néon rétro 80', '#1A0B33', '#FF3CAC'],
   ['minimal', 'Minimal noir & blanc', '#111111', '#FFFFFF'],
 ];
-const KEYS = { palette: 'zt-palette', layout: 'zt-layout', theme: 'theme' };
+const KEYS = { palette: 'zt-palette', layout: 'zt-layout', theme: 'theme', perso: 'zt-perso' };
 
 const root = document.documentElement;
 const menu = document.getElementById('lookMenu');
 const pals = document.getElementById('lookPals');
+const persoRail = document.getElementById('persoRail');
+const persoAccent = document.getElementById('persoAccent');
+
+// Couleurs de la palette « Perso » : calculées par theme.js (tpApplyPerso).
+function readPerso() {
+  try { return localStorage.getItem(KEYS.perso); } catch { return null; }
+}
+function showPerso(cfg) {
+  persoRail.value = cfg.rail.toLowerCase();
+  persoAccent.value = cfg.accent.toLowerCase();
+  const sw = pals.querySelector('[data-v="perso"] .sw');
+  if (sw) sw.innerHTML = `<i style="background:${cfg.rail}"></i><i style="background:${cfg.accent}"></i>`;
+}
 
 function save(key, value) {
   try { localStorage.setItem(key, value); } catch {}
@@ -40,6 +53,7 @@ export function applyLookFromStorage(key, value) {
   if (key === KEYS.palette) root.dataset.palette = value;
   else if (key === KEYS.layout) root.dataset.layout = value;
   else if (key === KEYS.theme) root.dataset.theme = value;
+  else if (key === KEYS.perso) showPerso(window.tpApplyPerso(value));
   else return false;
   if (menu.matches(':popover-open')) sync();
   return true;
@@ -52,7 +66,18 @@ export function openLookMenu(anchor) {
 
 export function initLook() {
   pals.innerHTML = PALETTES.map(([id, name, dark, acc]) =>
-    `<button type="button" data-v="${id}"><span class="sw"><i style="background:${dark}"></i><i style="background:${acc}"></i></span>${name}</button>`).join('');
+    `<button type="button" data-v="${id}"><span class="sw"><i style="background:${dark}"></i><i style="background:${acc}"></i></span>${name}</button>`).join('') +
+    '<button type="button" data-v="perso"><span class="sw"></span>Perso</button>';
+  showPerso(window.tpApplyPerso(readPerso()));
+  // Changer une couleur passe directement en « Perso » et s'applique en direct.
+  const onPick = () => {
+    const json = JSON.stringify({ rail: persoRail.value, accent: persoAccent.value });
+    save(KEYS.perso, json);
+    showPerso(window.tpApplyPerso(json));
+    if (root.dataset.palette !== 'perso') { root.dataset.palette = 'perso'; save(KEYS.palette, 'perso'); sync(); }
+  };
+  persoRail.addEventListener('input', onPick);
+  persoAccent.addEventListener('input', onPick);
   menu.addEventListener('click', (e) => {
     const b = e.target.closest('button[data-v]');
     if (!b) return;
