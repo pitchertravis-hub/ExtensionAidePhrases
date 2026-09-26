@@ -1,6 +1,12 @@
 // IA intégrée à Chrome (Prompt API, modèle local) : corriger ou reformuler un texte.
-// Rien n'est envoyé sur Internet. Sans l'API ou sans machine compatible, l'interface IA reste cachée.
+// Rien n'est envoyé sur Internet. Sans l'API ou sans machine compatible, l'onglet Rédiger explique pourquoi.
 import { FIELD_RE } from './fields.js';
+import { MODULES } from '../data/id-menus.js';
+
+// Noms exacts des modules et options du logiciel ID, pour que l'IA les écrive correctement.
+const ID_NAMES = [...new Set(Object.values(MODULES).flatMap((m) => [
+  m.name, ...Object.values(m.options).map((o) => (typeof o === 'string' ? o : o.name)),
+]))].join(', ');
 
 const LANG = { expectedInputs: [{ type: 'text', languages: ['fr'] }], expectedOutputs: [{ type: 'text', languages: ['fr'] }] };
 
@@ -15,12 +21,27 @@ Ne reformule pas, ne change ni le sens, ni le ton, ni l'ordre des mots, n'ajoute
 Garde les retours à la ligne. Si le texte est déjà correct, renvoie-le tel quel.
 ${KEEP}`,
   // Correction et ton professionnel, pour l'onglet Rédiger.
-  pro: `Tu réécris des messages pour un usage professionnel (clients, partenaires, collègues). Réponds toujours en français.
-Corrige toutes les fautes et reformule le texte dans un ton professionnel, courtois et clair, avec vouvoiement.
-Commence par une formule de salutation adaptée et termine par une formule de politesse courte, comme « Cordialement, ».
-Garde tout le sens et toutes les informations du texte, n'invente aucun fait, aucune date, aucun nom.
-Reste concis : pas de phrases inutiles. Fais des paragraphes courts, et une liste à tirets si le texte énumère plusieurs éléments.
+  pro: `Tu améliores des messages courts écrits par un technicien du support du logiciel ID (tchat, consignes, réponses aux clients).
+Réponds toujours en français.
+Ton travail : corriger toutes les fautes et rendre le ton professionnel et courtois, avec vouvoiement, en restant fidèle au texte.
+Règles :
+- Garde le même sens, les mêmes étapes, dans le même ordre. N'ajoute aucune information, aucune étape, n'en retire aucune.
+- Garde exactement les noms du logiciel : modules, menus, écrans, boutons, touches (F4, Entrée…). Ne les découpe pas et ne les renomme pas.
+- Noms officiels des menus du logiciel ID : ${ID_NAMES}. Si le texte parle d'un de ces menus, même avec une faute, écris son nom officiel.
+- Garde à peu près la même longueur et la même forme : pas de paragraphes en plus, pas de liste si le texte n'en a pas.
+- N'ajoute ni « Bonjour » ni « Cordialement » ni aucune formule de politesse si le texte n'en contient pas. S'il en contient, garde-les.
+- Tournures simples et directes, pas de phrases lourdes comme « veuillez procéder à ».
 ${KEEP}`,
+};
+
+// Exemples montrés à l'IA avant chaque texte : ce qu'on attend exactement.
+const EXAMPLES = {
+  pro: [
+    ['pouvez vous allez dans le module suivi de factrue puis de renseigner le numero de facture puis fin validé\nIl suffit ensuite de cliquer sur la facture de faire f4 saisie manuel d\'un rejet',
+      'Pouvez-vous aller dans le module Suivi Factures, puis renseigner le numéro de facture et valider ?\nIl suffit ensuite de cliquer sur la facture et d\'appuyer sur F4 (Saisie manuelle d\'un rejet).'],
+    ['bonjour, je regarde sa et je reviens vers vous des que possible merci de patienter',
+      'Bonjour, je regarde cela et je reviens vers vous dès que possible. Merci de patienter.'],
+  ],
 };
 
 const URL_RE = /https?:\/\/\S+/g;
@@ -54,16 +75,18 @@ async function session(kind, onProgress) {
   if (sessions[kind]) return sessions[kind];
   const opts = {
     ...lang,
-    initialPrompts: [{ role: 'system', content: PROMPTS[kind] }],
+    initialPrompts: [
+      { role: 'system', content: PROMPTS[kind] },
+      ...(EXAMPLES[kind] ?? []).flatMap(([q, a]) => [{ role: 'user', content: q }, { role: 'assistant', content: a }]),
+    ],
     monitor(m) { m.addEventListener('downloadprogress', (e) => onProgress?.(e.loaded)); },
   };
-  // Correction : réponse la plus sûre possible (réglage réservé aux extensions).
-  if (kind === 'fix') {
-    try {
-      sessions[kind] = await LanguageModel.create({ ...opts, temperature: 0, topK: 1 });
-      return sessions[kind];
-    } catch { /* réglage refusé : valeurs par défaut */ }
-  }
+  // Peu de fantaisie : l'IA doit rester fidèle au texte (réglage réservé aux extensions).
+  const params = kind === 'fix' ? { temperature: 0, topK: 1 } : { temperature: 0.3, topK: 3 };
+  try {
+    sessions[kind] = await LanguageModel.create({ ...opts, ...params });
+    return sessions[kind];
+  } catch { /* réglage refusé : valeurs par défaut */ }
   sessions[kind] = await LanguageModel.create(opts);
   return sessions[kind];
 }
