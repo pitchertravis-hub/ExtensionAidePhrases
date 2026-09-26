@@ -1,7 +1,7 @@
 // Onglet Phrases : rubrique ouverte, favoris ou résultats de recherche.
 // Un clic sur une carte copie la phrase ; modifier est une action à part.
 import { store } from '../store.js';
-import { state, render, rubriques, onRender, copyText, icon, setSort } from '../state.js';
+import { state, render, rubriques, onRender, copyText, icon } from '../state.js';
 import { stats } from '../core/stats.js';
 import { fieldsOf, fillText } from '../core/fields.js';
 import { htmlToText, escapeHtml } from '../core/text.js';
@@ -14,7 +14,6 @@ const $ = (id) => document.getElementById(id);
 const listEl = $('phList');
 const titleEl = $('mTitle');
 const subEl = $('mSub');
-const sortBox = $('sortBox');
 
 let items = [];            // [{ l, r, p }] affichés, dans l'ordre
 let lastValues = {};       // dernières valeurs saisies dans les champs
@@ -58,15 +57,12 @@ function collect() {
   } else {
     const r = rubriques()[state.rub];
     if (r) r.phrases.forEach((_, pi) => items.push({ l: state.list, r: state.rub, p: pi }));
-    if (state.sort === 'used') {
-      items.sort((a, b) => stats.isFav(htmlOf(b)) - stats.isFav(htmlOf(a)) || stats.count(htmlOf(b)) - stats.count(htmlOf(a)) || a.p - b.p);
-    }
   }
   if (state.sel >= items.length) state.sel = Math.max(0, items.length - 1);
 }
 
 function canReorder() {
-  return !state.q.trim() && state.mode === 'rub' && state.sort === 'order' && !state.edit;
+  return !state.q.trim() && state.mode === 'rub' && !state.edit;
 }
 
 function renderHead(q) {
@@ -76,13 +72,11 @@ function renderHead(q) {
     subEl.textContent = `${items.length} phrase(s) dans toutes les listes`;
   } else if (state.mode === 'fav') {
     titleEl.textContent = 'Favoris';
-    subEl.textContent = `${state.list} · ${items.length} phrase(s) épinglée(s) avec l'étoile`;
+    subEl.textContent = `${state.list} · phrases épinglées avec l'étoile`;
   } else {
     titleEl.textContent = rub ? rub.name : state.list ? 'Aucune rubrique' : 'Bienvenue';
-    subEl.textContent = rub ? `${state.list} · ${items.length} phrase(s)` : state.list ? 'Créez une rubrique avec le bouton + Rubrique.' : 'Créez une liste avec le bouton ⋯ ou importez vos phrases (Réglages).';
+    subEl.textContent = rub ? state.list : state.list ? 'Créez une rubrique avec le bouton + Rubrique.' : 'Créez une liste avec le bouton ⋯ ou importez vos phrases (Réglages).';
   }
-  sortBox.style.visibility = !q && state.mode === 'rub' && rub ? 'visible' : 'hidden';
-  sortBox.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.s === state.sort));
 }
 
 function chipsHtml(q) {
@@ -110,7 +104,6 @@ function card(it, i, q) {
   const editing = same(state.edit, it);
   const filling = same(state.fill, it);
   const fav = stats.isFav(html);
-  const used = stats.count(html);
   const fields = fieldsOf(text);
 
   const el = document.createElement('div');
@@ -118,12 +111,7 @@ function card(it, i, q) {
   el.dataset.i = i;
   el.innerHTML = `
     ${canReorder() ? `<span class="grip" title="Glisser pour déplacer">${icon('grip')}</span>` : ''}
-    <div class="body"><div class="txt"></div></div>
-    ${editing ? '' : `<div class="acts">
-      <button class="ibtn star${fav ? ' on' : ''}" type="button" data-a="fav" title="Favori (F)">${icon('star')}</button>
-      <button class="ibtn" type="button" data-a="edit" title="Modifier (E)">${icon('pen')}</button>
-      <button class="ibtn" type="button" data-a="del" title="Supprimer">${icon('trash')}</button>
-    </div><span class="hint">Cliquer pour copier</span>`}`;
+    <div class="body"><div class="txt"></div></div>`;
   const body = el.querySelector('.body');
   const txt = el.querySelector('.txt');
 
@@ -136,9 +124,14 @@ function card(it, i, q) {
     showPhrase(txt, html, q);
     const meta = [];
     if (q || state.mode === 'fav') meta.push(`<span class="rb">${escapeHtml(`${it.l} › ${store.rubriques(it.l)[it.r].name}`)}</span>`);
-    if (used) meta.push(`<span>${icon('clock')} copiée ${used}×</span>`);
     if (fields.length) meta.push(`<span>${fields.length} champ(s) à remplir</span>`);
-    body.insertAdjacentHTML('beforeend', `<div class="meta">${meta.join('')}</div>`);
+    // Barre sous le texte : infos à gauche, boutons à droite.
+    body.insertAdjacentHTML('beforeend', `<div class="row"><div class="meta">${meta.join('')}</div><div class="acts">
+      <span class="hint">Cliquer pour copier</span>
+      <button class="ibtn star${fav ? ' on' : ''}" type="button" data-a="fav" title="Favori (F)">${icon('star')}</button>
+      <button class="ibtn" type="button" data-a="edit" title="Modifier (E)">${icon('pen')}</button>
+      <button class="ibtn del" type="button" data-a="del" title="Supprimer">${icon('trash')}</button>
+    </div></div>`);
   }
 
   if (filling) {
@@ -324,13 +317,6 @@ export function initPhrases() {
   onRender(renderPh);
 
   $('addPhBtn').addEventListener('click', addPhrase);
-  sortBox.addEventListener('click', (e) => {
-    const b = e.target.closest('button[data-s]');
-    if (!b) return;
-    setSort(b.dataset.s);
-    state.sel = 0;
-    render();
-  });
 
   listEl.addEventListener('click', (e) => {
     const idChip = e.target.closest('[data-idp]');
