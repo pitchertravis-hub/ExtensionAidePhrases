@@ -14,6 +14,8 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
 - **Favoris** en tête de colonne, tri **Plus utilisées** dans chaque rubrique.
 - **Navigation ID** en trois colonnes, avec les 5 derniers chemins en raccourci.
 - **Apparence** (Réglages → Apparence) : palettes prêtes, ou **Perso** avec deux couleurs au choix (bandeau et accent) ; le reste du thème, clair et sombre, en est déduit.
+  Onglet **Affichage** : taille du texte, densité (compacte pour voir plus de phrases), coins, 17 polices, motif de fond
+  et colonne des rubriques **toujours visible** ou **repliée** (elle s'ouvre au passage de la souris). Sa largeur se règle en glissant son bord droit.
 - **Deux formats** : fenêtre 780 × 560 (clic sur l'icône) ou **panneau latéral** qui reste ouvert
   (Réglages → Ancrer sur le côté).
 
@@ -61,6 +63,9 @@ manifest.json
 popup.html              fenêtre et panneau latéral (même page)
 css/tokens.css          couleurs clair / sombre, police
 css/app.css             mise en page (large ≥ 620 px, étroite en dessous)
+css/palettes.css        palettes du menu Apparence
+css/affichage.css       réglages d'affichage (taille, densité, coins, police, motif, colonne)
+css/fonts.css           polices proposées (fichiers dans fonts/)
 js/theme.js             thème et format avant l'affichage
 js/main.js              démarrage, recherche, clavier, réglages
 js/state.js             état de l'interface
@@ -70,6 +75,6 @@ js/ui/                  dialog.js, menu.js, toast.js, phrase-text.js
 js/core/                text.js, fields.js, stats.js, csv.js, backup.js, voice.js
 js/data/id-menus.js     catalogue des menus ID (A à I)
 lib/Sortable.min.js     glisser-déposer (SortableJS 1.15.6, MIT)
-fonts/                  Manrope (licence OFL)
+fonts/                  Manrope et les polices du réglage Police (licence OFL, voir fonts/POLICES.txt)
 icons/
 ```

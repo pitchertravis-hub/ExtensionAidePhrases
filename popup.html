@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/app.css">
   <link rel="stylesheet" href="css/palettes.css">
+  <link rel="stylesheet" href="css/fonts.css">
+  <link rel="stylesheet" href="css/affichage.css">
   <script src="lib/Sortable.min.js" defer></script>
   <script type="module" src="js/main.js"></script>
 </head>
@@ -34,6 +36,7 @@
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
     <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></symbol>
     <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16a5 5 0 0 0 5-5c0-4-4-7.2-9-7.2z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="14.5" cy="7" r="1"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
     <symbol id="i-key" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></symbol>
   </svg>
 
@@ -67,6 +70,8 @@
         <div class="sbar" id="navBar" hidden><div class="thumb"></div></div>
       </div>
       <button class="add" type="button" id="addRubBtn"><svg class="ico"><use href="#i-plus"/></svg>Rubrique</button>
+      <div class="side-grip" id="sideGrip" title="Glisser pour changer la largeur (double-clic : largeur d'origine)"></div>
+      <div class="side-peek" aria-hidden="true"><svg class="ico"><use href="#i-chev"/></svg></div>
     </aside>
 
     <main class="main">
@@ -100,23 +105,69 @@
     <button type="button" data-act="delete" class="danger"><svg class="ico"><use href="#i-trash"/></svg>Supprimer la liste</button>
   </div>
   <div class="pop look" id="lookMenu" popover>
-    <div class="cap">Couleurs</div>
-    <div class="pals" id="lookPals"></div>
-    <div class="perso">
-      <span>Mes couleurs</span>
-      <label title="Couleur du bandeau et de la colonne"><input type="color" id="persoRail">Bandeau</label>
-      <label title="Couleur des boutons, du logo et de la sélection"><input type="color" id="persoAccent">Accent</label>
+    <div class="seg ltabs" id="lookTabs">
+      <button type="button" data-t="lookColors" aria-pressed="true">Couleurs</button>
+      <button type="button" data-t="lookDisplay" aria-pressed="false">Affichage</button>
     </div>
-    <div class="cap">Disposition</div>
-    <div class="seg" id="lookLayout">
-      <button type="button" data-v="none">Claire</button>
-      <button type="button" data-v="band">Bandeau</button>
-      <button type="button" data-v="col">Colonne</button>
+    <div id="lookColors">
+      <div class="cap">Couleurs</div>
+      <div class="pals" id="lookPals"></div>
+      <div class="perso">
+        <span>Mes couleurs</span>
+        <label title="Couleur du bandeau et de la colonne"><input type="color" id="persoRail">Bandeau</label>
+        <label title="Couleur des boutons, du logo et de la sélection"><input type="color" id="persoAccent">Accent</label>
+      </div>
+      <div class="row2">
+        <span>Bandeau en dégradé</span>
+        <label><input type="checkbox" id="gradOn">Activer</label>
+        <input type="color" id="gradColor" value="#5a2a6a" title="Deuxième couleur du dégradé">
+      </div>
+      <div class="cap">Disposition</div>
+      <div class="seg" id="lookLayout" data-g="layout">
+        <button type="button" data-v="none">Claire</button>
+        <button type="button" data-v="band">Bandeau</button>
+        <button type="button" data-v="col">Colonne</button>
+      </div>
+      <div class="cap">Mode</div>
+      <div class="seg" id="lookTheme" data-g="theme">
+        <button type="button" data-v="light">Clair</button>
+        <button type="button" data-v="dark">Sombre</button>
+      </div>
     </div>
-    <div class="cap">Mode</div>
-    <div class="seg" id="lookTheme">
-      <button type="button" data-v="light">Clair</button>
-      <button type="button" data-v="dark">Sombre</button>
+    <div id="lookDisplay" hidden>
+      <div class="cap">Taille du texte</div>
+      <div class="seg" data-a="size">
+        <button type="button" data-v="s">Petit</button>
+        <button type="button" data-v="m">Normal</button>
+        <button type="button" data-v="l">Grand</button>
+      </div>
+      <div class="cap">Densité</div>
+      <div class="seg" data-a="dens">
+        <button type="button" data-v="compact">Compacte</button>
+        <button type="button" data-v="normal">Normale</button>
+        <button type="button" data-v="confort">Confortable</button>
+      </div>
+      <div class="cap">Coins</div>
+      <div class="seg" data-a="corners">
+        <button type="button" data-v="square">Carrés</button>
+        <button type="button" data-v="normal">Normaux</button>
+        <button type="button" data-v="round">Arrondis</button>
+      </div>
+      <div class="cap">Police</div>
+      <div class="fonts" id="lookFonts" data-a="font"></div>
+      <div class="cap">Motif de fond</div>
+      <div class="seg" data-a="pattern">
+        <button type="button" data-v="none">Aucun</button>
+        <button type="button" data-v="dots">Points</button>
+        <button type="button" data-v="lines">Rayures</button>
+        <button type="button" data-v="grid">Carreaux</button>
+      </div>
+      <div class="cap">Colonne des rubriques</div>
+      <div class="seg" data-a="side">
+        <button type="button" data-v="show">Toujours visible</button>
+        <button type="button" data-v="auto">Repliée, s'ouvre au survol</button>
+      </div>
+      <p class="note">Glissez son bord droit pour changer sa largeur. <button type="button" id="sideReset">Largeur d'origine</button></p>
     </div>
   </div>
   <div class="pop" id="rubMenu" popover>

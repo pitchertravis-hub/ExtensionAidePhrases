@@ -5,11 +5,12 @@
   try { saved = localStorage.getItem('theme'); } catch (e) {}
   var dark = saved ? saved === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
   root.dataset.theme = dark ? 'dark' : 'light';
-  var palette = null, layout = null, perso = null;
-  try { palette = localStorage.getItem('zt-palette'); layout = localStorage.getItem('zt-layout'); perso = localStorage.getItem('zt-perso'); } catch (e) {}
+  var palette = null, layout = null, perso = null, affichage = null;
+  try { palette = localStorage.getItem('zt-palette'); layout = localStorage.getItem('zt-layout'); perso = localStorage.getItem('zt-perso'); affichage = localStorage.getItem('zt-affichage'); } catch (e) {}
   root.dataset.palette = palette || 'or';
   root.dataset.layout = layout || 'band';
   window.tpApplyPerso(perso);
+  window.tpApplyAffichage(affichage);
   try {
     if (chrome.extension.getViews({ type: 'popup' }).indexOf(window) !== -1) root.classList.add('is-popup');
   } catch (e) {}
@@ -84,5 +85,23 @@ function tpApplyPerso(json) {
   // html[…] l'emporte sur le :root commun de palettes.css, chargé après.
   el.textContent = 'html[data-palette="perso"] { ' + decl(light) + ' }\n' +
     'html[data-palette="perso"][data-theme="dark"] { ' + decl(darkV) + ' }';
+  return cfg;
+}
+
+// Réglages d'affichage (css/affichage.css) : un attribut sur <html> par réglage, absent = d'origine.
+// Appelée ici au démarrage et par le menu Apparence (js/ui/look.js).
+function tpApplyAffichage(json) {
+  var TP_AFFICHAGE = { size: 'm', dens: 'normal', corners: 'normal', font: 'manrope', pattern: 'none', grad: '', side: 'show', sideW: 200 };
+  var cfg = {}, k;
+  for (k in TP_AFFICHAGE) cfg[k] = TP_AFFICHAGE[k];
+  try { if (json) { var c = JSON.parse(json); for (k in cfg) if (c[k] != null && typeof c[k] === typeof cfg[k]) cfg[k] = c[k]; } } catch (e) {}
+  var root = document.documentElement;
+  ['size', 'dens', 'corners', 'font', 'pattern', 'side'].forEach(function (key) {
+    if (cfg[key] === TP_AFFICHAGE[key]) delete root.dataset[key]; else root.dataset[key] = cfg[key];
+  });
+  if (/^#[0-9a-f]{6}$/i.test(cfg.grad)) { root.dataset.grad = ''; root.style.setProperty('--rail2', cfg.grad); }
+  else { cfg.grad = ''; delete root.dataset.grad; root.style.removeProperty('--rail2'); }
+  cfg.sideW = Math.max(150, Math.min(320, Math.round(cfg.sideW) || 200));
+  root.style.setProperty('--side-w', cfg.sideW + 'px');
   return cfg;
 }

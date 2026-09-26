@@ -1,0 +1,139 @@
+/* Réglages › Apparence › Affichage : taille du texte, densité, coins, police, motif de fond,
+   bandeau en dégradé et colonne des rubriques (largeur, repliée au survol).
+   html[data-size|data-dens|data-corners|data-font|data-pattern|data-grad|data-side], posés par theme.js.
+   Réglage « normal » : aucun attribut, l'affichage d'origine (et celui des palettes) s'applique. */
+
+/* ---------- Taille du texte ---------- */
+[data-size="s"] { --fs: .9; }
+[data-size="l"] { --fs: 1.12; }
+[data-size] body { font-size: calc(13px * var(--fs)); }
+[data-size] .brand { font-size: calc(14px * var(--fs)); }
+[data-size] .search input { font-size: calc(13.5px * var(--fs)); }
+[data-size] .tabs button { font-size: calc(12px * var(--fs)); }
+[data-size] .mhead h1 { font-size: calc(18px * var(--fs)); }
+[data-size] .mhead .sub { font-size: calc(12px * var(--fs)); }
+[data-size] .ph .txt { font-size: calc(13.5px * var(--fs)); }
+[data-size] :is(.ph .meta, .ph .hint, .foot) { font-size: calc(11px * var(--fs)); }
+[data-size] .col li button { font-size: calc(12px * var(--fs)); }
+[data-size] .pop button { font-size: calc(12.5px * var(--fs)); }
+
+/* ---------- Densité ---------- */
+[data-dens="compact"] .top { padding: 6px 12px; }
+[data-dens="compact"] .search { height: 30px; }
+[data-dens="compact"] .tabs button { height: 25px; }
+[data-dens="compact"] .side { gap: 6px; padding-top: 8px; }
+[data-dens="compact"] :is(.listrow select, .rubrow select, .listrow .ibtn, .rubrow .ibtn) { height: 28px; }
+[data-dens="compact"] .nav .item { height: 26px; }
+[data-dens="compact"] .nav .more { top: 1px; width: 24px; height: 24px; }
+[data-dens="compact"] .side .add { height: 28px; }
+[data-dens="compact"] .mhead { padding: 8px 14px 6px; }
+[data-dens="compact"] .scroll { gap: 4px; }
+[data-dens="compact"] .ph { padding: 6px 10px 2px 14px; }
+[data-dens="compact"] .ph .grip { top: 5px; }
+[data-dens="compact"] .ph .txt { line-height: 1.45; }
+[data-dens="compact"] .ph .row { min-height: 22px; margin-top: 0; }
+[data-dens="compact"] .ph .acts .ibtn { height: 22px; }
+[data-dens="compact"] .foot { padding-block: 4px; }
+
+[data-dens="confort"] .top { padding: 12px 14px; }
+[data-dens="confort"] .search { height: 38px; }
+[data-dens="confort"] .nav .item { height: 36px; }
+[data-dens="confort"] .nav .more { top: 5px; }
+[data-dens="confort"] .mhead { padding: 14px 16px 10px; }
+[data-dens="confort"] .scroll { gap: 11px; padding-inline: 16px; }
+[data-dens="confort"] .ph { padding: 15px 12px 9px 16px; }
+[data-dens="confort"] .ph .grip { top: 14px; }
+[data-dens="confort"] .ph .txt { line-height: 1.7; }
+[data-dens="confort"] .ph .row { min-height: 30px; }
+
+/* ---------- Coins (l'emportent sur ceux de la palette) ---------- */
+[data-corners="square"] :is(.ph, .search, .tabs, .tabs button, .nav .item, .nav .more, .listrow select, .rubrow select, .ibtn, .btn, .side .add, .mono-z,
+  .col, .col li button, .ticket, .pop, .pop button, dialog, dialog input, .fill, .fill input, .ph.editing .txt, kbd, .chip, .toast, .fld, .ph mark, .look .seg, .look .seg button, .look .pals button) { border-radius: 2px; }
+[data-corners="round"] :is(.ph, .col, .ticket, dialog) { border-radius: 16px; }
+[data-corners="round"] :is(.nav .item, .listrow select, .rubrow select, .side .add, .fill, .ph.editing .txt, .pop, .look .pals button) { border-radius: 12px; }
+[data-corners="round"] :is(.tabs, .look .seg) { border-radius: 12px; }
+[data-corners="round"] :is(.tabs button, .look .seg button, .pop button, .col li button) { border-radius: 9px; }
+[data-corners="round"] :is(.search, .btn, .ibtn, .chip, .toast, .fld, .fill input, dialog input) { border-radius: 999px; }
+[data-corners="round"] .fld { padding-inline: 7px; }
+[data-corners="round"] .mono-z { border-radius: 12px; }
+
+/* ---------- Police ---------- */
+[data-font="system"] { --font: "Segoe UI Variable Text", "Segoe UI", system-ui, sans-serif; }
+[data-font="dmsans"] { --font: "TP DM Sans", "Segoe UI", system-ui, sans-serif; }
+[data-font="outfit"] { --font: "TP Outfit", "Segoe UI", system-ui, sans-serif; }
+[data-font="atkinson"] { --font: "TP Atkinson Hyperlegible", "Segoe UI", system-ui, sans-serif; }
+[data-font="lexend"] { --font: "TP Lexend", "Segoe UI", system-ui, sans-serif; }
+[data-font="nunito"] { --font: "TP Nunito", "Segoe UI", system-ui, sans-serif; }
+[data-font="quicksand"] { --font: "TP Quicksand", "Segoe UI", system-ui, sans-serif; }
+[data-font="fredoka"] { --font: "TP Fredoka", "Segoe UI", system-ui, sans-serif; }
+[data-font="comicneue"] { --font: "TP Comic Neue", "Segoe UI", system-ui, sans-serif; }
+[data-font="lora"] { --font: "TP Lora", Georgia, serif; }
+[data-font="merriweather"] { --font: "TP Merriweather", Georgia, serif; }
+[data-font="patrickhand"] { --font: "TP Patrick Hand", "Segoe Print", cursive; }
+[data-font="kalam"] { --font: "TP Kalam", "Segoe Print", cursive; }
+[data-font="courierprime"] { --font: "TP Courier Prime", "Courier New", monospace; }
+[data-font="jetbrainsmono"] { --font: "TP JetBrains Mono", Consolas, monospace; }
+[data-font="ibmplexmono"] { --font: "TP IBM Plex Mono", Consolas, monospace; }
+
+/* ---------- Motif de fond, derrière les phrases ---------- */
+[data-pattern="dots"] .scroll { background-image: radial-gradient(var(--line-strong) 1.1px, transparent 1.5px); background-size: 14px 14px; background-attachment: local; }
+[data-pattern="lines"] .scroll { background-image: repeating-linear-gradient(-45deg, transparent 0 9px, var(--line) 9px 10px); background-attachment: local; }
+[data-pattern="grid"] .scroll { background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 18px 18px; background-attachment: local; }
+
+/* ---------- Bandeau (ou colonne) en dégradé : --rail → --rail2 ---------- */
+[data-grad][data-layout="band"] .top { background: linear-gradient(90deg, var(--rail), var(--rail2)); }
+[data-grad][data-layout="col"] .side { background: linear-gradient(180deg, var(--rail), var(--rail2)); }
+[data-grad][data-layout="col"] .nav .more { background: transparent; }
+
+/* ---------- Colonne des rubriques : largeur et repli au survol ---------- */
+.app { grid-template-columns: var(--side-w, 200px) minmax(0, 1fr); }
+.side { position: relative; }
+.side-grip { position: absolute; top: 0; right: -4px; bottom: 0; width: 8px; z-index: 4; cursor: col-resize; touch-action: none; }
+.side-grip::after { content: ""; position: absolute; top: 0; bottom: 0; left: 3px; width: 2px; background: var(--accent); opacity: 0; transition: opacity .12s; }
+.side-grip:hover::after, .side-grip.drag::after { opacity: .6; }
+html.resizing, html.resizing * { cursor: col-resize !important; user-select: none; }
+.side-peek { display: none; }
+
+/* Repliée : une fine bande à gauche, la colonne glisse par-dessus les phrases au survol. */
+[data-side="auto"] .app { grid-template-columns: 14px minmax(0, 1fr); }
+[data-side="auto"] .side {
+  width: var(--side-w, 200px); z-index: 10; justify-self: start; background: var(--bg);
+  transform: translateX(calc(14px - 100%)); transition: transform .18s ease .35s, box-shadow .18s ease .35s;
+}
+[data-side="auto"][data-layout="col"] .side { background: var(--rail); }
+[data-side="auto"][data-grad][data-layout="col"] .side { background: linear-gradient(180deg, var(--rail), var(--rail2)); }
+[data-side="auto"] .side:is(:hover, :has(:focus-visible), :has(select:focus), .open) { transform: none; box-shadow: var(--shadow-pop); transition-delay: .1s; }
+html[data-side="auto"]:has(#listMenu:popover-open, #rubMenu:popover-open) .side { transform: none; box-shadow: var(--shadow-pop); transition-delay: 0s; }
+[data-side="auto"] .side-grip { display: none; }
+[data-side="auto"] .side-peek {
+  display: grid; place-items: center; position: absolute; top: 0; right: 0; bottom: 0; width: 14px;
+  background: var(--sunken); border-left: 1px solid var(--line); color: var(--muted); transition: opacity .15s .35s; pointer-events: none;
+}
+[data-side="auto"][data-layout="col"] .side-peek { background: rgba(255, 255, 255, .06); border-color: var(--rail-line); color: var(--rail-muted); }
+[data-side="auto"] .side-peek .ico { width: 12px; height: 12px; }
+[data-side="auto"] .side:is(:hover, :has(:focus-visible), :has(select:focus), .open) .side-peek { opacity: 0; transition-delay: 0s; }
+
+@media (max-width: 619px) {
+  .app, [data-side="auto"] .app { grid-template-columns: minmax(0, 1fr); }
+  [data-side="auto"] .side { width: auto; justify-self: stretch; transform: none; box-shadow: none; }
+  .side-grip, [data-side="auto"] .side-peek { display: none; }
+}
+
+/* ---------- Menu Apparence : onglets Couleurs / Affichage ---------- */
+.look { max-height: calc(100vh - 8px); overflow-y: auto; }
+.look .ltabs { margin-bottom: 4px; }
+.look .fonts { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; max-height: 176px; overflow-y: auto; padding: 3px; border-radius: 8px; background: var(--sunken); }
+.look .fonts .grp { grid-column: 1 / -1; font: 700 9px/1 var(--font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 6px 4px 1px; }
+.look .fonts .grp:first-child { margin-top: 3px; }
+.look .fonts button[data-font="manrope"] { --font: "Manrope", "Segoe UI", system-ui, sans-serif; }
+.look .fonts button { font-family: var(--font); height: 28px; padding: 0 8px; font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; border: 1px solid transparent; }
+.look .fonts button[aria-pressed="true"] { background: var(--surface); border-color: var(--accent); }
+.look .row2 { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.look .row2 > span { margin-right: auto; }
+.look .row2 label { display: flex; align-items: center; gap: 6px; color: var(--ink); cursor: pointer; }
+.look .row2 input[type="checkbox"] { accent-color: var(--accent); margin: 0; }
+.look .row2 input[type="color"] { width: 22px; height: 22px; padding: 0; border: 0; border-radius: 5px; background: none; cursor: pointer; }
+.look .row2 input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.look .row2 input[type="color"]::-webkit-color-swatch { border: 1px solid rgba(0, 0, 0, .15); border-radius: 5px; }
+.look .note { margin: 5px 2px 0; font-size: 11px; color: var(--muted); }
+.look .note button { display: inline; width: auto; height: auto; padding: 0; color: var(--accent); font: inherit; font-weight: 700; background: none; }
