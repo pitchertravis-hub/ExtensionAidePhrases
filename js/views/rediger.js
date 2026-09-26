@@ -50,7 +50,7 @@ async function run() {
     const res = await rewriteText(text, (x) => setTag(`Préparation de l’IA… ${Math.round(x * 100)} %`));
     out.value = res.text;
     if (res.ok) setTag('Reformulé');
-    else setTag('Vérifiez les champs {…} et les liens', true);
+    else setTag(res.why, true);
     check(); // le modèle vient peut-être d'être téléchargé
   } catch (e) {
     console.warn('Reformulation IA :', e);
