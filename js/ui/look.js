@@ -184,28 +184,39 @@ function initSideGrip() {
   grip.addEventListener('dblclick', () => setAffichage({ sideW: 200 }));
 }
 
-// Colonne « Repliée » : s'ouvre quand la souris arrive dessus, se replie dès qu'elle part
-// (y compris quand elle sort de la fenêtre), sauf pendant une liste déroulante ouverte.
+// Colonne « Repliée » : cachée ; elle s'ouvre quand la souris touche le bord gauche de la fenêtre
+// (zone #sideEdge) ou avec le bouton Rubriques, et se replie dès que la souris part (y compris hors
+// de la fenêtre), sauf pendant une liste déroulante ou un menu ⋯ ouvert.
 function initSideAuto() {
   const side = document.querySelector('.side');
+  const edge = document.getElementById('sideEdge');
+  const toggle = document.getElementById('sideToggle');
   let inside = false, picking = false, timer = 0;
-  const auto = () => root.dataset.side === 'auto';
-  const later = (open, ms) => {
+  const set = (open) => {
     clearTimeout(timer);
-    timer = setTimeout(() => side.classList.toggle('open', open), ms);
+    side.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', String(open));
   };
-  const maybeClose = () => { if (!inside && !picking) later(false, 220); };
-  side.addEventListener('pointerenter', () => { inside = true; if (auto()) later(true, 80); });
-  side.addEventListener('pointerleave', () => { inside = false; maybeClose(); });
+  const later = (open, ms) => { clearTimeout(timer); timer = setTimeout(() => set(open), ms); };
+  const maybeClose = () => { if (!inside && !picking) later(false, 250); };
+  const over = (el) => el && (side.contains(el) || el === edge || toggle.contains(el));
+
+  edge.addEventListener('pointerenter', () => { inside = true; later(true, 60); });
+  side.addEventListener('pointerenter', () => { inside = true; clearTimeout(timer); });
+  side.addEventListener('pointerleave', (e) => { if (!over(e.relatedTarget)) { inside = false; maybeClose(); } });
+  toggle.addEventListener('click', () => { const open = !side.classList.contains('open'); inside = open; set(open); });
   // Filets de sécurité : souris ailleurs dans la fenêtre, hors de la fenêtre, ou fenêtre quittée.
-  document.addEventListener('pointermove', (e) => { if (side.classList.contains('open') && !side.contains(e.target)) { inside = false; maybeClose(); } });
+  document.addEventListener('pointermove', (e) => {
+    if (side.classList.contains('open') && !over(e.target)) { inside = false; maybeClose(); }
+  });
   document.documentElement.addEventListener('pointerleave', () => { inside = false; maybeClose(); });
-  window.addEventListener('blur', () => { inside = false; picking = false; later(false, 0); });
+  window.addEventListener('blur', () => { inside = false; picking = false; set(false); });
+  // Un clic sur une rubrique : on la montre et on replie.
+  side.addEventListener('click', (e) => { if (e.target.closest('.nav .item') && root.dataset.side === 'auto') { inside = false; later(false, 150); } });
   side.querySelectorAll('select').forEach((sel) => {
     sel.addEventListener('pointerdown', () => { picking = true; });
     sel.addEventListener('change', () => { picking = false; maybeClose(); });
     sel.addEventListener('blur', () => { picking = false; maybeClose(); });
   });
-  // Un menu ⋯ de liste ou de rubrique qui se ferme : on replie si la souris n'est plus là.
   ['listMenu', 'rubMenu'].forEach((id) => document.getElementById(id)?.addEventListener('toggle', (e) => { if (e.newState === 'closed') maybeClose(); }));
 }

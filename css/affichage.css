@@ -102,30 +102,28 @@
 .side-grip::after { content: ""; position: absolute; top: 0; bottom: 0; left: 3px; width: 2px; background: var(--accent); opacity: 0; transition: opacity .12s; }
 .side-grip:hover::after, .side-grip.drag::after { opacity: .6; }
 html.resizing, html.resizing * { cursor: col-resize !important; user-select: none; }
-.side-peek { display: none; }
 
-/* Repliée : une bande très fine à gauche ; la colonne glisse par-dessus les phrases quand la souris
-   arrive dessus et se replie dès qu'elle part (classe .open posée par js/ui/look.js). */
-[data-side="auto"] .app { grid-template-columns: 7px minmax(0, 1fr); }
+/* Repliée : la colonne est entièrement cachée. Elle glisse par-dessus les phrases quand la souris touche
+   le bord gauche (zone .side-edge) ou avec le bouton Rubriques, et se replie dès que la souris part
+   (classe .open posée par js/ui/look.js). */
+.side-toggle, .side-edge { display: none; }
+[data-side="auto"] .app { position: relative; grid-template-columns: 0 minmax(0, 1fr); }
 [data-side="auto"] .side {
-  width: var(--side-w, 200px); z-index: 10; justify-self: start; background: var(--bg);
-  transform: translateX(calc(7px - 100%)); transition: transform .16s ease, box-shadow .16s ease;
+  width: var(--side-w, 200px); z-index: 10; justify-self: start; background: var(--bg); border-right: 1px solid var(--line);
+  transform: translateX(-100%); visibility: hidden; transition: transform .16s ease, visibility 0s linear .16s;
 }
 [data-side="auto"][data-layout="col"] .side { background: var(--rail); }
 [data-side="auto"][data-palette="perso"][data-grad][data-layout="col"] .side { background: linear-gradient(180deg, var(--rail), var(--rail2)); }
 [data-side="auto"] .side.open,
-html[data-side="auto"]:has(#listMenu:popover-open, #rubMenu:popover-open) .side { transform: none; box-shadow: var(--shadow-pop); }
+html[data-side="auto"]:has(#listMenu:popover-open, #rubMenu:popover-open) .side { transform: none; visibility: visible; box-shadow: var(--shadow-pop); transition: transform .16s ease; }
 [data-side="auto"] .side-grip { display: none; }
-[data-side="auto"] .side-peek {
-  display: block; position: absolute; top: 0; right: 0; bottom: 0; width: 7px; pointer-events: none;
-  background: var(--sunken); border-left: 1px solid var(--line); transition: opacity .12s;
-}
-[data-side="auto"] .side-peek::after { content: ""; position: absolute; left: 2px; top: 50%; width: 2px; height: 36px; margin-top: -18px; border-radius: 2px; background: var(--accent); opacity: .7; }
-[data-side="auto"][data-layout="col"] .side-peek { background: rgba(255, 255, 255, .08); border-color: var(--rail-line); }
-[data-side="auto"] .side.open .side-peek { opacity: 0; }
+[data-side="auto"] .side-edge { display: block; position: absolute; left: 0; top: 0; bottom: 0; width: 10px; z-index: 9; }
+[data-side="auto"] .side-toggle { display: inline-grid; margin: 0 -2px 0 -4px; }
+[data-side="auto"] .side-toggle[aria-expanded="true"] { color: var(--accent); }
+[data-side="auto"][data-layout="band"] .side-toggle[aria-expanded="true"] { color: var(--brand-bright); }
 
 @media (max-width: 619px) {
   .app, [data-side="auto"] .app { grid-template-columns: minmax(0, 1fr); }
-  [data-side="auto"] .side { width: auto; justify-self: stretch; transform: none; box-shadow: none; }
-  .side-grip, [data-side="auto"] .side-peek { display: none; }
+  [data-side="auto"] .side { width: auto; justify-self: stretch; transform: none; visibility: visible; box-shadow: none; }
+  .side-grip, [data-side="auto"] :is(.side-edge, .side-toggle) { display: none; }
 }
