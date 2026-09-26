@@ -11,6 +11,8 @@ const PALETTES = [
   ['corail', 'Ardoise & corail', '#1F2933', '#E4674D'],
   ['prune', 'Prune & ambre', '#2A1B3D', '#DBA036'],
   ['classique', 'Classique bleu', '#161A22', '#23408E'],
+  ['halloween', 'Halloween', '#1B1026', '#F5821F'],
+  ['noel', 'Noël', '#0F3B2E', '#C22F39'],
 ];
 const KEYS = { palette: 'zt-palette', layout: 'zt-layout', theme: 'theme' };
 
