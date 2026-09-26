@@ -1,0 +1,68 @@
+/* Menu Apparence (Réglages › Apparence) : en-tête fixe avec deux onglets, contenu qui défile. */
+.look { width: 390px; max-width: calc(100vw - 8px); max-height: calc(100vh - 8px); padding: 0; display: flex; flex-direction: column; overflow: hidden; }
+.look:not(:popover-open) { display: none; }
+.look .lhead { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid var(--line); flex: none; }
+.look .lhead strong { font-size: 13.5px; font-weight: 800; letter-spacing: -.01em; margin-right: auto; }
+.look .ltabs { width: 200px; }
+.look .lbody { overflow-y: auto; padding: 4px 12px 12px; min-height: 0; }
+.look .cap { margin: 12px 2px 6px; }
+.look .note { margin: 6px 2px 0; font-size: 11px; line-height: 1.4; color: var(--muted); }
+
+/* Boutons segmentés */
+.look .seg { display: flex; gap: 2px; padding: 3px; border-radius: 9px; background: var(--sunken); }
+.look .seg button { flex: 1; min-width: 0; height: 28px; justify-content: center; gap: 4px; padding: 0 6px; font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.look .seg button:hover { background: none; color: var(--ink); }
+.look .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
+.look .two { display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px; }
+
+/* Vignettes (thèmes, motifs) */
+.look .tiles { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 6px; }
+.look .tile { display: flex; flex-direction: column; align-items: stretch; gap: 4px; height: auto; padding: 4px 4px 5px; border: 1px solid transparent; border-radius: 9px; font-size: 10.5px; font-weight: 700; color: var(--ink-2); text-align: center; }
+.look .tile:hover { background: var(--sunken); }
+.look .tile[aria-pressed="true"] { border-color: var(--accent); background: var(--surface); box-shadow: 0 0 0 2px var(--accent-soft); color: var(--ink); }
+.look .tile .nm { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.look .tile .pv { position: relative; display: block; height: 34px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(0, 0, 0, .12); }
+/* Aperçu d'un thème : bandeau, fond clair, une barre d'accent et deux lignes de texte. */
+.look .pals .pv { background: #F5F5F3; }
+.look .pals .pv::before { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 11px; background: var(--pv-rail); }
+.look .pals .pv::after { content: ""; position: absolute; left: 6px; top: 16px; width: 40%; height: 5px; border-radius: 3px; background: var(--pv-acc); box-shadow: 0 8px 0 -1px #D9D9D6; }
+.look .pals .pv i { position: absolute; right: 6px; bottom: 5px; width: 10px; height: 10px; border-radius: 3px; background: var(--pv-acc); }
+/* Aperçu d'un motif : le motif lui-même sur le fond courant. */
+.look .pats .pv { background-color: var(--bg); background-image: var(--pat, none); background-size: var(--pat-size, auto); }
+.look .pats .tile[data-v="none"] .pv::after { content: ""; position: absolute; left: 50%; top: 50%; width: 60%; height: 1.5px; background: var(--muted); transform: translate(-50%, -50%) rotate(-20deg); opacity: .5; }
+
+/* Couleurs Perso, visibles quand la palette Perso est choisie */
+.look .persobox { margin-top: 8px; padding: 4px 10px; border-radius: 10px; background: var(--sunken); display: flex; flex-direction: column; }
+.look .prow { display: flex; align-items: center; gap: 6px; min-height: 36px; font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.look .prow + .prow { border-top: 1px solid var(--line); }
+.look .prow > span { margin-right: auto; }
+.look .prow label { display: flex; align-items: center; gap: 6px; padding: 3px 7px 3px 3px; border-radius: 7px; color: var(--ink); cursor: pointer; }
+.look .prow label:hover { background: var(--surface); }
+.look .prow input[type="color"] { width: 24px; height: 24px; padding: 0; border: 0; border-radius: 6px; background: none; cursor: pointer; }
+.look .prow input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+.look .prow input[type="color"]::-webkit-color-swatch { border: 1px solid rgba(0, 0, 0, .15); border-radius: 6px; }
+.look .prow input[type="color"]:disabled { opacity: .35; cursor: default; }
+/* Interrupteur */
+.look .tgl input { position: absolute; opacity: 0; pointer-events: none; }
+.look .tgl i { position: relative; width: 30px; height: 18px; border-radius: 99px; background: var(--line-strong); transition: background .15s; }
+.look .tgl i::after { content: ""; position: absolute; top: 2px; left: 2px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0, 0, 0, .3); transition: transform .15s; }
+.look .tgl input:checked + i { background: var(--accent); }
+.look .tgl input:checked + i::after { transform: translateX(12px); }
+.look .tgl input:focus-visible + i { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Polices : chaque nom est écrit dans sa police (data-font sur le bouton lui donne son --font). */
+.look .fonts { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; max-height: 190px; overflow-y: auto; padding: 3px; border-radius: 9px; background: var(--sunken); }
+.look .fonts .grp { grid-column: 1 / -1; font: 700 9px/1 var(--font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 7px 5px 2px; }
+.look .fonts .grp:first-child { margin-top: 4px; }
+.look .fonts button[data-font="manrope"] { --font: "Manrope", "Segoe UI", system-ui, sans-serif; }
+.look .fonts button { font-family: var(--font); display: block; height: 30px; padding: 0 9px; border: 1px solid transparent; font-size: 13px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.look .fonts button:hover { background: var(--surface); }
+.look .fonts button[aria-pressed="true"] { background: var(--surface); border-color: var(--accent); }
+
+/* Largeur de la colonne */
+.look .wrow { display: flex; align-items: center; gap: 10px; margin-top: 8px; padding: 4px 4px 4px 10px; border-radius: 9px; background: var(--sunken); font-size: 11.5px; font-weight: 600; color: var(--muted); }
+.look .wrow input[type="range"] { flex: 1; min-width: 0; accent-color: var(--accent); cursor: pointer; }
+.look .wrow output { min-width: 46px; text-align: right; font: 600 11px var(--mono); color: var(--ink); }
+.look .wrow .ibtn { width: 26px; height: 26px; }
+.look .wrow .ibtn:hover { background: var(--surface); }
+.look .pats .tile[data-v="none"] .pv { background-image: none; }

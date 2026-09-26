@@ -309,23 +309,3 @@
 [data-palette="brutal"] .foot kbd { background: #000; color: #fff; border-color: #fff; }
 [data-palette="brutal"] .toast { background: #FFE600; color: #000; border: 2px solid #000; box-shadow: 4px 4px 0 #000; }
 [data-palette="brutal"] .toast button { color: #000; }
-
-/* ---------- Menu Apparence ---------- */
-.look { width: 330px; padding: 10px; }
-.look .cap { margin: 4px 2px 7px; }
-.look .cap:not(:first-child) { margin-top: 12px; }
-.look .pals { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; }
-.look .pals button { height: 34px; padding: 0 7px; white-space: nowrap; gap: 7px; border: 1px solid var(--line); font-size: 11.5px; }
-.look .pals button[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); background: var(--surface); }
-.look .sw { display: flex; width: 26px; height: 18px; flex: none; border-radius: 4px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08); }
-.look .sw i { flex: 1; }
-.look .perso { display: flex; align-items: center; gap: 6px; margin-top: 6px; padding: 5px 5px 5px 9px; border: 1px dashed var(--line-strong); border-radius: 7px; font-size: 11.5px; font-weight: 600; color: var(--muted); }
-.look .perso span { margin-right: auto; }
-.look .perso label { display: flex; align-items: center; gap: 5px; padding: 3px 7px 3px 3px; border-radius: 6px; color: var(--ink); cursor: pointer; }
-.look .perso label:hover { background: var(--sunken); }
-.look .perso input { width: 22px; height: 22px; padding: 0; border: 0; border-radius: 5px; background: none; cursor: pointer; }
-.look .perso input::-webkit-color-swatch-wrapper { padding: 0; }
-.look .perso input::-webkit-color-swatch { border: 1px solid rgba(0, 0, 0, .15); border-radius: 5px; }
-.look .seg { display: flex; gap: 2px; padding: 3px; border-radius: 8px; background: var(--sunken); }
-.look .seg button { flex: 1; height: 28px; justify-content: center; padding: 0 6px; font-size: 11.5px; color: var(--muted); }
-.look .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }

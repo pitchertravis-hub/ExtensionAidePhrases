@@ -48,9 +48,9 @@
 
 /* ---------- Coins (l'emportent sur ceux de la palette) ---------- */
 [data-corners="square"] :is(.ph, .search, .tabs, .tabs button, .nav .item, .nav .more, .listrow select, .rubrow select, .ibtn, .btn, .side .add, .mono-z,
-  .col, .col li button, .ticket, .pop, .pop button, dialog, dialog input, .fill, .fill input, .ph.editing .txt, kbd, .chip, .toast, .fld, .ph mark, .look .seg, .look .seg button, .look .pals button) { border-radius: 2px; }
+  .col, .col li button, .ticket, .pop, .pop button, dialog, dialog input, .fill, .fill input, .ph.editing .txt, kbd, .chip, .toast, .fld, .ph mark, .look .seg, .look .seg button, .look .tile, .look .tile .pv) { border-radius: 2px; }
 [data-corners="round"] :is(.ph, .col, .ticket, dialog) { border-radius: 16px; }
-[data-corners="round"] :is(.nav .item, .listrow select, .rubrow select, .side .add, .fill, .ph.editing .txt, .pop, .look .pals button) { border-radius: 12px; }
+[data-corners="round"] :is(.nav .item, .listrow select, .rubrow select, .side .add, .fill, .ph.editing .txt, .pop, .look .tile .pv) { border-radius: 12px; }
 [data-corners="round"] :is(.tabs, .look .seg) { border-radius: 12px; }
 [data-corners="round"] :is(.tabs button, .look .seg button, .pop button, .col li button) { border-radius: 9px; }
 [data-corners="round"] :is(.search, .btn, .ibtn, .chip, .toast, .fld, .fill input, dialog input) { border-radius: 999px; }
@@ -75,15 +75,25 @@
 [data-font="jetbrainsmono"] { --font: "TP JetBrains Mono", Consolas, monospace; }
 [data-font="ibmplexmono"] { --font: "TP IBM Plex Mono", Consolas, monospace; }
 
-/* ---------- Motif de fond, derrière les phrases ---------- */
-[data-pattern="dots"] .scroll { background-image: radial-gradient(var(--line-strong) 1.1px, transparent 1.5px); background-size: 14px 14px; background-attachment: local; }
-[data-pattern="lines"] .scroll { background-image: repeating-linear-gradient(-45deg, transparent 0 9px, var(--line) 9px 10px); background-attachment: local; }
-[data-pattern="grid"] .scroll { background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); background-size: 18px 18px; background-attachment: local; }
+/* ---------- Motif de fond, derrière les phrases ----------
+   Chaque motif pose --pat et --pat-size ; les vignettes du menu Apparence s'en servent aussi. */
+[data-pattern="dots"] { --pat: radial-gradient(var(--line-strong) 1.1px, transparent 1.5px); --pat-size: 14px 14px; }
+[data-pattern="polka"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='%23888' fill-opacity='.22'%3E%3Ccircle cx='6' cy='6' r='3'/%3E%3Ccircle cx='18' cy='18' r='3'/%3E%3C/svg%3E"); --pat-size: 24px 24px; }
+[data-pattern="lines"] { --pat: repeating-linear-gradient(-45deg, transparent 0 9px, var(--line) 9px 10px); --pat-size: auto; }
+[data-pattern="ruled"] { --pat: repeating-linear-gradient(transparent 0 21px, var(--line) 21px 22px); --pat-size: auto; }
+[data-pattern="grid"] { --pat: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px); --pat-size: 18px 18px; }
+[data-pattern="cross"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='22' height='22' fill='none' stroke='%23888' stroke-opacity='.35' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M11 7v8M7 11h8'/%3E%3C/svg%3E"); --pat-size: 22px 22px; }
+[data-pattern="diamonds"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='24' fill='none' stroke='%23888' stroke-opacity='.35' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 3 21 12 12 21 3 12z'/%3E%3C/svg%3E"); --pat-size: 24px 24px; }
+[data-pattern="waves"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='16' fill='none' stroke='%23888' stroke-opacity='.35' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M0 8q10-8 20 0t20 0'/%3E%3C/svg%3E"); --pat-size: 40px 16px; }
+[data-pattern="zigzag"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='24' height='12' fill='none' stroke='%23888' stroke-opacity='.35' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M0 9l6-6 6 6 6-6 6 6'/%3E%3C/svg%3E"); --pat-size: 24px 12px; }
+[data-pattern="stars"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' fill='%23888' fill-opacity='.22'%3E%3Cpath d='M10 4q1 5 6 6-5 1-6 6-1-5-6-6 5-1 6-6zM30 24q.7 3.3 4 4-3.3.7-4 4-.7-3.3-4-4 3.3-.7 4-4z'/%3E%3C/svg%3E"); --pat-size: 40px 40px; }
+[data-pattern="bubbles"] { --pat: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48' fill='none' stroke='%23888' stroke-opacity='.35' stroke-width='1.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='7'/%3E%3Ccircle cx='34' cy='30' r='10'/%3E%3Ccircle cx='38' cy='8' r='3'/%3E%3Ccircle cx='10' cy='38' r='4'/%3E%3C/svg%3E"); --pat-size: 48px 48px; }
+[data-pattern]:not([data-pattern="none"]) .scroll { background-image: var(--pat); background-size: var(--pat-size); background-attachment: local; }
 
-/* ---------- Bandeau (ou colonne) en dégradé : --rail → --rail2 ---------- */
-[data-grad][data-layout="band"] .top { background: linear-gradient(90deg, var(--rail), var(--rail2)); }
-[data-grad][data-layout="col"] .side { background: linear-gradient(180deg, var(--rail), var(--rail2)); }
-[data-grad][data-layout="col"] .nav .more { background: transparent; }
+/* ---------- Palette Perso : bandeau (ou colonne) en dégradé --rail → --rail2 ---------- */
+[data-palette="perso"][data-grad][data-layout="band"] .top { background: linear-gradient(90deg, var(--rail), var(--rail2)); }
+[data-palette="perso"][data-grad][data-layout="col"] .side { background: linear-gradient(180deg, var(--rail), var(--rail2)); }
+[data-palette="perso"][data-grad][data-layout="col"] .nav .more { background: transparent; }
 
 /* ---------- Colonne des rubriques : largeur et repli au survol ---------- */
 .app { grid-template-columns: var(--side-w, 200px) minmax(0, 1fr); }
@@ -94,46 +104,28 @@
 html.resizing, html.resizing * { cursor: col-resize !important; user-select: none; }
 .side-peek { display: none; }
 
-/* Repliée : une fine bande à gauche, la colonne glisse par-dessus les phrases au survol. */
-[data-side="auto"] .app { grid-template-columns: 14px minmax(0, 1fr); }
+/* Repliée : une bande très fine à gauche ; la colonne glisse par-dessus les phrases quand la souris
+   arrive dessus et se replie dès qu'elle part (classe .open posée par js/ui/look.js). */
+[data-side="auto"] .app { grid-template-columns: 7px minmax(0, 1fr); }
 [data-side="auto"] .side {
   width: var(--side-w, 200px); z-index: 10; justify-self: start; background: var(--bg);
-  transform: translateX(calc(14px - 100%)); transition: transform .18s ease .35s, box-shadow .18s ease .35s;
+  transform: translateX(calc(7px - 100%)); transition: transform .16s ease, box-shadow .16s ease;
 }
 [data-side="auto"][data-layout="col"] .side { background: var(--rail); }
-[data-side="auto"][data-grad][data-layout="col"] .side { background: linear-gradient(180deg, var(--rail), var(--rail2)); }
-[data-side="auto"] .side:is(:hover, :has(:focus-visible), :has(select:focus), .open) { transform: none; box-shadow: var(--shadow-pop); transition-delay: .1s; }
-html[data-side="auto"]:has(#listMenu:popover-open, #rubMenu:popover-open) .side { transform: none; box-shadow: var(--shadow-pop); transition-delay: 0s; }
+[data-side="auto"][data-palette="perso"][data-grad][data-layout="col"] .side { background: linear-gradient(180deg, var(--rail), var(--rail2)); }
+[data-side="auto"] .side.open,
+html[data-side="auto"]:has(#listMenu:popover-open, #rubMenu:popover-open) .side { transform: none; box-shadow: var(--shadow-pop); }
 [data-side="auto"] .side-grip { display: none; }
 [data-side="auto"] .side-peek {
-  display: grid; place-items: center; position: absolute; top: 0; right: 0; bottom: 0; width: 14px;
-  background: var(--sunken); border-left: 1px solid var(--line); color: var(--muted); transition: opacity .15s .35s; pointer-events: none;
+  display: block; position: absolute; top: 0; right: 0; bottom: 0; width: 7px; pointer-events: none;
+  background: var(--sunken); border-left: 1px solid var(--line); transition: opacity .12s;
 }
-[data-side="auto"][data-layout="col"] .side-peek { background: rgba(255, 255, 255, .06); border-color: var(--rail-line); color: var(--rail-muted); }
-[data-side="auto"] .side-peek .ico { width: 12px; height: 12px; }
-[data-side="auto"] .side:is(:hover, :has(:focus-visible), :has(select:focus), .open) .side-peek { opacity: 0; transition-delay: 0s; }
+[data-side="auto"] .side-peek::after { content: ""; position: absolute; left: 2px; top: 50%; width: 2px; height: 36px; margin-top: -18px; border-radius: 2px; background: var(--accent); opacity: .7; }
+[data-side="auto"][data-layout="col"] .side-peek { background: rgba(255, 255, 255, .08); border-color: var(--rail-line); }
+[data-side="auto"] .side.open .side-peek { opacity: 0; }
 
 @media (max-width: 619px) {
   .app, [data-side="auto"] .app { grid-template-columns: minmax(0, 1fr); }
   [data-side="auto"] .side { width: auto; justify-self: stretch; transform: none; box-shadow: none; }
   .side-grip, [data-side="auto"] .side-peek { display: none; }
 }
-
-/* ---------- Menu Apparence : onglets Couleurs / Affichage ---------- */
-.look { max-height: calc(100vh - 8px); overflow-y: auto; }
-.look .ltabs { margin-bottom: 4px; }
-.look .fonts { display: grid; grid-template-columns: 1fr 1fr; gap: 3px; max-height: 176px; overflow-y: auto; padding: 3px; border-radius: 8px; background: var(--sunken); }
-.look .fonts .grp { grid-column: 1 / -1; font: 700 9px/1 var(--font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); margin: 6px 4px 1px; }
-.look .fonts .grp:first-child { margin-top: 3px; }
-.look .fonts button[data-font="manrope"] { --font: "Manrope", "Segoe UI", system-ui, sans-serif; }
-.look .fonts button { font-family: var(--font); height: 28px; padding: 0 8px; font-size: 12.5px; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block; border: 1px solid transparent; }
-.look .fonts button[aria-pressed="true"] { background: var(--surface); border-color: var(--accent); }
-.look .row2 { display: flex; align-items: center; gap: 8px; margin-top: 6px; font-size: 11.5px; font-weight: 600; color: var(--muted); }
-.look .row2 > span { margin-right: auto; }
-.look .row2 label { display: flex; align-items: center; gap: 6px; color: var(--ink); cursor: pointer; }
-.look .row2 input[type="checkbox"] { accent-color: var(--accent); margin: 0; }
-.look .row2 input[type="color"] { width: 22px; height: 22px; padding: 0; border: 0; border-radius: 5px; background: none; cursor: pointer; }
-.look .row2 input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
-.look .row2 input[type="color"]::-webkit-color-swatch { border: 1px solid rgba(0, 0, 0, .15); border-radius: 5px; }
-.look .note { margin: 5px 2px 0; font-size: 11px; color: var(--muted); }
-.look .note button { display: inline; width: auto; height: auto; padding: 0; color: var(--accent); font: inherit; font-weight: 700; background: none; }

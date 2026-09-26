@@ -48,12 +48,19 @@ function save(key, value) {
   try { localStorage.setItem(key, value); } catch {}
 }
 
+// [id, nom] des motifs de fond (css/affichage.css).
+const PATTERNS = [['none', 'Aucun'], ['dots', 'Points'], ['polka', 'Pois'], ['lines', 'Rayures'], ['ruled', 'Lignes'], ['grid', 'Carreaux'],
+  ['cross', 'Croix'], ['diamonds', 'Losanges'], ['waves', 'Vagues'], ['zigzag', 'Zigzag'], ['stars', 'Étoiles'], ['bubbles', 'Bulles']];
+const persoBox = document.getElementById('persoBox');
+const sideRange = document.getElementById('sideRange');
+const sideVal = document.getElementById('sideVal');
+
 // Couleurs de la palette « Perso » : calculées par theme.js (tpApplyPerso).
 function showPerso(cfg) {
   persoRail.value = cfg.rail.toLowerCase();
   persoAccent.value = cfg.accent.toLowerCase();
-  const sw = pals.querySelector('[data-v="perso"] .sw');
-  if (sw) sw.innerHTML = `<i style="background:${cfg.rail}"></i><i style="background:${cfg.accent}"></i>`;
+  const pv = pals.querySelector('[data-v="perso"] .pv');
+  if (pv) { pv.style.setProperty('--pv-rail', cfg.rail); pv.style.setProperty('--pv-acc', cfg.accent); }
 }
 
 // Réglages d'affichage : appliqués par theme.js (tpApplyAffichage), qui renvoie les valeurs retenues.
@@ -64,16 +71,17 @@ export function setAffichage(patch) {
   save(KEYS.affichage, JSON.stringify(aff));
   if (menu.matches(':popover-open')) sync();
 }
-export function getAffichage() {
-  return aff;
-}
 
 function sync() {
-  pals.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === root.dataset.palette)));
+  menu.querySelectorAll('#lookPals button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === root.dataset.palette)));
   menu.querySelectorAll('[data-g] button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === root.dataset[b.parentElement.dataset.g])));
   menu.querySelectorAll('[data-a] button').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.v === aff[b.parentElement.dataset.a])));
+  persoBox.hidden = root.dataset.palette !== 'perso';
   gradOn.checked = !!aff.grad;
   gradColor.value = aff.grad || gradLast;
+  gradColor.disabled = !aff.grad;
+  sideRange.value = aff.sideW;
+  sideVal.textContent = aff.sideW + ' px';
 }
 
 // Applique un réglage reçu d'une autre fenêtre (événement storage).
@@ -103,11 +111,14 @@ function showTab(id) {
 
 export function initLook() {
   pals.innerHTML = PALETTES.map(([id, name, dark, acc]) =>
-    `<button type="button" data-v="${id}"><span class="sw"><i style="background:${dark}"></i><i style="background:${acc}"></i></span>${name}</button>`).join('') +
-    '<button type="button" data-v="perso"><span class="sw"></span>Perso</button>';
+    `<button type="button" class="tile" data-v="${id}" title="${name}"><span class="pv" style="--pv-rail:${dark};--pv-acc:${acc}"><i></i></span><span class="nm">${name}</span></button>`).join('') +
+    '<button type="button" class="tile" data-v="perso" title="Mes couleurs"><span class="pv"><i></i></span><span class="nm">Perso</span></button>';
   // Chaque nom est écrit dans sa police : data-font sur le bouton lui donne son --font (css/affichage.css).
   document.getElementById('lookFonts').innerHTML = FONTS.map(([grp, list]) => `<div class="grp">${grp}</div>` +
     list.map(([id, name]) => `<button type="button" data-v="${id}" data-font="${id}">${name}</button>`).join('')).join('');
+  // Chaque vignette montre son motif : data-pattern sur l'aperçu lui donne son --pat.
+  document.getElementById('lookPats').innerHTML = PATTERNS.map(([id, name]) =>
+    `<button type="button" class="tile" data-v="${id}"><span class="pv" data-pattern="${id}"></span><span class="nm">${name}</span></button>`).join('');
   showPerso(window.tpApplyPerso(read(KEYS.perso)));
 
   // Changer une couleur passe directement en « Perso » et s'applique en direct.
@@ -119,13 +130,16 @@ export function initLook() {
   };
   persoRail.addEventListener('input', onPick);
   persoAccent.addEventListener('input', onPick);
-  gradOn.addEventListener('change', () => setAffichage({ grad: gradOn.checked ? gradColor.value : '' }));
-  gradColor.addEventListener('input', () => { gradLast = gradColor.value; setAffichage({ grad: gradColor.value }); });
+  gradOn.addEventListener('change', () => setAffichage({ grad: gradOn.checked ? gradLast : '' }));
+  gradColor.addEventListener('input', () => { gradLast = gradColor.value; if (aff.grad) setAffichage({ grad: gradLast }); });
+  // Largeur : appliquée en direct pendant le glissé, enregistrée au lâcher.
+  sideRange.addEventListener('input', () => { root.style.setProperty('--side-w', sideRange.value + 'px'); sideVal.textContent = sideRange.value + ' px'; });
+  sideRange.addEventListener('change', () => setAffichage({ sideW: +sideRange.value }));
 
   menu.addEventListener('click', (e) => {
     const tab = e.target.closest('#lookTabs button');
     if (tab) { showTab(tab.dataset.t); return; }
-    if (e.target.id === 'sideReset') { setAffichage({ sideW: 200 }); return; }
+    if (e.target.closest('#sideReset')) { setAffichage({ sideW: 200 }); return; }
     const b = e.target.closest('button[data-v]');
     if (!b) return;
     const box = b.parentElement;
@@ -136,6 +150,7 @@ export function initLook() {
     sync();
   });
   initSideGrip();
+  initSideAuto();
 }
 
 // Bord droit de la colonne des rubriques : glisser pour changer sa largeur, double-clic pour revenir à 200 px.
@@ -167,4 +182,30 @@ function initSideGrip() {
     grip.addEventListener('pointercancel', end);
   });
   grip.addEventListener('dblclick', () => setAffichage({ sideW: 200 }));
+}
+
+// Colonne « Repliée » : s'ouvre quand la souris arrive dessus, se replie dès qu'elle part
+// (y compris quand elle sort de la fenêtre), sauf pendant une liste déroulante ouverte.
+function initSideAuto() {
+  const side = document.querySelector('.side');
+  let inside = false, picking = false, timer = 0;
+  const auto = () => root.dataset.side === 'auto';
+  const later = (open, ms) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => side.classList.toggle('open', open), ms);
+  };
+  const maybeClose = () => { if (!inside && !picking) later(false, 220); };
+  side.addEventListener('pointerenter', () => { inside = true; if (auto()) later(true, 80); });
+  side.addEventListener('pointerleave', () => { inside = false; maybeClose(); });
+  // Filets de sécurité : souris ailleurs dans la fenêtre, hors de la fenêtre, ou fenêtre quittée.
+  document.addEventListener('pointermove', (e) => { if (side.classList.contains('open') && !side.contains(e.target)) { inside = false; maybeClose(); } });
+  document.documentElement.addEventListener('pointerleave', () => { inside = false; maybeClose(); });
+  window.addEventListener('blur', () => { inside = false; picking = false; later(false, 0); });
+  side.querySelectorAll('select').forEach((sel) => {
+    sel.addEventListener('pointerdown', () => { picking = true; });
+    sel.addEventListener('change', () => { picking = false; maybeClose(); });
+    sel.addEventListener('blur', () => { picking = false; maybeClose(); });
+  });
+  // Un menu ⋯ de liste ou de rubrique qui se ferme : on replie si la souris n'est plus là.
+  ['listMenu', 'rubMenu'].forEach((id) => document.getElementById(id)?.addEventListener('toggle', (e) => { if (e.newState === 'closed') maybeClose(); }));
 }

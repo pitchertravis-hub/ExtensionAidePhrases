@@ -13,9 +13,11 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
   `{date}`, `{heure}`, `{jour}` et `{date+2}` se remplissent seuls.
 - **Favoris** en tête de colonne, tri **Plus utilisées** dans chaque rubrique.
 - **Navigation ID** en trois colonnes, avec les 5 derniers chemins en raccourci.
-- **Apparence** (Réglages → Apparence) : palettes prêtes, ou **Perso** avec deux couleurs au choix (bandeau et accent) ; le reste du thème, clair et sombre, en est déduit.
-  Onglet **Affichage** : taille du texte, densité (compacte pour voir plus de phrases), coins, 17 polices, motif de fond
-  et colonne des rubriques **toujours visible** ou **repliée** (elle s'ouvre au passage de la souris). Sa largeur se règle en glissant son bord droit.
+- **Apparence** (Réglages → Apparence), en deux onglets :
+  **Couleurs** : thèmes prêts, ou **Perso** avec deux couleurs au choix (bandeau et accent) et un dégradé optionnel ; le reste du thème, clair et sombre, en est déduit.
+  **Affichage** : taille du texte, densité (compacte pour voir plus de phrases), coins, 17 polices, 11 motifs de fond,
+  et colonne des rubriques **toujours visible** ou **repliée** (elle s'ouvre quand la souris arrive sur le bord gauche et se replie quand elle part).
+  Sa largeur se règle avec le curseur du menu ou en glissant son bord droit.
 - **Deux formats** : fenêtre 780 × 560 (clic sur l'icône) ou **panneau latéral** qui reste ouvert
   (Réglages → Ancrer sur le côté).
 
@@ -64,6 +66,7 @@ popup.html              fenêtre et panneau latéral (même page)
 css/tokens.css          couleurs clair / sombre, police
 css/app.css             mise en page (large ≥ 620 px, étroite en dessous)
 css/palettes.css        palettes du menu Apparence
+css/look.css            fenêtre du menu Apparence
 css/affichage.css       réglages d'affichage (taille, densité, coins, police, motif, colonne)
 css/fonts.css           polices proposées (fichiers dans fonts/)
 js/theme.js             thème et format avant l'affichage
