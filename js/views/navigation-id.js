@@ -92,7 +92,7 @@ function renderId() {
   h += column('3 · Sous-option', 2, subs ? sortKeys(Object.keys(subs)).map((k) => [k, subs[k]]) : [], path[2], opt ? 'Pas de sous-option.' : '—');
   h += '</div>';
   if (opt) {
-    h += `<div class="ticket"><p></p><ol>${lines(path)
+    h += `<div class="ticket"><p><span></span><button class="ibtn" type="button" data-act="intro" title="Modifier la phrase d'introduction">${icon('pen')}</button></p><ol>${lines(path)
       .map((l) => {
         const m = l.match(/^• (\S+): (.*)$/);
         return m ? `<li><span>${escapeHtml(m[1])}</span>${escapeHtml(m[2])}</li>` : '<li><span>•</span>Menu ID</li>';
@@ -101,7 +101,7 @@ function renderId() {
       <button class="btn" type="button" data-act="copy">${icon('copy')}Recopier</button></footer></div>`;
   }
   box.innerHTML = h;
-  const intro = box.querySelector('.ticket p');
+  const intro = box.querySelector('.ticket p span');
   if (intro) intro.textContent = store.intro;
 }
 
@@ -123,14 +123,15 @@ export function initNavigation() {
       return;
     }
     if (e.target.closest('[data-act="copy"]')) copyPath();
+    if (e.target.closest('[data-act="intro"]')) editIntro();
   });
 
-  document.getElementById('introBtn').addEventListener('click', async () => {
+  async function editIntro() {
     const text = await askText("Phrase d'introduction", store.intro, {
       message: `Texte placé avant le chemin. Par défaut : « ${DEFAULT_INTRO} »`,
     });
     if (!text) return;
     store.intro = text;
     renderId();
-  });
+  }
 }

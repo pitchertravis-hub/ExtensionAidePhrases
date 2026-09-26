@@ -140,7 +140,7 @@ kbd { font: 600 10px var(--mono); padding: 0 5px; border-radius: 4px; border: 1p
 .fill .go small { color: var(--muted); }
 
 /* Navigation ID */
-.nid { flex: 1; padding: 2px 14px 14px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; min-height: 0; }
+.nid { flex: 1; padding: 14px; display: flex; flex-direction: column; gap: 12px; overflow-y: auto; min-height: 0; }
 .cols { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
 .col { border: 1px solid var(--line); border-radius: 10px; background: var(--surface); overflow: hidden; display: flex; flex-direction: column; }
 .col h4 { margin: 0; padding: 8px 10px; font: 700 10px var(--font); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); }
@@ -152,7 +152,7 @@ kbd { font: 600 10px var(--mono); padding: 0 5px; border-radius: 4px; border: 1p
 .col li button[aria-current="true"] span { color: var(--mono-ink); }
 .col .none { padding: 10px; color: var(--muted); font-size: 12px; }
 .ticket { border-radius: 10px; background: var(--surface); border: 1px solid var(--line); box-shadow: var(--shadow); overflow: hidden; }
-.ticket p { margin: 0; padding: 11px 14px 4px; color: var(--muted); font-style: italic; font-size: 12px; }
+.ticket p { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0; padding: 7px 8px 2px 14px; color: var(--muted); font-style: italic; font-size: 12px; }
 .ticket ol { list-style: none; margin: 0; padding: 2px 14px 12px; display: flex; flex-direction: column; gap: 3px; font-weight: 700; }
 .ticket ol li span { display: inline-block; min-width: 18px; font: 600 10.5px var(--mono); color: var(--gold); }
 .ticket footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding: 6px 8px 6px 14px; border-top: 1px dashed var(--line-strong); background: var(--sunken); font-size: 12px; font-weight: 700; color: var(--ok); }
