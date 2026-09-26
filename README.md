@@ -13,6 +13,10 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
   `{date}`, `{heure}`, `{jour}` et `{date+2}` se remplissent seuls.
 - **Favoris** en tête de colonne, tri **Plus utilisées** dans chaque rubrique.
 - **Navigation ID** en trois colonnes, avec les 5 derniers chemins en raccourci.
+- **Rédiger** : on tape ou on dicte un brouillon, **Reformuler** (ou `Ctrl+Entrée`) le corrige et le rend professionnel
+  (vouvoiement, formules de politesse). Le résultat se retouche, se copie ou se garde comme phrase dans une rubrique.
+  L'IA est celle de Chrome et tourne sur l'ordinateur : rien n'est envoyé sur Internet. Le modèle se télécharge
+  au premier usage. L'onglet n'apparaît que si Chrome et l'ordinateur le permettent (Chrome 138+, machine compatible).
 - **Apparence** (Réglages → Apparence), en deux onglets :
   **Couleurs** : thèmes prêts, ou **Perso** avec deux couleurs au choix (bandeau et accent) et un dégradé optionnel ; le reste du thème, clair et sombre, en est déduit.
   **Affichage** : taille du texte, densité (compacte pour voir plus de phrases), coins, 17 polices, 11 motifs de fond,
@@ -72,9 +76,9 @@ js/theme.js             thème et format avant l'affichage
 js/main.js              démarrage, recherche, clavier, réglages
 js/state.js             état de l'interface
 js/store.js             données (localStorage, mêmes clés qu'en v2.5)
-js/views/               sidebar.js, phrases.js, navigation-id.js
+js/views/               sidebar.js, phrases.js, navigation-id.js, rediger.js
 js/ui/                  dialog.js, menu.js, toast.js, phrase-text.js
-js/core/                text.js, fields.js, stats.js, csv.js, backup.js, voice.js
+js/core/                text.js, fields.js, stats.js, csv.js, backup.js, voice.js, ai.js
 js/data/id-menus.js     catalogue des menus ID (A à I)
 lib/Sortable.min.js     glisser-déposer (SortableJS 1.15.6, MIT)
 fonts/                  Manrope et les polices du réglage Police (licence OFL, voir fonts/POLICES.txt)

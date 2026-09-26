@@ -11,6 +11,7 @@ import { initLook, openLookMenu, applyLookFromStorage } from './ui/look.js';
 import { initSidebar, setList } from './views/sidebar.js';
 import { initPhrases, moveSel, copyItem, editItem, toggleFavItem, selected, hasItems, addPhrase } from './views/phrases.js';
 import { initNavigation } from './views/navigation-id.js';
+import { initRediger } from './views/rediger.js';
 
 const $ = (id) => document.getElementById(id);
 const q = $('q');
@@ -21,8 +22,10 @@ const isPopup = document.documentElement.classList.contains('is-popup');
 function renderTabs() {
   $('tabBtnPh').setAttribute('aria-selected', state.tab === 'ph');
   $('tabBtnId').setAttribute('aria-selected', state.tab === 'id');
+  $('tabBtnRd').setAttribute('aria-selected', state.tab === 'rd');
   $('tabPh').hidden = state.tab !== 'ph';
   $('tabId').hidden = state.tab !== 'id';
+  $('tabRd').hidden = state.tab !== 'rd';
 }
 function setTab(tab) {
   state.tab = tab;
@@ -31,6 +34,7 @@ function setTab(tab) {
 }
 $('tabBtnPh').addEventListener('click', () => setTab('ph'));
 $('tabBtnId').addEventListener('click', () => setTab('id'));
+$('tabBtnRd').addEventListener('click', () => { setTab('rd'); $('rdDraft').focus(); });
 
 // ---------- Recherche ----------
 q.addEventListener('input', () => {
@@ -146,6 +150,7 @@ initSidebar();
 initLook();
 initPhrases();
 initNavigation();
+initRediger();
 render();
 
 try {
