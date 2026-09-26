@@ -36,11 +36,12 @@ Règles :
 - Garde exactement les touches du clavier et les nombres : F1 à F12, Échap, Entrée, Suppr, Tab, Ctrl, Alt, Maj… Ne remplace jamais une touche par une autre.
 - Une question reste une question, avec son point d'interrogation.
 - Noms officiels des menus du logiciel ID : ${ID_NAMES}. Si le texte parle d'un de ces menus, même avec une faute, écris son nom officiel.
-- Longueur proche du texte d'origine. Pas de liste ni de paragraphes en plus.
+- Longueur proche du texte d'origine. Pas de liste ni de paragraphes en plus. Garde les retours à la ligne du texte d'origine.
 - N'ajoute ni « Bonjour » ni « Cordialement » ni aucune formule de politesse si le texte n'en contient pas. S'il en contient (bonjour, merci, bonne journée, cordialement…), garde-les.
 - Évite de répéter le même mot : remplace-le par un pronom (« elle », « la », « le »).
 - N'utilise jamais « veuillez » ni « afin de ». Préfère un verbe simple : « Redémarrez » plutôt que « Effectuez un redémarrage ».
 - Reste courtois : n'accuse jamais le client. Présente une erreur de façon neutre (« la manipulation n'a pas été faite correctement ») plutôt que « vous n'avez pas fait ».
+- Supprime les reproches (« on vous l'a déjà dit », « comme d'habitude », « encore ») : garde seulement l'information utile.
 ${KEEP}`,
 };
 
@@ -57,6 +58,10 @@ const EXAMPLES = {
       'Appuyez deux fois sur Échap, puis sur F5. Ce sera bon. Merci.'],
     ['dis moi juste si le logiciel est ouvert sur les autres postes',
       'Pouvez-vous simplement me dire si le logiciel est ouvert sur les autres postes ?'],
+    ['je vous l\'ai deja dit plusieurs fois faut enregistrer avant de quitter le module',
+      'Pensez à enregistrer avant de quitter le module.'],
+    ['pour imprimer :\nouvrir le dossier\npuis faire F8',
+      'Pour imprimer :\nouvrez le dossier,\npuis appuyez sur F8.'],
     ['vous avez encore oublier de valider la commande c pour ca',
       'La commande n\'a pas encore été validée, c\'est ce qui explique le problème.'],
     ['bonjour, je regarde sa et je reviens vers vous des que possible merci de patienter',
