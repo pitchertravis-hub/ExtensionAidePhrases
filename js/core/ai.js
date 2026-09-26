@@ -23,14 +23,17 @@ ${KEEP}`,
   // Correction et ton professionnel, pour l'onglet Rédiger.
   pro: `Tu améliores des messages courts écrits par un technicien du support du logiciel ID (tchat, consignes, réponses aux clients).
 Réponds toujours en français.
-Ton travail : corriger toutes les fautes et rendre le ton professionnel et courtois, avec vouvoiement, en restant fidèle au texte.
+Ton travail : corriger toutes les fautes ET reformuler les phrases pour qu'elles soient fluides, claires et professionnelles.
+Le texte ne doit pas être seulement corrigé : réécris vraiment les phrases.
 Règles :
-- Garde le même sens, les mêmes étapes, dans le même ordre. N'ajoute aucune information, aucune étape, n'en retire aucune.
+- Au vouvoiement, avec des tournures directes : « Accédez à », « Cliquez sur », « Vous pourrez », « N'oubliez pas de ».
+- Évite les répétitions (« puis… puis… », « il faut… il faut… ») et les phrases trop longues : coupe-les en phrases courtes.
+- Garde le même sens et toutes les étapes, dans le même ordre. N'ajoute aucune information, n'en retire aucune.
 - Garde exactement les noms du logiciel : modules, menus, écrans, boutons, touches (F4, Entrée…). Ne les découpe pas et ne les renomme pas.
 - Noms officiels des menus du logiciel ID : ${ID_NAMES}. Si le texte parle d'un de ces menus, même avec une faute, écris son nom officiel.
-- Garde à peu près la même longueur et la même forme : pas de paragraphes en plus, pas de liste si le texte n'en a pas.
+- Longueur proche du texte d'origine. Pas de liste ni de paragraphes en plus.
 - N'ajoute ni « Bonjour » ni « Cordialement » ni aucune formule de politesse si le texte n'en contient pas. S'il en contient, garde-les.
-- Tournures simples et directes, pas de phrases lourdes comme « veuillez procéder à ».
+- Évite les formules lourdes comme « veuillez procéder à » ou « afin de ».
 ${KEEP}`,
 };
 
@@ -38,9 +41,11 @@ ${KEEP}`,
 const EXAMPLES = {
   pro: [
     ['pouvez vous allez dans le module suivi de factrue puis de renseigner le numero de facture puis fin validé\nIl suffit ensuite de cliquer sur la facture de faire f4 saisie manuel d\'un rejet',
-      'Pouvez-vous aller dans le module Suivi Factures, puis renseigner le numéro de facture et valider ?\nIl suffit ensuite de cliquer sur la facture et d\'appuyer sur F4 (Saisie manuelle d\'un rejet).'],
+      'Rendez-vous dans le module Suivi Factures, saisissez le numéro de facture, puis validez.\nCliquez ensuite sur la facture et appuyez sur F4 pour faire la saisie manuelle du rejet.'],
+    ['Il faut accéder à la fiche patient puis de clique sur le menu burger en haut à gauche puis de cliquer sur info commercial vous aurez la posibilité de cocher le relevé d\'opération et n\'oubliez de selection un profil d\'édtion puis de sauvegarder',
+      'Accédez à la fiche patient, puis cliquez sur le menu burger en haut à gauche et choisissez Info Commercial. Vous pourrez y cocher le relevé d\'opérations. N\'oubliez pas de sélectionner un profil d\'édition avant de sauvegarder.'],
     ['bonjour, je regarde sa et je reviens vers vous des que possible merci de patienter',
-      'Bonjour, je regarde cela et je reviens vers vous dès que possible. Merci de patienter.'],
+      'Bonjour, je vérifie cela et je reviens vers vous dès que possible. Merci de votre patience.'],
   ],
 };
 
@@ -81,8 +86,9 @@ async function session(kind, onProgress) {
     ],
     monitor(m) { m.addEventListener('downloadprogress', (e) => onProgress?.(e.loaded)); },
   };
-  // Peu de fantaisie : l'IA doit rester fidèle au texte (réglage réservé aux extensions).
-  const params = kind === 'fix' ? { temperature: 0, topK: 1 } : { temperature: 0.3, topK: 3 };
+  // Correction : aucune fantaisie. Reformulation : un peu de liberté, sans s'éloigner du texte
+  // (réglage réservé aux extensions).
+  const params = kind === 'fix' ? { temperature: 0, topK: 1 } : { temperature: 0.5, topK: 3 };
   try {
     sessions[kind] = await LanguageModel.create({ ...opts, ...params });
     return sessions[kind];
