@@ -62,11 +62,9 @@ kbd { font: 600 10px var(--mono); padding: 0 5px; border-radius: 4px; border: 1p
 .nav .item:hover { background: var(--sunken); color: var(--ink); }
 .nav .item[aria-current="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }
 .nav .item .n { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-.nav .item .c { font: 500 10.5px var(--mono); color: var(--muted); }
 .nav .fav .ico { color: var(--gold); }
 .nav .more { position: absolute; right: 3px; top: 3px; width: 26px; height: 26px; display: none; background: var(--sunken); }
 .nav li.r:hover .more, .nav li.r:focus-within .more { display: inline-grid; }
-.nav li.r:hover .c, .nav li.r:focus-within .c { visibility: hidden; }
 .nav .sep { height: 1px; background: var(--line); margin: 6px 4px; }
 .nav .sortable-ghost { opacity: .4; }
 .side .add { flex: none; margin-top: auto; height: 32px; border: 1px dashed var(--line-strong); border-radius: 8px; background: none; color: var(--muted); font-weight: 700; display: flex; align-items: center; justify-content: center; gap: 6px; }
@@ -79,9 +77,6 @@ kbd { font: 600 10px var(--mono); padding: 0 5px; border-radius: 4px; border: 1p
 .mhead .t { flex: 1; min-width: 0; }
 .mhead h1 { font: 800 18px/1.2 var(--font); letter-spacing: -.02em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .mhead .sub { color: var(--muted); font-size: 12px; }
-.sort { display: flex; gap: 2px; padding: 2px; border-radius: 7px; background: var(--sunken); flex: none; }
-.sort button { border: 0; background: none; height: 24px; padding: 0 8px; border-radius: 5px; font-size: 11px; font-weight: 700; color: var(--muted); }
-.sort button[aria-pressed="true"] { background: var(--surface); color: var(--ink); }
 .scroll { flex: 1; overflow-y: auto; padding: 2px 14px 14px; display: flex; flex-direction: column; gap: 7px; min-height: 0; }
 .group { margin: 6px 0 0; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; }
@@ -197,7 +192,6 @@ dialog input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--ac
   .listrow { flex: 2 1 0; min-width: 0; }
   .rubrow { display: flex; flex: 3 1 0; min-width: 0; }
   .nav, .side .add { display: none !important; }
-  .sort { display: none; }
   .cols { grid-template-columns: 1fr; }
   .col ul { max-height: 150px; }
   .foot .wide { display: none; }

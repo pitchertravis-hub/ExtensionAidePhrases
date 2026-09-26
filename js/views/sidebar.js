@@ -1,7 +1,6 @@
 // Colonne de gauche : choix de la liste, favoris et rubriques.
 import { store } from '../store.js';
 import { state, render, rubriques, onRender, icon } from '../state.js';
-import { stats } from '../core/stats.js';
 import { askText, confirmAction } from '../ui/dialog.js';
 import { openMenu, bindMenu } from '../ui/menu.js';
 import { escapeHtml } from '../core/text.js';
@@ -14,12 +13,6 @@ const listMenu = $('listMenu');
 const rubMenu = $('rubMenu');
 let menuIndex = -1;
 let sortable = null;
-
-export function favCount(listName = state.list) {
-  let n = 0;
-  for (const r of rubriques(listName)) for (const p of r.phrases) if (stats.isFav(p)) n++;
-  return n;
-}
 
 // Ouvre une rubrique (ou les favoris) et vide la recherche.
 export function openRubrique(index, mode = 'rub') {
@@ -55,10 +48,10 @@ function renderSide() {
   const onPh = state.tab === 'ph' && !state.q;
   let h = '';
   if (state.list) {
-    h += `<li class="fav"><button class="item" type="button" data-fav="1" aria-current="${onPh && state.mode === 'fav'}">${icon('star')}<span class="n">Favoris</span><span class="c">${favCount()}</span></button></li><li class="sep" aria-hidden="true"></li>`;
+    h += `<li class="fav"><button class="item" type="button" data-fav="1" aria-current="${onPh && state.mode === 'fav'}">${icon('star')}<span class="n">Favoris</span></button></li><li class="sep" aria-hidden="true"></li>`;
   }
   rubs.forEach((r, i) => {
-    h += `<li class="r" data-r="${i}"><button class="item" type="button" data-r="${i}" aria-current="${onPh && state.mode === 'rub' && state.rub === i}" title="${escapeHtml(r.name)}"><span class="n">${escapeHtml(r.name)}</span><span class="c">${r.phrases.length}</span></button><button class="ibtn more" type="button" aria-label="Actions sur la rubrique">${icon('dots')}</button></li>`;
+    h += `<li class="r" data-r="${i}"><button class="item" type="button" data-r="${i}" aria-current="${onPh && state.mode === 'rub' && state.rub === i}" title="${escapeHtml(r.name)}"><span class="n">${escapeHtml(r.name)}</span></button><button class="ibtn more" type="button" aria-label="Actions sur la rubrique">${icon('dots')}</button></li>`;
   });
   nav.innerHTML = h;
   renderRubSelect(rubs, onPh);
@@ -69,8 +62,8 @@ function renderSide() {
 function renderRubSelect(rubs, onPh) {
   rubSelect.textContent = '';
   if (state.list) {
-    rubSelect.append(new Option(`★ Favoris (${favCount()})`, 'fav'));
-    rubs.forEach((r, i) => rubSelect.append(new Option(`${r.name} (${r.phrases.length})`, String(i))));
+    rubSelect.append(new Option('★ Favoris', 'fav'));
+    rubs.forEach((r, i) => rubSelect.append(new Option(r.name, String(i))));
     rubSelect.append(new Option('+ Nouvelle rubrique…', 'new'));
   }
   const cur = state.mode === 'fav' ? 'fav' : String(state.rub);
