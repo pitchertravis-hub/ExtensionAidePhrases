@@ -3,7 +3,7 @@
 import { store } from '../store.js';
 import { state, render, rubriques, copyText } from '../state.js';
 import { textToHtml, escapeHtml } from '../core/text.js';
-import { aiStatus, rewriteText, chromeVersion } from '../core/ai.js';
+import { aiStatus, rewriteText, chromeVersion, warmUp } from '../core/ai.js';
 import { createVoice } from '../core/voice.js';
 import { openMenu, bindMenu } from '../ui/menu.js';
 import { inform } from '../ui/dialog.js';
@@ -50,7 +50,16 @@ async function run() {
   setTag('L’IA réfléchit…');
   updateButtons();
   try {
-    const res = await rewriteText(text, (x) => setTag(`Préparation de l’IA… ${Math.round(x * 100)} %`));
+    const res = await rewriteText(
+      text,
+      (x) => setTag(`Préparation de l’IA… ${Math.round(x * 100)} %`),
+      (partial) => {
+        // Le texte s'affiche au fur et à mesure.
+        if (box.classList.contains('busy')) { box.classList.remove('busy'); setTag('L’IA écrit…'); }
+        out.value = partial;
+        out.scrollTop = out.scrollHeight;
+      },
+    );
     out.value = res.text;
     if (res.ok) setTag('Reformulé · relisez avant d’envoyer');
     else setTag(res.why, true);
@@ -175,6 +184,7 @@ export function initRediger() {
   $('rdDiag').addEventListener('click', () => chrome.tabs.create({ url: 'chrome://on-device-internals' }));
 
   draft.addEventListener('input', () => { save(); updateButtons(); });
+  draft.addEventListener('focus', () => { if (usable) warmUp(); });
   out.addEventListener('input', () => { save(); updateButtons(); });
   draft.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); run(); }

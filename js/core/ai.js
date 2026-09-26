@@ -99,8 +99,16 @@ export async function aiStatus() {
   }
 }
 
-async function session(kind, onProgress) {
-  if (sessions[kind]) return sessions[kind];
+// Une session par usage, préparée une seule fois : l'IA lit alors ses consignes et ses exemples.
+// La promesse est gardée pour que le préchauffage et un clic rapide partagent la même préparation.
+function session(kind, onProgress) {
+  if (!sessions[kind]) {
+    sessions[kind] = createSession(kind, onProgress).catch((e) => { delete sessions[kind]; throw e; });
+  }
+  return sessions[kind];
+}
+
+async function createSession(kind, onProgress) {
   const opts = {
     ...lang,
     initialPrompts: [
@@ -113,20 +121,38 @@ async function session(kind, onProgress) {
   // (réglage réservé aux extensions).
   const params = kind === 'fix' ? { temperature: 0, topK: 1 } : { temperature: 0.5, topK: 3 };
   try {
-    sessions[kind] = await LanguageModel.create({ ...opts, ...params });
-    return sessions[kind];
+    return await LanguageModel.create({ ...opts, ...params });
   } catch { /* réglage refusé : valeurs par défaut */ }
-  sessions[kind] = await LanguageModel.create(opts);
-  return sessions[kind];
+  return LanguageModel.create(opts);
 }
 
-async function ask(kind, text, onProgress) {
-  const s = await (await session(kind, onProgress)).clone();
+// Prépare l'IA pendant que l'utilisateur écrit, pour que Reformuler réponde plus vite.
+// Seulement si le modèle est déjà sur l'ordinateur : un téléchargement doit partir d'un clic.
+export async function warmUp() {
   try {
-    let out = (await s.prompt(kind === 'pro' ? wrap(text) : text)).trim()
-      .replace(/^```\w*\n?|\n?```$/g, '').replace(/<\/?texte>/g, '').trim();
-    if (/^["«“]/.test(out) && !/^["«“]/.test(text)) out = out.replace(/^["«“]\s*|\s*["»”]$/g, '');
-    return out;
+    const st = await LanguageModel.availability(lang);
+    if (st === 'available') await session('pro');
+  } catch { /* le clic sur Reformuler réessaiera */ }
+}
+
+const clean = (out, text) => {
+  out = out.trim().replace(/^```\w*\n?|\n?```$/g, '').replace(/<\/?texte>/g, '').trim();
+  if (/^["«“]/.test(out) && !/^["«“]/.test(text)) out = out.replace(/^["«“]\s*|\s*["»”]$/g, '');
+  return out;
+};
+
+// `onText` reçoit le texte au fur et à mesure qu'il s'écrit.
+async function ask(kind, text, onProgress, onText) {
+  const s = await (await session(kind, onProgress)).clone();
+  const input = kind === 'pro' ? wrap(text) : text;
+  try {
+    if (!onText || !s.promptStreaming) return clean(await s.prompt(input), text);
+    let out = '';
+    for await (const chunk of s.promptStreaming(input)) {
+      out += chunk;
+      onText(clean(out, text));
+    }
+    return clean(out, text);
   } finally {
     s.destroy();
   }
@@ -188,8 +214,8 @@ function problem(before, after) {
 }
 
 // Texte corrigé et rendu professionnel. `why` explique ce qui semble faux, sinon il est vide.
-export async function rewriteText(text, onProgress) {
-  const out = await ask('pro', text.trim(), onProgress);
+export async function rewriteText(text, onProgress, onText) {
+  const out = await ask('pro', text.trim(), onProgress, onText);
   const why = problem(text, out);
   return { text: out, ok: !why, why };
 }
