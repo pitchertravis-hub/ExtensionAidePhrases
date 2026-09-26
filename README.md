@@ -13,6 +13,7 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
   `{date}`, `{heure}`, `{jour}` et `{date+2}` se remplissent seuls.
 - **Favoris** en tête de colonne, tri **Plus utilisées** dans chaque rubrique.
 - **Navigation ID** en trois colonnes, avec les 5 derniers chemins en raccourci.
+- **Apparence** (Réglages → Apparence) : palettes prêtes, ou **Perso** avec deux couleurs au choix (bandeau et accent) ; le reste du thème, clair et sombre, en est déduit.
 - **Deux formats** : fenêtre 780 × 560 (clic sur l'icône) ou **panneau latéral** qui reste ouvert
   (Réglages → Ancrer sur le côté).
 
