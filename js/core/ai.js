@@ -149,12 +149,25 @@ export async function correctText(text, onProgress) {
 }
 
 // Touches du clavier citées dans un texte, écrites d'une seule façon (« echap », « esc » → echap).
+// Entrée, Tab, Maj, Alt et Suppr sont aussi des mots courants (« date d'entrée », « maj » pour mise à jour) :
+// ils ne comptent que près d'un verbe de clavier (« appuyez », « tapez », « touche »…) ou d'un « + ».
 const KEY_RE = /(?<![\p{L}\d])(f(?:1[0-2]|[1-9])|[ée]chap|esc|entr[ée]e|enter|suppr|tab|ctrl|alt|maj|shift)(?![\p{L}\d])/giu;
 const KEY_SAME = { esc: 'echap', enter: 'entree', shift: 'maj' };
+const KEY_WORDS = new Set(['entree', 'tab', 'maj', 'alt', 'suppr']);
+const KEY_BEFORE = /(?:touche|appuy|tap|press|clavier|\+)[^.!?\n]{0,30}$/i;
 function keysOf(text) {
-  return (text.match(KEY_RE) ?? [])
-    .map((k) => k.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, ''))
-    .map((k) => KEY_SAME[k] ?? k);
+  const keys = [];
+  for (const m of text.matchAll(KEY_RE)) {
+    let k = m[1].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    k = KEY_SAME[k] ?? k;
+    if (KEY_WORDS.has(k)) {
+      const before = text.slice(Math.max(0, m.index - 40), m.index);
+      const after = text.slice(m.index + m[0].length, m.index + m[0].length + 3);
+      if (!KEY_BEFORE.test(before) && !/^\s*\+/.test(after)) continue;
+    }
+    keys.push(k);
+  }
+  return keys;
 }
 
 // Ce qui ne va pas dans une reformulation, ou '' si elle paraît sûre.
