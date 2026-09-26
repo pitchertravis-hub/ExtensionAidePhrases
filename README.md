@@ -4,6 +4,30 @@ Extension Chrome : phrases prêtes à copier, rangées par listes et rubriques, 
 
 Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le dossier est l'extension.
 
+## Utilisation
+
+- **Une seule fenêtre** : rubriques à gauche, phrases à droite, onglet **Navigation ID** en haut.
+- **Recherche unique** (en haut) : noms de rubriques, texte des phrases et menus ID, sans tenir compte des accents.
+- **Un clic sur une phrase la copie.** Le crayon (ou `E`) sert à la modifier, l'étoile (ou `F`) à la mettre en favori.
+- **Champs à remplir** : écrivez `{Nom}`, `{Dossier}`… dans une phrase ; un petit formulaire s'ouvre à la copie.
+  `{date}`, `{heure}`, `{jour}` et `{date+2}` se remplissent seuls.
+- **Favoris** en tête de colonne, tri **Plus utilisées** dans chaque rubrique.
+- **Navigation ID** en trois colonnes, avec les 5 derniers chemins en raccourci.
+- **Deux formats** : fenêtre 780 × 560 (clic sur l'icône) ou **panneau latéral** qui reste ouvert
+  (Réglages → Ancrer sur le côté).
+
+### Clavier
+
+| Touche | Action |
+|---|---|
+| `Alt+Z` | Ouvrir ZenText (modifiable dans `chrome://extensions/shortcuts`) |
+| `/` | Aller dans la recherche |
+| `↑` `↓` | Choisir une phrase |
+| `Entrée` | Copier la phrase choisie |
+| `E` / `F` / `N` | Modifier / favori / nouvelle phrase |
+| `Échap` | Vider la recherche, annuler une modification |
+| `Ctrl+Entrée` | Enregistrer une modification |
+
 ## Mettre l'extension dans Chrome
 
 **Pour l'utiliser ou la tester**
@@ -18,6 +42,8 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
 
 Le champ `key` sert au chargement non empaqueté : il garde le même identifiant d'extension, donc les mêmes données enregistrées.
 
+Chrome 116 ou plus récent est nécessaire (panneau latéral).
+
 ## Import et export
 
 Menu **Réglages** (icône curseurs, en haut à droite) :
@@ -31,16 +57,16 @@ Une sauvegarde JSON est aussi téléchargée automatiquement à l'ouverture si l
 
 ```
 manifest.json
-popup.html              les 3 vues (160 / 775 / 310 px) et les icônes
+popup.html              fenêtre et panneau latéral (même page)
 css/tokens.css          couleurs clair / sombre, police
-css/app.css             mise en page et composants
-js/theme.js             applique le thème avant l'affichage
-js/main.js              démarrage
-js/app.js               passage d'une vue à l'autre, copie
+css/app.css             mise en page (large ≥ 620 px, étroite en dessous)
+js/theme.js             thème et format avant l'affichage
+js/main.js              démarrage, recherche, clavier, réglages
+js/state.js             état de l'interface
 js/store.js             données (localStorage, mêmes clés qu'en v2.5)
-js/views/               rubriques.js, phrases.js, navigation-id.js
-js/ui/                  dialog.js (<dialog>), menu.js (popover), toast.js
-js/core/                text.js, csv.js, backup.js, voice.js
+js/views/               sidebar.js, phrases.js, navigation-id.js
+js/ui/                  dialog.js, menu.js, toast.js, phrase-text.js
+js/core/                text.js, fields.js, stats.js, csv.js, backup.js, voice.js
 js/data/id-menus.js     catalogue des menus ID (A à I)
 lib/Sortable.min.js     glisser-déposer (SortableJS 1.15.6, MIT)
 fonts/                  Manrope (licence OFL)

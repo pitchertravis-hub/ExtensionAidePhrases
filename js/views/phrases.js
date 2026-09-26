@@ -1,214 +1,414 @@
-// Vue 2 · Phrases d'une rubrique.
+// Onglet Phrases : rubrique ouverte, favoris ou résultats de recherche.
+// Un clic sur une carte copie la phrase ; modifier est une action à part.
 import { store } from '../store.js';
-import { show, onLeave, copyToClipboard, icon } from '../app.js';
-import { htmlToText, linkify, unlinkify, normalizeText } from '../core/text.js';
-import { showToast, hideToast } from '../ui/toast.js';
+import { state, render, rubriques, onRender, copyText, icon, setSort } from '../state.js';
+import { stats } from '../core/stats.js';
+import { fieldsOf, fillText } from '../core/fields.js';
+import { htmlToText, escapeHtml } from '../core/text.js';
+import { showPhrase, editablePhrase, foldText } from '../ui/phrase-text.js';
+import { showToast } from '../ui/toast.js';
+import { searchId, openPath } from './navigation-id.js';
+import { setList, addRubrique } from './sidebar.js';
 
 const $ = (id) => document.getElementById(id);
-const listEl = $('phraseList');
-const titleEl = $('rubriqueTitle');
-const countEl = $('phCount');
-const listNameEl = $('phListName');
-const filterEl = $('phraseFilter');
-const emptyEl = $('phEmpty');
+const listEl = $('phList');
+const titleEl = $('mTitle');
+const subEl = $('mSub');
+const sortBox = $('sortBox');
 
-// Rubrique ouverte, repérée par son index (et non plus par son nom :
-// deux rubriques du même nom ne se mélangent plus).
-let current = { list: '', index: -1 };
+let items = [];            // [{ l, r, p }] affichés, dans l'ordre
+let lastValues = {};       // dernières valeurs saisies dans les champs
 let sortable = null;
-let onChange = () => {};
+const foldCache = new Map();
 
-function rubrique() {
-  return store.rubriques(current.list)[current.index];
+const htmlOf = (it) => store.rubriques(it.l)[it.r]?.phrases[it.p] ?? '';
+const same = (a, b) => a && b && a.l === b.l && a.r === b.r && a.p === b.p;
+
+function folded(html) {
+  let f = foldCache.get(html);
+  if (f === undefined) {
+    f = foldText(htmlToText(html));
+    if (foldCache.size > 5000) foldCache.clear();
+    foldCache.set(html, f);
+  }
+  return f;
 }
 
-function updateCount() {
-  const n = rubrique()?.phrases.length ?? 0;
-  countEl.textContent = n === 1 ? '1 phrase' : `${n} phrases`;
+function queryFold() {
+  return foldText(state.q.trim());
 }
 
-function renumber() {
-  listEl.querySelectorAll('.ph').forEach((ph, i) => {
-    ph.dataset.index = i;
-    ph.querySelector('.idx span').textContent = String(i + 1).padStart(2, '0');
-  });
+// ---------- Ce qui est affiché ----------
+function collect() {
+  const q = queryFold();
+  items = [];
+  if (q) {
+    for (const l of store.listNames()) {
+      store.rubriques(l).forEach((r, ri) => {
+        const nameHit = foldText(r.name).includes(q);
+        r.phrases.forEach((p, pi) => { if (nameHit || folded(p).includes(q)) items.push({ l, r: ri, p: pi }); });
+      });
+    }
+    // Liste en cours d'abord, favoris puis plus utilisées.
+    items.sort((a, b) => (b.l === state.list) - (a.l === state.list)
+      || stats.isFav(htmlOf(b)) - stats.isFav(htmlOf(a))
+      || stats.count(htmlOf(b)) - stats.count(htmlOf(a)));
+  } else if (state.mode === 'fav') {
+    rubriques().forEach((r, ri) => r.phrases.forEach((p, pi) => { if (stats.isFav(p)) items.push({ l: state.list, r: ri, p: pi }); }));
+  } else {
+    const r = rubriques()[state.rub];
+    if (r) r.phrases.forEach((_, pi) => items.push({ l: state.list, r: state.rub, p: pi }));
+    if (state.sort === 'used') {
+      items.sort((a, b) => stats.isFav(htmlOf(b)) - stats.isFav(htmlOf(a)) || stats.count(htmlOf(b)) - stats.count(htmlOf(a)) || a.p - b.p);
+    }
+  }
+  if (state.sel >= items.length) state.sel = Math.max(0, items.length - 1);
 }
 
-function phraseCard(html, i) {
-  const ph = document.createElement('div');
-  ph.className = 'ph';
-  ph.dataset.index = i;
-  ph.innerHTML = `
-    <span class="idx" title="Glisser pour déplacer"><span></span>${icon('grip')}</span>
-    <div class="txt" contenteditable="true" spellcheck="true"></div>
-    <div class="acts">
-      <button class="copy" type="button">${icon('copy')}Copier</button>
-      <button class="ibtn del" type="button" title="Supprimer la phrase">${icon('trash')}</button>
-    </div>`;
-  const txt = ph.querySelector('.txt');
-  txt.innerHTML = html;
-  // Répare les liens mal imbriqués enregistrés par la v2.5, puis refait les liens.
-  unlinkify(txt);
-  linkify(txt);
-  return ph;
+function canReorder() {
+  return !state.q.trim() && state.mode === 'rub' && state.sort === 'order' && !state.edit;
 }
 
-function render() {
-  const r = rubrique();
+function renderHead(q) {
+  const rub = rubriques()[state.rub];
+  if (q) {
+    titleEl.textContent = `Résultats pour « ${state.q.trim()} »`;
+    subEl.textContent = `${items.length} phrase(s) dans toutes les listes`;
+  } else if (state.mode === 'fav') {
+    titleEl.textContent = 'Favoris';
+    subEl.textContent = `${state.list} · ${items.length} phrase(s) épinglée(s) avec l'étoile`;
+  } else {
+    titleEl.textContent = rub ? rub.name : state.list ? 'Aucune rubrique' : 'Bienvenue';
+    subEl.textContent = rub ? `${state.list} · ${items.length} phrase(s)` : state.list ? 'Créez une rubrique avec le bouton + Rubrique.' : 'Créez une liste avec le bouton ⋯ ou importez vos phrases (Réglages).';
+  }
+  sortBox.style.visibility = !q && state.mode === 'rub' && rub ? 'visible' : 'hidden';
+  sortBox.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', b.dataset.s === state.sort));
+}
+
+function chipsHtml(q) {
+  let h = '';
+  const rubHits = [];
+  for (const l of store.listNames()) {
+    store.rubriques(l).forEach((r, ri) => { if (foldText(r.name).includes(q)) rubHits.push({ l, ri, name: r.name }); });
+  }
+  if (rubHits.length) {
+    h += `<div class="group cap">Rubriques</div><div class="chips">${rubHits.slice(0, 8)
+      .map((x) => `<button class="chip" type="button" data-jl="${escapeHtml(x.l)}" data-jr="${x.ri}"><span>${escapeHtml(x.l)}</span>${escapeHtml(x.name)}</button>`).join('')}</div>`;
+  }
+  const ids = searchId(q);
+  if (ids.length) {
+    h += `<div class="group cap">Menus ID</div><div class="chips">${ids
+      .map((m) => `<button class="chip" type="button" data-idp="${m.path.join('|')}"><span>${m.path.filter(Boolean).join('›')}</span>${escapeHtml(m.label)}</button>`).join('')}</div>`;
+  }
+  if (h) h += '<div class="group cap">Phrases</div>';
+  return h;
+}
+
+function card(it, i, q) {
+  const html = htmlOf(it);
+  const text = htmlToText(html);
+  const editing = same(state.edit, it);
+  const filling = same(state.fill, it);
+  const fav = stats.isFav(html);
+  const used = stats.count(html);
+  const fields = fieldsOf(text);
+
+  const el = document.createElement('div');
+  el.className = 'ph' + (i === state.sel ? ' sel' : '') + (editing ? ' editing' : '') + (fav ? ' is-fav' : '');
+  el.dataset.i = i;
+  el.innerHTML = `
+    ${canReorder() ? `<span class="grip" title="Glisser pour déplacer">${icon('grip')}</span>` : ''}
+    <div class="body"><div class="txt"></div></div>
+    ${editing ? '' : `<div class="acts">
+      <button class="ibtn star${fav ? ' on' : ''}" type="button" data-a="fav" title="Favori (F)">${icon('star')}</button>
+      <button class="ibtn" type="button" data-a="edit" title="Modifier (E)">${icon('pen')}</button>
+      <button class="ibtn" type="button" data-a="del" title="Supprimer">${icon('trash')}</button>
+    </div><span class="hint">Cliquer pour copier</span>`}`;
+  const body = el.querySelector('.body');
+  const txt = el.querySelector('.txt');
+
+  if (editing) {
+    editablePhrase(txt, html);
+    txt.contentEditable = 'true';
+    txt.spellcheck = true;
+    body.insertAdjacentHTML('beforeend', `<div class="edit-acts"><small>{Nom} = champ à remplir · {date}, {heure}, {jour} se remplissent seuls · Ctrl+Entrée pour enregistrer</small><span><button class="btn" type="button" data-a="cancel">Annuler</button><button class="btn solid" type="button" data-a="save">Enregistrer</button></span></div>`);
+  } else {
+    showPhrase(txt, html, q);
+    const meta = [];
+    if (q || state.mode === 'fav') meta.push(`<span class="rb">${escapeHtml(`${it.l} › ${store.rubriques(it.l)[it.r].name}`)}</span>`);
+    if (used) meta.push(`<span>${icon('clock')} copiée ${used}×</span>`);
+    if (fields.length) meta.push(`<span>${fields.length} champ(s) à remplir</span>`);
+    body.insertAdjacentHTML('beforeend', `<div class="meta">${meta.join('')}</div>`);
+  }
+
+  if (filling) {
+    const form = document.createElement('div');
+    form.className = 'fill';
+    form.innerHTML = fields.map((f) => `<label><span></span><input data-f=""></label>`).join('')
+      + `<div class="go"><small>Entrée pour copier · Échap pour annuler</small><button class="btn solid" type="button" data-a="dofill">${icon('copy')}Copier</button></div>`;
+    form.querySelectorAll('label').forEach((label, j) => {
+      label.querySelector('span').textContent = fields[j];
+      const input = label.querySelector('input');
+      input.dataset.f = fields[j];
+      input.value = lastValues[fields[j]] ?? '';
+    });
+    body.append(form);
+  }
+  return el;
+}
+
+function renderPh() {
+  if (state.tab !== 'ph') return;
+  const draft = listEl.querySelector('.ph.editing .txt')?.innerHTML;
+  collect();
+  const q = queryFold();
+  renderHead(q);
+
   listEl.textContent = '';
-  if (!r) return;
-  r.phrases.forEach((html, i) => listEl.append(phraseCard(html, i)));
-  renumber();
-  updateCount();
-  applyFilter();
+  if (q) listEl.insertAdjacentHTML('beforeend', chipsHtml(q));
+  items.forEach((it, i) => listEl.append(card(it, i, q)));
+  if (!items.length) {
+    const msg = q ? 'Aucune phrase ne contient ce texte.'
+      : state.mode === 'fav' ? 'Aucun favori. Cliquez l’étoile d’une phrase pour l’épingler ici.'
+      : rubriques()[state.rub] ? 'Aucune phrase dans cette rubrique.' : '';
+    if (msg) listEl.insertAdjacentHTML('beforeend', `<div class="empty">${msg}</div>`);
+  }
+  sortable?.option('disabled', !canReorder());
+
+  const editTxt = listEl.querySelector('.ph.editing .txt');
+  if (editTxt) {
+    if (draft !== undefined) editTxt.innerHTML = draft;
+    if (document.activeElement !== editTxt) {
+      editTxt.focus();
+      const range = document.createRange();
+      range.selectNodeContents(editTxt);
+      range.collapse(false);
+      getSelection().removeAllRanges();
+      getSelection().addRange(range);
+    }
+  }
+  listEl.querySelector('.fill input')?.focus();
 }
 
-function applyFilter() {
-  const q = normalizeText(filterEl.value);
-  let visible = 0;
-  listEl.querySelectorAll('.ph').forEach((ph) => {
-    const match = !q || normalizeText(ph.querySelector('.txt').textContent).includes(q);
-    ph.hidden = !match;
-    if (match) visible++;
-  });
-  sortable?.option('disabled', !!q);
-  const total = rubrique()?.phrases.length ?? 0;
-  emptyEl.hidden = visible > 0;
-  emptyEl.textContent = total ? 'Aucune phrase ne correspond au filtre.' : 'Aucune phrase pour le moment.';
+// ---------- Actions ----------
+function flash(i) {
+  const el = listEl.querySelector(`.ph[data-i="${i}"]`);
+  if (!el) return;
+  el.classList.add('flash');
+  setTimeout(() => el.classList.remove('flash'), 700);
 }
 
-function savePhrase(ph) {
-  const r = rubrique();
-  const clone = ph.querySelector('.txt').cloneNode(true);
-  r.phrases[Number(ph.dataset.index)] = unlinkify(clone).innerHTML;
-  store.save();
+export async function copyItem(i, values) {
+  const it = items[i];
+  if (!it || state.edit) return;
+  const html = htmlOf(it);
+  const text = htmlToText(html);
+  if (fieldsOf(text).length && !values) {
+    state.fill = { ...it };
+    state.sel = i;
+    renderPh();
+    return;
+  }
+  const out = fillText(text, values);
+  const ok = await copyText(out);
+  if (values) Object.assign(lastValues, values);
+  state.fill = null;
+  state.sel = i;
+  if (ok) stats.bump(html);
+  render();
+  flash(i);
+  showToast(ok ? `Copié · ${out.replace(/\s+/g, ' ').slice(0, 60)}${out.length > 60 ? '…' : ''}` : 'Copie impossible : cliquez dans la fenêtre puis réessayez.');
 }
 
-function addPhrase() {
-  const r = rubrique();
-  if (!r) return;
-  filterEl.value = '';
-  r.phrases.push('');
+function readFill(el) {
+  const v = {};
+  el.querySelectorAll('.fill input').forEach((x) => { v[x.dataset.f] = x.value.trim(); });
+  return v;
+}
+
+export function editItem(i) {
+  const it = items[i];
+  if (!it) return;
+  state.fill = null;
+  state.edit = { ...it };
+  state.sel = i;
+  renderPh();
+}
+
+function saveEdit() {
+  const el = listEl.querySelector('.ph.editing .txt');
+  const e = state.edit;
+  if (!el || !e) return;
+  const rub = store.rubriques(e.l)[e.r];
+  const old = rub.phrases[e.p];
+  const html = el.innerHTML;
+  state.edit = null;
+  if (!htmlToText(html) && !/<img/i.test(html)) {
+    rub.phrases.splice(e.p, 1);
+    store.save();
+    render();
+    if (!e.isNew) showToast('Phrase vide supprimée.');
+    return;
+  }
+  rub.phrases[e.p] = html;
+  stats.rekey(old, html);
   store.save();
   render();
-  onChange();
-  const last = listEl.lastElementChild;
-  last?.scrollIntoView({ block: 'nearest' });
-  last?.querySelector('.txt').focus();
+  showToast(e.isNew ? 'Phrase ajoutée' : 'Modifications enregistrées');
 }
 
-function deletePhrase(ph) {
-  const r = rubrique();
-  const index = Number(ph.dataset.index);
-  const [removed] = r.phrases.splice(index, 1);
+function cancelEdit() {
+  const e = state.edit;
+  state.edit = null;
+  if (e?.isNew) {
+    store.rubriques(e.l)[e.r].phrases.splice(e.p, 1);
+    store.save();
+  }
+  render();
+}
+
+export function toggleFavItem(i) {
+  const it = items[i];
+  if (!it) return;
+  const on = stats.toggleFav(htmlOf(it));
+  state.sel = i;
+  render();
+  showToast(on ? 'Ajoutée aux favoris' : 'Retirée des favoris');
+}
+
+function deleteItem(i) {
+  const it = items[i];
+  if (!it) return;
+  const rub = store.rubriques(it.l)[it.r];
+  const [removed] = rub.phrases.splice(it.p, 1);
   store.save();
   render();
-  onChange();
-  const at = { ...current };
   showToast('Phrase supprimée.', {
     actionLabel: 'Annuler',
     onClick: () => {
-      const target = store.rubriques(at.list)[at.index];
-      if (!target) return;
-      target.phrases.splice(Math.min(index, target.phrases.length), 0, removed);
+      rub.phrases.splice(Math.min(it.p, rub.phrases.length), 0, removed);
       store.save();
-      if (current.list === at.list && current.index === at.index) render();
-      onChange();
+      render();
     },
   });
 }
 
-// Retire les phrases laissées vides en quittant la vue.
-function dropEmpty() {
-  const r = rubrique();
-  if (!r) return;
-  const before = r.phrases.length;
-  r.phrases = r.phrases.filter((p) => htmlToText(p) !== '' || /<img/i.test(p));
-  if (r.phrases.length !== before) {
-    store.save();
-    onChange();
+export async function addPhrase() {
+  if (!rubriques()[state.rub]) {
+    await addRubrique();
+    if (!rubriques()[state.rub]) return;
   }
-}
-
-export function openPhrases(listName, index) {
-  current = { list: listName, index };
-  const r = rubrique();
-  if (!r) return;
-  titleEl.textContent = r.name;
-  listNameEl.textContent = listName;
-  filterEl.value = '';
-  hideToast();
+  state.q = '';
+  $('q').value = '';
+  state.mode = 'rub';
+  state.tab = 'ph';
+  const rub = rubriques()[state.rub];
+  rub.phrases.push('');
+  state.edit = { l: state.list, r: state.rub, p: rub.phrases.length - 1, isNew: true };
+  state.fill = null;
   render();
-  show('phrases');
-  listEl.scrollTop = 0;
+  listEl.querySelector('.ph.editing')?.scrollIntoView({ block: 'nearest' });
 }
 
-export function initPhrases({ onDataChange }) {
-  onChange = onDataChange;
+// ---------- Clavier ----------
+export function moveSel(delta) {
+  if (!items.length) return;
+  state.sel = Math.max(0, Math.min(items.length - 1, state.sel + delta));
+  listEl.querySelectorAll('.ph').forEach((el) => el.classList.toggle('sel', Number(el.dataset.i) === state.sel));
+  listEl.querySelector('.ph.sel')?.scrollIntoView({ block: 'nearest' });
+}
+export const selected = () => state.sel;
+export const hasItems = () => items.length > 0;
 
-  $('backBtn').addEventListener('click', () => show('rubriques'));
-  $('addPhraseBtn').addEventListener('click', addPhrase);
-  $('addPhraseBtn2').addEventListener('click', addPhrase);
-  filterEl.addEventListener('input', applyFilter);
-  onLeave('phrases', () => { dropEmpty(); hideToast(); });
+export function initPhrases() {
+  onRender(renderPh);
 
-  listEl.addEventListener('input', (e) => {
-    const ph = e.target.closest('.ph');
-    if (ph) savePhrase(ph);
+  $('addPhBtn').addEventListener('click', addPhrase);
+  sortBox.addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-s]');
+    if (!b) return;
+    setSort(b.dataset.s);
+    state.sel = 0;
+    render();
   });
 
-  // Coller en texte brut.
+  listEl.addEventListener('click', (e) => {
+    const idChip = e.target.closest('[data-idp]');
+    if (idChip) {
+      state.tab = 'id';
+      render();
+      openPath(idChip.dataset.idp.split('|'));
+      return;
+    }
+    const rubChip = e.target.closest('[data-jl]');
+    if (rubChip) {
+      setList(rubChip.dataset.jl);
+      state.rub = Number(rubChip.dataset.jr);
+      state.q = '';
+      $('q').value = '';
+      render();
+      return;
+    }
+    const link = e.target.closest('.txt a');
+    const el = e.target.closest('.ph');
+    if (!el) return;
+    const i = Number(el.dataset.i);
+    if (link && !el.classList.contains('editing')) {
+      e.preventDefault();
+      window.open(link.href, '_blank', 'noopener');
+      return;
+    }
+    const act = e.target.closest('[data-a]')?.dataset.a;
+    if (act === 'fav') return toggleFavItem(i);
+    if (act === 'edit') return editItem(i);
+    if (act === 'del') return deleteItem(i);
+    if (act === 'save') return saveEdit();
+    if (act === 'cancel') return cancelEdit();
+    if (act === 'dofill') return copyItem(i, readFill(el));
+    if (el.classList.contains('editing') || e.target.closest('.fill')) return;
+    copyItem(i);
+  });
+
+  listEl.addEventListener('keydown', (e) => {
+    const el = e.target.closest('.ph');
+    if (!el) return;
+    if (e.target.matches('.fill input')) {
+      if (e.key === 'Enter') { e.preventDefault(); copyItem(Number(el.dataset.i), readFill(el)); }
+      else if (e.key === 'Escape') { e.preventDefault(); e.stopPropagation(); state.fill = null; renderPh(); }
+      e.stopPropagation();
+      return;
+    }
+    if (e.target.closest('.ph.editing .txt')) {
+      if (e.key === 'Escape') { e.preventDefault(); cancelEdit(); }
+      else if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); saveEdit(); }
+      e.stopPropagation();
+    }
+  });
+
+  // Coller en texte brut pendant la modification.
   listEl.addEventListener('paste', (e) => {
-    if (!e.target.closest('.txt')) return;
+    if (!e.target.closest('.ph.editing .txt')) return;
     const text = e.clipboardData?.getData('text/plain');
     if (!text) return;
     e.preventDefault();
     document.execCommand('insertText', false, text);
   });
 
-  listEl.addEventListener('click', async (e) => {
-    const link = e.target.closest('.txt a');
-    if (link) {
-      e.preventDefault();
-      window.open(link.href, '_blank', 'noopener');
-      return;
-    }
-    const ph = e.target.closest('.ph');
-    if (!ph) return;
-    if (e.target.closest('.del')) {
-      deletePhrase(ph);
-    } else if (e.target.closest('.copy')) {
-      const btn = e.target.closest('.copy');
-      const text = htmlToText(rubrique().phrases[Number(ph.dataset.index)]);
-      const ok = await copyToClipboard(text);
-      btn.classList.toggle('done', ok);
-      btn.innerHTML = ok ? `${icon('check')}Copié` : `${icon('copy')}Échec`;
-      clearTimeout(btn._t);
-      btn._t = setTimeout(() => {
-        btn.classList.remove('done');
-        btn.innerHTML = `${icon('copy')}Copier`;
-      }, 1500);
-    }
-  });
-
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && !$('view-phrases').hidden && !e.target.closest('.txt') && !document.querySelector('dialog[open]')) {
-      show('rubriques');
-    }
-  });
-
   if (window.Sortable) {
     sortable = new Sortable(listEl, {
       animation: 150,
-      handle: '.idx',
+      handle: '.grip',
       draggable: '.ph',
       onEnd(evt) {
-        if (evt.oldIndex === evt.newIndex) return;
-        const phrases = rubrique().phrases;
-        const [moved] = phrases.splice(evt.oldIndex, 1);
-        phrases.splice(evt.newIndex, 0, moved);
+        const from = evt.oldDraggableIndex;
+        const to = evt.newDraggableIndex;
+        if (from === to) return;
+        const phrases = rubriques()[state.rub].phrases;
+        const [moved] = phrases.splice(from, 1);
+        phrases.splice(to, 0, moved);
         store.save();
-        renumber();
+        state.sel = to;
+        render();
       },
     });
   }
