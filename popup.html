@@ -38,6 +38,10 @@
     <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></symbol>
     <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16a5 5 0 0 0 5-5c0-4-4-7.2-9-7.2z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="14.5" cy="7" r="1"/></symbol>
     <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4 12a8 8 0 1 0 2.3-5.6M4 4v4h4"/></symbol>
+    <symbol id="i-spell" viewBox="0 0 24 24"><path d="m3 15 4-10 4 10M4.5 11h5M13 17l3 3 5-7"/></symbol>
+    <symbol id="i-spark" viewBox="0 0 24 24"><path d="M12 3v4M12 17v4M3 12h4M17 12h4M6 6l2.5 2.5M15.5 15.5 18 18M6 18l2.5-2.5M15.5 8.5 18 6"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 0 1 8 0v3"/></symbol>
+    <symbol id="i-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.01"/></symbol>
     <symbol id="i-key" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></symbol>
   </svg>
 
@@ -53,6 +57,7 @@
       <div class="tabs" role="tablist">
         <button type="button" role="tab" id="tabBtnPh" aria-selected="true"><svg class="ico"><use href="#i-text"/></svg>Phrases</button>
         <button type="button" role="tab" id="tabBtnId" aria-selected="false"><svg class="ico"><use href="#i-compass"/></svg><span>Navigation ID</span></button>
+        <button type="button" role="tab" id="tabBtnRd" aria-selected="false"><svg class="ico"><use href="#i-spark"/></svg><span>Rédiger</span></button>
       </div>
       <button class="ibtn" type="button" id="settingsBtn" title="Réglages"><svg class="ico"><use href="#i-sliders"/></svg></button>
     </header>
@@ -84,6 +89,51 @@
       </section>
       <section class="pane" id="tabId" hidden>
         <div class="nid" id="idBox"></div>
+      </section>
+      <section class="pane" id="tabRd" hidden>
+        <div class="mhead">
+          <div class="t"><h1>Rédiger avec l'IA</h1><div class="sub">Écrivez comme ça vient : l'IA corrige et rend le texte professionnel.</div></div>
+          <span class="local" title="L'IA de Chrome tourne sur cet ordinateur : le texte à reformuler n'est pas envoyé sur Internet."><svg class="ico"><use href="#i-lock"/></svg><span>Sur cet ordinateur</span></span>
+        </div>
+        <div class="rd-note" id="rdNote" hidden>
+          <svg class="ico"><use href="#i-info"/></svg>
+          <div>
+            <strong id="rdNoteTitle"></strong>
+            <p id="rdNoteText"></p>
+            <small id="rdNoteInfo"></small>
+            <span class="acts" id="rdNoteActs">
+              <button class="btn" type="button" id="rdCheck">Revérifier</button>
+              <button class="btn" type="button" id="rdDiag">Diagnostic de Chrome</button>
+            </span>
+          </div>
+        </div>
+        <div class="work">
+          <section class="box">
+            <header>
+              <label class="cap" for="rdDraft">Votre texte</label>
+              <button class="ibtn mic" type="button" id="rdMic" title="Dicter (reconnaissance vocale de Chrome, qui peut passer par les serveurs de Google)"><svg class="ico"><use href="#i-mic"/></svg></button>
+            </header>
+            <textarea class="area" id="rdDraft" placeholder="Tapez ou dictez votre message, sans vous soucier des fautes…"></textarea>
+            <footer>
+              <small><kbd>Ctrl</kbd> <kbd>Entrée</kbd></small>
+              <span class="sp"></span>
+              <button class="btn solid" type="button" id="rdGo"><svg class="ico"><use href="#i-spark"/></svg>Reformuler</button>
+            </footer>
+          </section>
+          <section class="box">
+            <header>
+              <label class="cap" for="rdOut">Version pro</label>
+              <span class="tag" id="rdTag"></span>
+            </header>
+            <textarea class="area out" id="rdOut" placeholder="La version corrigée et professionnelle apparaîtra ici. Vous pourrez la retoucher avant de la copier."></textarea>
+            <footer>
+              <button class="ibtn" type="button" id="rdAgain" title="Autre proposition"><svg class="ico"><use href="#i-reset"/></svg></button>
+              <span class="sp"></span>
+              <button class="btn" type="button" id="rdKeep" title="Garder comme phrase dans une rubrique"><svg class="ico"><use href="#i-plus"/></svg>Garder</button>
+              <button class="btn solid" type="button" id="rdCopy"><svg class="ico"><use href="#i-copy"/></svg>Copier</button>
+            </footer>
+          </section>
+        </div>
       </section>
     </main>
 
@@ -184,6 +234,7 @@
     <hr>
     <button type="button" data-act="delete" class="danger"><svg class="ico"><use href="#i-trash"/></svg>Supprimer</button>
   </div>
+  <div class="pop" id="rdKeepMenu" popover></div>
   <div class="pop" id="settingsMenu" popover>
     <button type="button" data-act="panel"><svg class="ico"><use href="#i-panel"/></svg><span>Ancrer sur le côté</span></button>
     <button type="button" data-act="shortcut"><svg class="ico"><use href="#i-key"/></svg>Raccourci clavier…</button>

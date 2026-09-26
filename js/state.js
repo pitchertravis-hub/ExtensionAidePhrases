@@ -6,7 +6,7 @@ export const state = {
   rub: 0,          // index de la rubrique ouverte
   mode: 'rub',     // 'rub' (une rubrique) ou 'fav' (favoris de la liste)
   q: '',           // recherche en cours
-  tab: 'ph',       // 'ph' (phrases) ou 'id' (Navigation ID)
+  tab: 'ph',       // 'ph' (phrases), 'id' (Navigation ID) ou 'rd' (Rédiger)
   sel: 0,          // carte sélectionnée au clavier
   edit: null,      // { l, r, p, isNew } de la phrase en cours de modification
   fill: null,      // { l, r, p } de la phrase dont on remplit les champs

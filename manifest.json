@@ -1,8 +1,8 @@
 {
    "manifest_version": 3,
    "name": "TPhrase",
-   "version": "4.9",
-   "description": "Phrases prêtes à copier, rangées par listes et rubriques, et chemins de menus du logiciel ID.",
+   "version": "5.1",
+   "description": "Phrases prêtes à copier, rangées par rubriques, chemins de menus du logiciel ID, et rédaction pro avec l'IA de Chrome.",
    "minimum_chrome_version": "116",
    "action": {
       "default_icon": {

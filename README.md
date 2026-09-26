@@ -13,6 +13,14 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
   `{date}`, `{heure}`, `{jour}` et `{date+2}` se remplissent seuls.
 - **Favoris** en tête de colonne, tri **Plus utilisées** dans chaque rubrique.
 - **Navigation ID** en trois colonnes, avec les 5 derniers chemins en raccourci.
+- **Rédiger** : on tape ou on dicte un brouillon, **Reformuler** (ou `Ctrl+Entrée`) le corrige et le rend professionnel
+  (vouvoiement, formules de politesse). Le résultat se retouche, se copie ou se garde comme phrase dans une rubrique.
+  L'IA est celle de Chrome (Prompt API) et tourne sur l'ordinateur : le texte à reformuler n'est pas envoyé sur Internet.
+  Le modèle se télécharge une fois, au premier clic sur Reformuler. Il faut Chrome 138 ou plus récent
+  (149 pour le français officiel), Windows 10/11, macOS 13+ ou Linux, 22 Go libres sur le disque,
+  et 16 Go de mémoire (4 cœurs) ou une carte graphique de plus de 4 Go. Si l'IA ne peut pas tourner,
+  l'onglet explique pourquoi et ouvre la page de diagnostic de Chrome (`chrome://on-device-internals`).
+  La dictée (micro) utilise la reconnaissance vocale de Chrome, qui peut passer par les serveurs de Google.
 - **Apparence** (Réglages → Apparence), en deux onglets :
   **Couleurs** : thèmes prêts, ou **Perso** avec deux couleurs au choix (bandeau et accent) et un dégradé optionnel ; le reste du thème, clair et sombre, en est déduit.
   **Affichage** : taille du texte, densité (compacte pour voir plus de phrases), coins, 17 polices, 11 motifs de fond,
@@ -43,6 +51,9 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
 1. Zipper le contenu du dossier (sans `.git` ni `README.md`).
 2. Dans le `manifest.json` du zip, retirer les champs `key` et `update_url` : le Web Store les refuse. Il garde lui-même l'identifiant de l'extension.
 3. Envoyer le zip depuis le tableau de bord développeur du Web Store.
+4. Dans la fiche et l'onglet Confidentialité : indiquer que l'extension utilise l'IA intégrée à Chrome, en local,
+   et qu'aucune donnée n'est collectée. L'usage de l'IA doit respecter la
+   [Generative AI Prohibited Use Policy](https://policies.google.com/terms/generative-ai/use-policy) de Google.
 
 Le champ `key` sert au chargement non empaqueté : il garde le même identifiant d'extension, donc les mêmes données enregistrées.
 
@@ -72,9 +83,9 @@ js/theme.js             thème et format avant l'affichage
 js/main.js              démarrage, recherche, clavier, réglages
 js/state.js             état de l'interface
 js/store.js             données (localStorage, mêmes clés qu'en v2.5)
-js/views/               sidebar.js, phrases.js, navigation-id.js
+js/views/               sidebar.js, phrases.js, navigation-id.js, rediger.js
 js/ui/                  dialog.js, menu.js, toast.js, phrase-text.js
-js/core/                text.js, fields.js, stats.js, csv.js, backup.js, voice.js
+js/core/                text.js, fields.js, stats.js, csv.js, backup.js, voice.js, ai.js
 js/data/id-menus.js     catalogue des menus ID (A à I)
 lib/Sortable.min.js     glisser-déposer (SortableJS 1.15.6, MIT)
 fonts/                  Manrope et les polices du réglage Police (licence OFL, voir fonts/POLICES.txt)
