@@ -182,6 +182,61 @@
   [data-palette="fuchsia"] .mhead { background: none; }
 }
 
+/* Pharmacie : vert croix de pharmacie, logo croix, gélules. */
+[data-palette="pharmacie"] {
+  --bg: #F5FBF8; --surface: #FFFFFF; --sunken: #EDF7F2; --ink: #1C3029; --ink-2: #38524C; --muted: #6E8C84; --line: #E3F3EB; --line-strong: #D4EBDF;
+  --accent: #138A4A; --accent-soft: #DEEFE6; --gold: #138A4A; --gold-soft: #DEEFE6;
+  --brand-grad: linear-gradient(135deg, #2BB673, #16924F); --brand-on: #FFFFFF; --brand-tp: #138A4A; --brand-bright: #5FDC9C;
+  --rail: #0B4D2C; --rail-hi: rgba(95, 220, 156, .16);
+}
+[data-palette="pharmacie"][data-theme="dark"] {
+  --bg: #12201C; --surface: #1B2B27; --sunken: #223532; --ink: #E3EAE8; --ink-2: #BAC6C4; --muted: #809290; --line: #283F39; --line-strong: #324E46;
+  --accent: #3CCB84; --accent-soft: #1E3E31; --gold: #3CCB84; --gold-soft: #1E3E31; --brand-tp: #3CCB84; --rail: #07361F;
+}
+[data-palette="pharmacie"] .mono-z { display: none; }
+[data-palette="pharmacie"] .slogo.cross { display: block; }
+[data-palette="pharmacie"] .mhead { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 44' opacity='.7'%3E%3Cg transform='translate%2818 22%29 rotate%2835%29 scale%280.8%29'%3E%3Cpath d='M0-7h9a7 7 0 0 1 0 14H0z' fill='%23FFFFFF' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M0-7h-9a7 7 0 0 0 0 14H0z' fill='%232BB673' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M-10-3.5h5' stroke='%23FFFFFF' stroke-opacity='.6' stroke-width='2' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate%2858 14%29 rotate%28-25%29 scale%280.6%29'%3E%3Cpath d='M0-7h9a7 7 0 0 1 0 14H0z' fill='%23FFFFFF' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M0-7h-9a7 7 0 0 0 0 14H0z' fill='%232BB673' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M-10-3.5h5' stroke='%23FFFFFF' stroke-opacity='.6' stroke-width='2' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate%2896 26%29 rotate%2870%29 scale%280.85%29'%3E%3Cpath d='M0-7h9a7 7 0 0 1 0 14H0z' fill='%23FFFFFF' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M0-7h-9a7 7 0 0 0 0 14H0z' fill='%232BB673' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M-10-3.5h5' stroke='%23FFFFFF' stroke-opacity='.6' stroke-width='2' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E") no-repeat right 110px top 4px / 100px 40px; }
+[data-palette="pharmacie"] .main { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 110' opacity='.45'%3E%3Cg transform='translate%2852 88%29 rotate%28-30%29 scale%281.7%29'%3E%3Cpath d='M0-7h9a7 7 0 0 1 0 14H0z' fill='%23FFFFFF' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M0-7h-9a7 7 0 0 0 0 14H0z' fill='%232BB673' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M-10-3.5h5' stroke='%23FFFFFF' stroke-opacity='.6' stroke-width='2' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate%2892 60%29 rotate%2840%29 scale%281.4%29'%3E%3Cpath d='M0-7h9a7 7 0 0 1 0 14H0z' fill='%23FFFFFF' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M0-7h-9a7 7 0 0 0 0 14H0z' fill='%232BB673' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M-10-3.5h5' stroke='%23FFFFFF' stroke-opacity='.6' stroke-width='2' stroke-linecap='round'/%3E%3C/g%3E%3Cg transform='translate%28100 98%29 rotate%2895%29 scale%281%29'%3E%3Cpath d='M0-7h9a7 7 0 0 1 0 14H0z' fill='%23FFFFFF' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M0-7h-9a7 7 0 0 0 0 14H0z' fill='%232BB673' stroke='%2316924F' stroke-width='1.5'/%3E%3Cpath d='M-10-3.5h5' stroke='%23FFFFFF' stroke-opacity='.6' stroke-width='2' stroke-linecap='round'/%3E%3C/g%3E%3C/svg%3E") no-repeat right 12px bottom 12px / 110px 100px; }
+
+/* Néon rétro 80 : violet nuit, néons rose et cyan, quadrillage et soleil. */
+[data-palette="neon"] {
+  --bg: #F8F5FC; --surface: #FFFFFF; --sunken: #F2EEFA; --ink: #241D39; --ink-2: #433B5F; --muted: #7A729A; --line: #EAE4F7; --line-strong: #DED5F2;
+  --accent: #C2268F; --accent-soft: #F6E1EF; --gold: #C2268F; --gold-soft: #F6E1EF;
+  --brand-grad: linear-gradient(135deg, #FF3CAC, #784BA0); --brand-on: #FFFFFF; --brand-tp: #C2268F; --brand-bright: #2BD2FF;
+  --rail: #1A0B33; --rail-hi: rgba(255, 60, 172, .18);
+}
+[data-palette="neon"][data-theme="dark"] {
+  --bg: #181426; --surface: #221D34; --sunken: #2A253F; --ink: #E6E4ED; --ink-2: #BFBBCD; --muted: #87829D; --line: #312A4A; --line-strong: #3E345C;
+  --accent: #FF3CAC; --accent-soft: #481E3A; --gold: #FF3CAC; --gold-soft: #481E3A; --brand-tp: #FF3CAC; --rail: #10061F;
+}
+[data-palette="neon"] .mono-z { display: none; }
+[data-palette="neon"] .slogo.neon { display: block; filter: drop-shadow(0 0 6px rgba(43, 210, 255, .6)); }
+[data-palette="neon"][data-layout="band"] .top { background-image: linear-gradient(rgba(43, 210, 255, .1) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 60, 172, .1) 1px, transparent 1px); background-size: 18px 18px; }
+[data-palette="neon"] .mhead { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 110 44' fill='none' stroke-width='2' opacity='.7'%3E%3Cpath d='M5 34h100' stroke='%232BD2FF'/%3E%3Cpath d='M20 34 55 6l35 28' stroke='%23FF3CAC'/%3E%3C/svg%3E") no-repeat right 110px top 4px / 100px 40px; }
+[data-palette="neon"] .main { background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 110' opacity='.5'%3E%3Ccircle cx='60' cy='70' r='34' fill='%23FF3CAC'/%3E%3Crect x='20' y='58' width='80' height='2' fill='%231A0B33'/%3E%3Crect x='20' y='66' width='80' height='3' fill='%231A0B33'/%3E%3Crect x='20' y='74' width='80' height='4' fill='%231A0B33'/%3E%3Crect x='20' y='82' width='80' height='5' fill='%231A0B33'/%3E%3Crect x='20' y='90' width='80' height='6' fill='%231A0B33'/%3E%3Cpath d='M0 104h120' stroke='%232BD2FF' stroke-width='3'/%3E%3C/svg%3E") no-repeat right 12px bottom 12px / 110px 100px; }
+[data-palette="neon"] .ph.sel { box-shadow: 0 0 0 1px var(--accent), 0 0 18px -2px var(--accent); }
+[data-palette="neon"] .btn.solid { box-shadow: 0 0 16px -2px #FF3CAC; }
+
+/* Minimal noir & blanc : aucune couleur, angles nets, aucun décor. */
+[data-palette="minimal"] {
+  --bg: #F9F9F9; --surface: #FFFFFF; --sunken: #F2F2F2; --ink: #111111; --ink-2: #333333; --muted: #7A7A7A; --line: #E6E6E6; --line-strong: #CFCFCF;
+  --accent: #111111; --accent-soft: #E4E4E4; --gold: #111111; --gold-soft: #EBEBEB;
+  --brand-grad: #111111; --brand-on: #FFFFFF; --brand-tp: #111111; --brand-bright: #FFFFFF;
+  --rail: #111111; --rail-hi: rgba(255, 255, 255, .12);
+}
+[data-palette="minimal"][data-theme="dark"] {
+  --bg: #111111; --surface: #1A1A1A; --sunken: #232323; --ink: #F2F2F2; --ink-2: #CFCFCF; --muted: #8A8A8A; --line: #2C2C2C; --line-strong: #3A3A3A;
+  --accent: #F2F2F2; --accent-soft: #333333; --gold: #F2F2F2; --gold-soft: #2A2A2A;
+  --brand-grad: #F2F2F2; --brand-on: #111111; --brand-tp: #F2F2F2; --rail: #000000;
+}
+[data-palette="minimal"][data-layout="band"] .mono-z, [data-palette="minimal"][data-layout="col"][data-theme="dark"] .mono-z { background: #FFFFFF; color: #111111; }
+[data-palette="minimal"] :is(.ph, .search, .tabs, .tabs button, .nav .item, .listrow select, .rubrow select, .btn, .side .add, .mono-z, .ticket, .col, .pop, kbd) { border-radius: 2px; }
+[data-palette="minimal"] .ph.sel { box-shadow: 0 0 0 1px var(--accent); }
+
+@media (max-width: 619px) {
+  [data-palette="pharmacie"] .mhead, [data-palette="neon"] .mhead { background: none; }
+}
+
 /* ---------- Menu Apparence ---------- */
 .look { width: 330px; padding: 10px; }
 .look .cap { margin: 4px 2px 7px; }

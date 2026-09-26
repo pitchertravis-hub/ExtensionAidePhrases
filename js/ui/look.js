@@ -14,6 +14,9 @@ const PALETTES = [
   ['halloween', 'Halloween', '#1B1026', '#F5821F'],
   ['noel', 'Noël', '#0F3B2E', '#C22F39'],
   ['fuchsia', 'Fuchsia pop', '#5A1646', '#FF5FAE'],
+  ['pharmacie', 'Pharmacie', '#0B4D2C', '#2BB673'],
+  ['neon', 'Néon rétro 80', '#1A0B33', '#FF3CAC'],
+  ['minimal', 'Minimal noir & blanc', '#111111', '#FFFFFF'],
 ];
 const KEYS = { palette: 'zt-palette', layout: 'zt-layout', theme: 'theme' };
 
