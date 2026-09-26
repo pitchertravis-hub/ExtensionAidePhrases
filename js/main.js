@@ -7,6 +7,7 @@ import { createVoice } from './core/voice.js';
 import { confirmAction, inform } from './ui/dialog.js';
 import { openMenu, bindMenu } from './ui/menu.js';
 import { showToast } from './ui/toast.js';
+import { initLook, openLookMenu, applyLookFromStorage } from './ui/look.js';
 import { initSidebar, setList } from './views/sidebar.js';
 import { initPhrases, moveSel, copyItem, editItem, toggleFavItem, selected, hasItems, addPhrase } from './views/phrases.js';
 import { initNavigation } from './views/navigation-id.js';
@@ -71,10 +72,6 @@ else mic.hidden = true;
 
 // ---------- Réglages ----------
 function updateSettingsMenu() {
-  const dark = document.documentElement.dataset.theme === 'dark';
-  const theme = settingsMenu.querySelector('[data-act="theme"]');
-  theme.querySelector('span').textContent = dark ? 'Thème clair' : 'Thème sombre';
-  theme.querySelector('use').setAttribute('href', dark ? '#i-sun' : '#i-moon');
   const panel = settingsMenu.querySelector('[data-act="panel"]');
   panel.querySelector('span').textContent = isPopup ? 'Ancrer sur le côté' : 'Fermer le panneau';
   panel.hidden = !chrome?.sidePanel;
@@ -135,10 +132,8 @@ bindMenu(settingsMenu, (act) => {
     renderBackupInfo();
   } else if (act === 'export-csv') {
     exportCsv();
-  } else if (act === 'theme') {
-    const dark = document.documentElement.dataset.theme !== 'dark';
-    document.documentElement.dataset.theme = dark ? 'dark' : 'light';
-    store.theme = dark ? 'dark' : 'light';
+  } else if (act === 'look') {
+    openLookMenu($('settingsBtn'));
   }
 });
 $('fileInput').addEventListener('change', (e) => e.target.files[0] && importFile(e.target.files[0]));
@@ -148,6 +143,7 @@ store.load();
 setList(store.selectedList);
 onRender(renderTabs);
 initSidebar();
+initLook();
 initPhrases();
 initNavigation();
 render();
@@ -174,7 +170,7 @@ window.addEventListener('storage', (e) => {
     store.load();
     stats.reload();
     render();
-  } else if (e.key === 'theme' && e.newValue) {
-    document.documentElement.dataset.theme = e.newValue;
+  } else {
+    applyLookFromStorage(e.key, e.newValue);
   }
 });

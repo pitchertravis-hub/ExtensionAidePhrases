@@ -3,7 +3,6 @@
 const KEYS = {
   lists: 'listes',
   selected: 'selectedList',
-  theme: 'theme',
   intro: 'customIntroText',
   lastExport: 'lastExportDate',
 };
@@ -68,12 +67,6 @@ export const store = {
     write(KEYS.selected, name);
   },
 
-  get theme() {
-    return read(KEYS.theme);
-  },
-  set theme(value) {
-    write(KEYS.theme, value);
-  },
 
   get intro() {
     return read(KEYS.intro) || DEFAULT_INTRO;
