@@ -169,7 +169,7 @@ setPlaceholder();
 
 // Fenêtre et panneau ouverts en même temps : on se tient à jour.
 window.addEventListener('storage', (e) => {
-  if (!e.key || ['listes', 'zt-favs', 'zt-used', 'zt-id-recent'].includes(e.key)) {
+  if (!e.key || ['listes', 'zt-favs', 'zt-used'].includes(e.key)) {
     if (state.edit) return;
     store.load();
     stats.reload();
