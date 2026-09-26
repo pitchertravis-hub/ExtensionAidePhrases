@@ -42,31 +42,52 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
 
 ## Mettre l'extension dans Chrome
 
+Il faut Chrome 116 ou plus récent (panneau latéral).
+
 **Pour l'utiliser ou la tester**
 1. Ouvrir `chrome://extensions` et activer le **Mode développeur**.
 2. Cliquer **Charger l'extension non empaquetée** et choisir ce dossier.
 3. Après une modification, cliquer l'icône ↻ de l'extension.
 
+Le champ `key` du `manifest.json` garde le même identifiant d'extension, donc les mêmes données enregistrées,
+d'un chargement à l'autre. Ne pas le retirer du dossier.
+
 **Mettre à jour (Windows)**
-1. Télécharger le nouveau `TPhrase-x.y.zip` (il arrive dans Téléchargements).
+1. Télécharger le nouveau `TPhrase-x.y.zip` depuis le dossier [`dist/`](dist/) du dépôt (il arrive dans Téléchargements).
 2. Double-cliquer **`Mettre a jour TPhrase.bat`** dans le dossier de l'extension : il prend le dernier zip TPhrase
    des Téléchargements et remplace les fichiers. Les phrases, gardées par Chrome, ne sont pas touchées.
 3. Dans `chrome://extensions`, cliquer ↻ sur TPhrase.
 
-**Pour la publier sur le Chrome Web Store**
+## Les zips (dossier `dist/`)
+
+Le dossier [`dist/`](dist/) contient toujours deux zips de la version en cours :
+
+| Fichier | Usage |
+|---|---|
+| `NE-PAS-INSTALLER_TPhrase-x.y_pour-Chrome-Web-Store.zip` | **À envoyer au Chrome Web Store.** Manifest sans `key` ni `update_url` (refusés par le Web Store). Ne pas l'installer : il créerait une autre extension, vide. |
+| `TPhrase-x.y.zip` | Version de test, avec `key`, pour **`Mettre a jour TPhrase.bat`**. Refusée par le Web Store. |
+
+Ils ne contiennent que l'extension : `manifest.json`, `popup.html`, `css/`, `js/`, `lib/`, `fonts/`, `icons/`.
+
+**Ils restent à jour tout seuls** : à chaque push sur `main`, l'action GitHub `Zips à jour`
+(`.github/workflows/zip.yml`) les reconstruit et les commit s'ils ont changé.
+Pour les refaire à la main : `python3 outils/construire-zip.py`.
+Le résultat est identique d'une fois à l'autre : le zip ne change que si l'extension change.
+
+**Avant chaque nouvelle version** : augmenter `version` dans `manifest.json` (le Web Store refuse un numéro déjà envoyé).
+
+## Publier sur le Chrome Web Store
+
 Tous les textes à coller, les images et la marche à suivre sont dans [`store/fiche-web-store.md`](store/fiche-web-store.md) ;
 la page de confidentialité est [`docs/confidentialite.html`](docs/confidentialite.html).
 
-1. Zipper le contenu du dossier (sans `.git`, `README.md`, `outils/` ni `Mettre a jour TPhrase.bat`).
-2. Dans le `manifest.json` du zip, retirer les champs `key` et `update_url` : le Web Store les refuse. Il garde lui-même l'identifiant de l'extension.
-3. Envoyer le zip depuis le tableau de bord développeur du Web Store.
+1. Augmenter `version` dans `manifest.json`, pousser sur `main` et attendre l'action `Zips à jour`.
+2. Télécharger `dist/NE-PAS-INSTALLER_TPhrase-x.y_pour-Chrome-Web-Store.zip`.
+3. L'envoyer depuis le [tableau de bord développeur](https://chrome.google.com/webstore/devconsole)
+   (nouvel élément, ou onglet **Package › Importer un nouveau package** pour une mise à jour).
 4. Dans la fiche et l'onglet Confidentialité : indiquer que l'extension utilise l'IA intégrée à Chrome, en local,
    et qu'aucune donnée n'est collectée. L'usage de l'IA doit respecter la
    [Generative AI Prohibited Use Policy](https://policies.google.com/terms/generative-ai/use-policy) de Google.
-
-Le champ `key` sert au chargement non empaqueté : il garde le même identifiant d'extension, donc les mêmes données enregistrées.
-
-Chrome 116 ou plus récent est nécessaire (panneau latéral).
 
 ## Import et export
 
@@ -99,4 +120,11 @@ js/data/id-menus.js     catalogue des menus ID (A à I)
 lib/Sortable.min.js     glisser-déposer (SortableJS 1.15.6, MIT)
 fonts/                  Manrope et les polices du réglage Police (licence OFL, voir fonts/POLICES.txt)
 icons/
+
+Hors de l'extension (pas dans les zips) :
+dist/                   zips prêts : Web Store et test (reconstruits automatiquement)
+outils/                 construire-zip.py (zips), maj-tphrase.ps1 (lancé par « Mettre a jour TPhrase.bat »)
+store/                  textes et images de la fiche Chrome Web Store
+docs/                   page de confidentialité (à mettre en ligne)
+.github/workflows/      zip.yml : reconstruit dist/ à chaque push sur main
 ```
