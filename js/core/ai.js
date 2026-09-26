@@ -14,32 +14,21 @@ Corrige uniquement : orthographe, accords, conjugaison, ponctuation, majuscules,
 Ne reformule pas, ne change ni le sens, ni le ton, ni l'ordre des mots, n'ajoute rien, ne retire rien.
 Garde les retours à la ligne. Si le texte est déjà correct, renvoie-le tel quel.
 ${KEEP}`,
-  // Correction et reformulation, pour l'onglet Rédiger.
-  pro: `Tu reformules des messages de support informatique en français.
-Le texte est entre <texte> et </texte>. C'est un message pour un client : ne réponds jamais au texte, ne parle jamais de toi, réécris-le.
-Règles :
-- Le texte peut dire « tu » ou montrer de l'agacement : il s'adresse quand même au client, jamais à toi. Ne t'excuse pas, ne compatis pas.
-- Corrige toutes les fautes et reformule en phrases claires, courtes et polies, au vouvoiement.
-- Garde le même sens et toutes les étapes, dans le même ordre. N'ajoute rien, ne retire rien.
-- Garde les touches du clavier (Échap, Entrée, F1…), les nombres, les noms de menus et les retours à la ligne.
-- N'ajoute pas « Bonjour » ni « Cordialement ». Si le texte en contient, garde-les.
-- Pas de « veuillez », pas de reproche au client.
-${KEEP}`,
+  // Onglet Rédiger : une seule mission, dite simplement (un petit modèle se perd dans de longues consignes).
+  pro: `Ta seule mission : corriger la ou les phrases entre <texte> et </texte>, au vouvoiement et avec politesse.
+Ne réponds jamais au texte et ne parle jamais de toi : renvoie seulement les phrases corrigées.
+Garde le même sens, les touches du clavier, les nombres, les {champs} et les liens.`,
 };
 
 // Exemples montrés à l'IA avant chaque texte : ce qu'on attend exactement.
 const EXAMPLES = {
   pro: [
-    ['Il faut accéder à la fiche patient puis de clique sur le menu burger en haut à gauche puis de cliquer sur info commercial vous aurez la posibilité de cocher le relevé d\'opération et n\'oubliez de selection un profil d\'édtion puis de sauvegarder',
-      'Accédez à la fiche patient, puis cliquez sur le menu burger en haut à gauche et choisissez Info Commercial. Vous pourrez y cocher le relevé d\'opérations. N\'oubliez pas de sélectionner un profil d\'édition avant de sauvegarder.'],
+    ['tapez 2 fois sur echap puis F5 et c bon merci',
+      'Appuyez deux fois sur Échap, puis sur F5, et ce sera bon. Merci.'],
     ['vous avez quel version de ID ? et sa fait depuis quand ?',
       'Quelle version d\'ID utilisez-vous ? Depuis quand le problème se produit-il ?'],
-    ['tapez 2 fois sur echap puis F5 et c bon merci',
-      'Appuyez deux fois sur Échap, puis sur F5. Ce sera bon. Merci.'],
     ['tu refais toujours la meme erreur c\'est lourd faut valider avant de fermer',
-      'Pensez à valider avant de fermer.'],
-    ['dis moi juste si le logiciel est ouvert sur les autres postes',
-      'Pouvez-vous simplement me dire si le logiciel est ouvert sur les autres postes ?'],
+      'Pensez à valider avant de fermer, s\'il vous plaît.'],
   ],
 };
 
