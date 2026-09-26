@@ -1,0 +1,127 @@
+/* Apparence choisie par l'utilisateur (Réglages › Apparence).
+   html[data-palette] : couleurs ; html[data-layout] : bandeau ou colonne sombre.
+   « classique » n'a pas d'entrée ici : il garde les couleurs de tokens.css. */
+
+/* Valeurs communes aux palettes (le bandeau / la colonne sombre). */
+:root {
+  --rail: #161A22; --rail-hi: rgba(227, 196, 127, .13); --rail-ink: rgba(255, 255, 255, .78); --rail-muted: rgba(255, 255, 255, .55); --rail-line: rgba(255, 255, 255, .13);
+  --brand-grad: var(--solid); --brand-on: var(--solid-ink); --brand-tp: var(--gold); --brand-bright: #E3C47F;
+}
+/* Hors « classique » : logo et bouton principal aux couleurs de la palette. */
+[data-palette]:not([data-palette="classique"]) .mono-z,
+[data-palette]:not([data-palette="classique"]) .btn.solid { background: var(--brand-grad); border-color: transparent; color: var(--brand-on); }
+.bname .tp { color: var(--brand-tp); }
+
+/* ---------- Palettes ---------- */
+[data-palette="or"] {
+  --bg: #F6F5F2; --surface: #FFFFFF; --sunken: #EFEDE8; --ink: #17181C; --ink-2: #3B3D45; --muted: #7C7F89; --line: #E6E2DA; --line-strong: #D6D0C4;
+  --accent: #A5813F; --accent-soft: #F6EEDD; --gold: #A5813F; --gold-soft: #F6EEDD;
+  --brand-grad: linear-gradient(135deg, #C9A45F, #A07A38); --brand-on: #16181D; --brand-tp: #A5813F; --brand-bright: #E3C47F;
+  --rail: #16181D; --rail-hi: rgba(227, 196, 127, .13);
+}
+[data-palette="or"][data-theme="dark"] {
+  --bg: #111317; --surface: #191C22; --sunken: #20242B; --ink: #ECEAE4; --ink-2: #C9C6BD; --muted: #8E8C86; --line: #262A31; --line-strong: #333842;
+  --accent: #D9B774; --accent-soft: #2A2419; --gold: #D9B774; --gold-soft: #2A2419; --brand-tp: #D9B774; --rail: #0C0D10;
+}
+
+[data-palette="cuivre"] {
+  --bg: #F4F6F9; --surface: #FFFFFF; --sunken: #EBEFF4; --ink: #141B2B; --ink-2: #374257; --muted: #727C8F; --line: #DFE4EC; --line-strong: #CBD2DD;
+  --accent: #B8683A; --accent-soft: #F8EAE0; --gold: #B8683A; --gold-soft: #F8EAE0;
+  --brand-grad: linear-gradient(135deg, #D98A57, #B0602F); --brand-on: #FFFFFF; --brand-tp: #B8683A; --brand-bright: #F0A877;
+  --rail: #14213D; --rail-hi: rgba(230, 150, 100, .16);
+}
+[data-palette="cuivre"][data-theme="dark"] {
+  --bg: #0D1322; --surface: #141C2E; --sunken: #1B2438; --ink: #E8ECF3; --ink-2: #C0C8D6; --muted: #8591A6; --line: #233049; --line-strong: #2E3C58;
+  --accent: #E59A68; --accent-soft: #2E1F18; --gold: #E59A68; --gold-soft: #2E1F18; --brand-tp: #E59A68; --rail: #0A1226;
+}
+
+[data-palette="sapin"] {
+  --bg: #F3F5F2; --surface: #FFFFFF; --sunken: #E9EDE8; --ink: #142420; --ink-2: #344740; --muted: #71807A; --line: #DDE3DC; --line-strong: #C9D2C8;
+  --accent: #9A7E34; --accent-soft: #F2EDDA; --gold: #9A7E34; --gold-soft: #F2EDDA;
+  --brand-grad: linear-gradient(135deg, #C7A95A, #9C8035); --brand-on: #12241F; --brand-tp: #9A7E34; --brand-bright: #DCC27A;
+  --rail: #16302B; --rail-hi: rgba(214, 190, 120, .15);
+}
+[data-palette="sapin"][data-theme="dark"] {
+  --bg: #0C1714; --surface: #13211D; --sunken: #1A2A25; --ink: #E6EEEA; --ink-2: #BFCDC6; --muted: #86968F; --line: #22352F; --line-strong: #2D443C;
+  --accent: #D6BB6E; --accent-soft: #262416; --gold: #D6BB6E; --gold-soft: #262416; --brand-tp: #D6BB6E; --rail: #0B1E1A;
+}
+
+[data-palette="bordeaux"] {
+  --bg: #F7F4F3; --surface: #FFFFFF; --sunken: #F0EBEA; --ink: #231418; --ink-2: #48343A; --muted: #857479; --line: #E8DFDD; --line-strong: #D8CBC8;
+  --accent: #B0685A; --accent-soft: #F8E9E5; --gold: #B0685A; --gold-soft: #F8E9E5;
+  --brand-grad: linear-gradient(135deg, #E0A999, #B87766); --brand-on: #2A0F17; --brand-tp: #B0685A; --brand-bright: #F0BFB0;
+  --rail: #3A1621; --rail-hi: rgba(232, 170, 155, .16);
+}
+[data-palette="bordeaux"][data-theme="dark"] {
+  --bg: #170C10; --surface: #211318; --sunken: #2A1A20; --ink: #F1E8EA; --ink-2: #D2C2C6; --muted: #9B888D; --line: #35222A; --line-strong: #452D36;
+  --accent: #E7AE9F; --accent-soft: #33201E; --gold: #E7AE9F; --gold-soft: #33201E; --brand-tp: #E7AE9F; --rail: #260D15;
+}
+
+[data-palette="corail"] {
+  --bg: #F5F6F7; --surface: #FFFFFF; --sunken: #ECEEF0; --ink: #1A2129; --ink-2: #3A444F; --muted: #77818C; --line: #E0E4E8; --line-strong: #CDD3D9;
+  --accent: #D6573E; --accent-soft: #FCE8E3; --gold: #D6573E; --gold-soft: #FCE8E3;
+  --brand-grad: linear-gradient(135deg, #F07F66, #D95B42); --brand-on: #FFFFFF; --brand-tp: #D6573E; --brand-bright: #FF9A83;
+  --rail: #1F2933; --rail-hi: rgba(240, 120, 95, .16);
+}
+[data-palette="corail"][data-theme="dark"] {
+  --bg: #10151A; --surface: #171E25; --sunken: #1E262E; --ink: #E9EDF1; --ink-2: #C3CBD3; --muted: #8893A0; --line: #27313B; --line-strong: #33404C;
+  --accent: #FF8E75; --accent-soft: #3A2019; --gold: #FF8E75; --gold-soft: #3A2019; --brand-tp: #FF8E75; --rail: #151C23;
+}
+
+[data-palette="prune"] {
+  --bg: #F6F4F8; --surface: #FFFFFF; --sunken: #EEEBF2; --ink: #1E1629; --ink-2: #40354E; --muted: #7E758A; --line: #E4DFEA; --line-strong: #D2CBDB;
+  --accent: #B07A12; --accent-soft: #FBF0DA; --gold: #B07A12; --gold-soft: #FBF0DA;
+  --brand-grad: linear-gradient(135deg, #EDB44A, #C98D22); --brand-on: #261634; --brand-tp: #B07A12; --brand-bright: #F6C765;
+  --rail: #2A1B3D; --rail-hi: rgba(235, 175, 70, .16);
+}
+[data-palette="prune"][data-theme="dark"] {
+  --bg: #130D1B; --surface: #1B1426; --sunken: #231A31; --ink: #EEE9F3; --ink-2: #CBC1D6; --muted: #978CA4; --line: #2D2340; --line-strong: #3A2E52;
+  --accent: #F2BE5A; --accent-soft: #332616; --gold: #F2BE5A; --gold-soft: #332616; --brand-tp: #F2BE5A; --rail: #1C1229;
+}
+
+/* ---------- Disposition « bandeau sombre » ---------- */
+[data-layout="band"] .top { background: var(--rail); border-bottom: 2px solid var(--brand-bright); color: var(--rail-ink); }
+[data-layout="band"] .brand { color: #F4F1EA; }
+[data-layout="band"] .bname .tp { color: var(--brand-bright); }
+[data-layout="band"] .search { background: rgba(255, 255, 255, .07); border-color: var(--rail-line); color: var(--rail-muted); }
+[data-layout="band"] .search:focus-within { background: rgba(255, 255, 255, .11); border-color: var(--brand-bright); box-shadow: none; }
+[data-layout="band"] .search input { color: #F4F1EA; }
+[data-layout="band"] .search input::placeholder { color: var(--rail-muted); }
+[data-layout="band"] .search kbd { background: transparent; border-color: var(--rail-line); color: var(--rail-muted); }
+[data-layout="band"] .top .ibtn { color: var(--rail-muted); }
+[data-layout="band"] .top .ibtn:hover { background: rgba(255, 255, 255, .1); color: #F4F1EA; }
+[data-layout="band"] .tabs { background: rgba(255, 255, 255, .07); }
+[data-layout="band"] .tabs button { color: var(--rail-muted); }
+[data-layout="band"] .tabs button[aria-selected="true"] { background: rgba(255, 255, 255, .14); color: #F4F1EA; box-shadow: none; }
+[data-layout="band"] .tabs button[aria-selected="true"] .ico { color: var(--brand-bright); }
+
+/* ---------- Disposition « colonne sombre » ---------- */
+[data-layout="col"] .side { background: var(--rail); border-color: var(--rail-line); }
+[data-layout="col"] .side select { background-color: rgba(255, 255, 255, .07); border-color: var(--rail-line); color: #F4F1EA; }
+[data-layout="col"] .side select option { background: var(--rail); color: #F4F1EA; }
+[data-layout="col"] .side .ibtn { color: var(--rail-muted); }
+[data-layout="col"] .side .ibtn:hover { background: rgba(255, 255, 255, .1); color: #F4F1EA; }
+[data-layout="col"] .nav .item { color: var(--rail-ink); }
+[data-layout="col"] .nav .item:hover { background: rgba(255, 255, 255, .07); color: #F4F1EA; }
+[data-layout="col"] .nav .item[aria-current="true"] { background: var(--rail-hi); color: var(--brand-bright); box-shadow: none; }
+[data-layout="col"] .nav .fav .ico { color: var(--brand-bright); }
+[data-layout="col"] .nav .sep { background: var(--rail-line); }
+[data-layout="col"] .nav .more { background: var(--rail); color: var(--rail-muted); }
+[data-layout="col"] .sbar { background: rgba(255, 255, 255, .05); }
+[data-layout="col"] .sbar .thumb { background: rgba(255, 255, 255, .3); }
+[data-layout="col"] .sbar .thumb:hover, [data-layout="col"] .sbar.drag .thumb { background: rgba(255, 255, 255, .5); }
+[data-layout="col"] .side .add { border-color: var(--rail-line); color: var(--rail-muted); }
+[data-layout="col"] .side .add:hover { border-color: var(--brand-bright); color: #F4F1EA; }
+
+/* ---------- Menu Apparence ---------- */
+.look { width: 330px; padding: 10px; }
+.look .cap { margin: 4px 2px 7px; }
+.look .cap:not(:first-child) { margin-top: 12px; }
+.look .pals { display: grid; grid-template-columns: repeat(2, 1fr); gap: 5px; }
+.look .pals button { height: 34px; padding: 0 7px; white-space: nowrap; gap: 7px; border: 1px solid var(--line); font-size: 11.5px; }
+.look .pals button[aria-pressed="true"] { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent-soft); background: var(--surface); }
+.look .sw { display: flex; width: 26px; height: 18px; flex: none; border-radius: 4px; overflow: hidden; box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .08); }
+.look .sw i { flex: 1; }
+.look .seg { display: flex; gap: 2px; padding: 3px; border-radius: 8px; background: var(--sunken); }
+.look .seg button { flex: 1; height: 28px; justify-content: center; padding: 0 6px; font-size: 11.5px; color: var(--muted); }
+.look .seg button[aria-pressed="true"] { background: var(--surface); color: var(--ink); box-shadow: var(--shadow); }

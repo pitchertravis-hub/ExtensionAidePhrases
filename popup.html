@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>ZenText</title>
+  <title>TPhrase</title>
   <script src="js/theme.js"></script>
   <link rel="stylesheet" href="css/tokens.css">
   <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/palettes.css">
   <script src="lib/Sortable.min.js" defer></script>
   <script type="module" src="js/main.js"></script>
 </head>
@@ -32,12 +33,13 @@
     <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
     <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
     <symbol id="i-panel" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M15 4v16"/></symbol>
+    <symbol id="i-palette" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 0 0 18c1.1 0 1.8-.8 1.8-1.7 0-.5-.2-.9-.5-1.2-.3-.3-.5-.7-.5-1.2 0-.9.8-1.7 1.7-1.7H16a5 5 0 0 0 5-5c0-4-4-7.2-9-7.2z"/><circle cx="7.5" cy="11" r="1"/><circle cx="10" cy="7" r="1"/><circle cx="14.5" cy="7" r="1"/></symbol>
     <symbol id="i-key" viewBox="0 0 24 24"><rect x="2" y="6" width="20" height="12" rx="2"/><path d="M6 10h.01M10 10h.01M14 10h.01M18 10h.01M7 14h10"/></symbol>
   </svg>
 
   <div class="app" id="app">
     <header class="top">
-      <div class="brand"><span class="mono-z">Z</span><span class="bname">ZenText</span></div>
+      <div class="brand"><span class="mono-z">TP</span><span class="bname"><span class="tp">TP</span>hrase</span></div>
       <label class="search">
         <svg class="ico"><use href="#i-search"/></svg>
         <input id="q" placeholder="Chercher une rubrique, une phrase ou un menu ID" autocomplete="off" aria-label="Recherche">
@@ -97,6 +99,21 @@
     <hr>
     <button type="button" data-act="delete" class="danger"><svg class="ico"><use href="#i-trash"/></svg>Supprimer la liste</button>
   </div>
+  <div class="pop look" id="lookMenu" popover>
+    <div class="cap">Couleurs</div>
+    <div class="pals" id="lookPals"></div>
+    <div class="cap">Disposition</div>
+    <div class="seg" id="lookLayout">
+      <button type="button" data-v="none">Claire</button>
+      <button type="button" data-v="band">Bandeau</button>
+      <button type="button" data-v="col">Colonne</button>
+    </div>
+    <div class="cap">Mode</div>
+    <div class="seg" id="lookTheme">
+      <button type="button" data-v="light">Clair</button>
+      <button type="button" data-v="dark">Sombre</button>
+    </div>
+  </div>
   <div class="pop" id="rubMenu" popover>
     <button type="button" data-act="rename"><svg class="ico"><use href="#i-pen"/></svg>Renommer</button>
     <hr>
@@ -110,7 +127,7 @@
     <button type="button" data-act="export-json"><svg class="ico"><use href="#i-up"/></svg>Exporter JSON</button>
     <button type="button" data-act="export-csv"><svg class="ico"><use href="#i-table"/></svg>Exporter CSV</button>
     <hr>
-    <button type="button" data-act="theme"><svg class="ico"><use href="#i-moon"/></svg><span>Thème sombre</span></button>
+    <button type="button" data-act="look"><svg class="ico"><use href="#i-palette"/></svg><span>Apparence…</span></button>
   </div>
 
   <dialog id="dialog">
