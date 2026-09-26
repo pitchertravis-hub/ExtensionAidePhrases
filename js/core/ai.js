@@ -1,5 +1,5 @@
 // IA intégrée à Chrome (Prompt API, modèle local) : corriger ou reformuler un texte.
-// Rien n'est envoyé sur Internet. Sans l'API ou sans machine compatible, l'interface IA reste cachée.
+// Rien n'est envoyé sur Internet. Sans l'API ou sans machine compatible, l'onglet Rédiger explique pourquoi.
 import { FIELD_RE } from './fields.js';
 
 const LANG = { expectedInputs: [{ type: 'text', languages: ['fr'] }], expectedOutputs: [{ type: 'text', languages: ['fr'] }] };
@@ -14,17 +14,31 @@ Corrige uniquement : orthographe, accords, conjugaison, ponctuation, majuscules,
 Ne reformule pas, ne change ni le sens, ni le ton, ni l'ordre des mots, n'ajoute rien, ne retire rien.
 Garde les retours à la ligne. Si le texte est déjà correct, renvoie-le tel quel.
 ${KEEP}`,
-  // Correction et ton professionnel, pour l'onglet Rédiger.
-  pro: `Tu réécris des messages pour un usage professionnel (clients, partenaires, collègues). Réponds toujours en français.
-Corrige toutes les fautes et reformule le texte dans un ton professionnel, courtois et clair, avec vouvoiement.
-Commence par une formule de salutation adaptée et termine par une formule de politesse courte, comme « Cordialement, ».
-Garde tout le sens et toutes les informations du texte, n'invente aucun fait, aucune date, aucun nom.
-Reste concis : pas de phrases inutiles. Fais des paragraphes courts, et une liste à tirets si le texte énumère plusieurs éléments.
-${KEEP}`,
+  // Onglet Rédiger : une seule mission, dite simplement (un petit modèle se perd dans de longues consignes).
+  pro: `Ta seule mission : corriger la ou les phrases entre <texte> et </texte>, au vouvoiement et avec politesse.
+Ne réponds jamais au texte et ne parle jamais de toi : renvoie seulement les phrases corrigées.
+Garde le même sens, les touches du clavier, les nombres, les {champs} et les liens.`,
 };
+
+// Exemples montrés à l'IA avant chaque texte : ce qu'on attend exactement.
+const EXAMPLES = {
+  pro: [
+    ['tapez 2 fois sur echap puis F5 et c bon merci',
+      'Appuyez deux fois sur Échap, puis sur F5, et ce sera bon. Merci.'],
+    ['vous avez quel version de ID ? et sa fait depuis quand ?',
+      'Quelle version d\'ID utilisez-vous ? Depuis quand le problème se produit-il ?'],
+    ['tu refais toujours la meme erreur c\'est lourd faut valider avant de fermer',
+      'Pensez à valider avant de fermer, s\'il vous plaît.'],
+  ],
+};
+
+// Le texte est encadré pour que l'IA ne le prenne pas pour une question qui lui est posée.
+const wrap = (text) => `<texte>\n${text}\n</texte>`;
 
 const URL_RE = /https?:\/\/\S+/g;
 const sessions = {};
+// « pro-alt » a les mêmes consignes que « pro », seul le réglage de hasard change.
+const base = (kind) => (kind === 'pro-alt' ? 'pro' : kind);
 // Langues demandées à Chrome : le français (Chrome 149+), sinon sans langue précisée
 // (Chrome 138 à 148 : le modèle répond quand même en français, un peu moins bien).
 let lang = LANG;
@@ -50,30 +64,62 @@ export async function aiStatus() {
   }
 }
 
-async function session(kind, onProgress) {
-  if (sessions[kind]) return sessions[kind];
-  const opts = {
-    ...lang,
-    initialPrompts: [{ role: 'system', content: PROMPTS[kind] }],
-    monitor(m) { m.addEventListener('downloadprogress', (e) => onProgress?.(e.loaded)); },
-  };
-  // Correction : réponse la plus sûre possible (réglage réservé aux extensions).
-  if (kind === 'fix') {
-    try {
-      sessions[kind] = await LanguageModel.create({ ...opts, temperature: 0, topK: 1 });
-      return sessions[kind];
-    } catch { /* réglage refusé : valeurs par défaut */ }
+// Une session par usage, préparée une seule fois : l'IA lit alors ses consignes et ses exemples.
+// La promesse est gardée pour que le préchauffage et un clic rapide partagent la même préparation.
+function session(kind, onProgress) {
+  if (!sessions[kind]) {
+    sessions[kind] = createSession(kind, onProgress).catch((e) => { delete sessions[kind]; throw e; });
   }
-  sessions[kind] = await LanguageModel.create(opts);
   return sessions[kind];
 }
 
-async function ask(kind, text, onProgress) {
-  const s = await (await session(kind, onProgress)).clone();
+async function createSession(kind, onProgress) {
+  const opts = {
+    ...lang,
+    initialPrompts: [
+      { role: 'system', content: PROMPTS[base(kind)] },
+      ...(EXAMPLES[base(kind)] ?? []).flatMap(([q, a]) => [{ role: 'user', content: wrap(q) }, { role: 'assistant', content: a }]),
+    ],
+    monitor(m) { m.addEventListener('downloadprogress', (e) => onProgress?.(e.loaded)); },
+  };
+  // Correction : aucune fantaisie. Reformulation : un peu de liberté, sans s'éloigner du texte
+  // (réglage réservé aux extensions).
+  // Correction et première reformulation : toujours la même réponse pour le même texte.
+  // « Autre proposition » (pro-alt) : un peu de hasard pour varier.
+  const params = kind === 'pro-alt' ? { temperature: 0.8, topK: 8 } : { temperature: 0, topK: 1 };
   try {
-    let out = (await s.prompt(text)).trim().replace(/^```\w*\n?|\n?```$/g, '').trim();
-    if (/^["«“]/.test(out) && !/^["«“]/.test(text)) out = out.replace(/^["«“]\s*|\s*["»”]$/g, '');
-    return out;
+    return await LanguageModel.create({ ...opts, ...params });
+  } catch { /* réglage refusé : valeurs par défaut */ }
+  return LanguageModel.create(opts);
+}
+
+// Prépare l'IA pendant que l'utilisateur écrit, pour que Reformuler réponde plus vite.
+// Seulement si le modèle est déjà sur l'ordinateur : un téléchargement doit partir d'un clic.
+export async function warmUp() {
+  try {
+    const st = await LanguageModel.availability(lang);
+    if (st === 'available') await session('pro');
+  } catch { /* le clic sur Reformuler réessaiera */ }
+}
+
+const clean = (out, text) => {
+  out = out.trim().replace(/^```\w*\n?|\n?```$/g, '').replace(/<\/?texte>/g, '').trim();
+  if (/^["«“]/.test(out) && !/^["«“]/.test(text)) out = out.replace(/^["«“]\s*|\s*["»”]$/g, '');
+  return out;
+};
+
+// `onText` reçoit le texte au fur et à mesure qu'il s'écrit.
+async function ask(kind, text, onProgress, onText) {
+  const s = await (await session(kind, onProgress)).clone();
+  const input = base(kind) === 'pro' ? wrap(text) : text;
+  try {
+    if (!onText || !s.promptStreaming) return clean(await s.prompt(input), text);
+    let out = '';
+    for await (const chunk of s.promptStreaming(input)) {
+      out += chunk;
+      onText(clean(out, text));
+    }
+    return clean(out, text);
   } finally {
     s.destroy();
   }
@@ -95,8 +141,53 @@ export async function correctText(text, onProgress) {
   return text.slice(0, at) + out + text.slice(at + core.length);
 }
 
-// Texte corrigé et rendu professionnel. `ok` est faux si l'IA a touché aux champs ou aux liens.
-export async function rewriteText(text, onProgress) {
-  const out = await ask('pro', text.trim(), onProgress);
-  return { text: out, ok: !!out && sameKept(text, out) };
+// Touches du clavier citées dans un texte, écrites d'une seule façon (« echap », « esc » → echap).
+// Entrée, Tab, Maj, Alt et Suppr sont aussi des mots courants (« date d'entrée », « maj » pour mise à jour) :
+// ils ne comptent que près d'un verbe de clavier (« appuyez », « tapez », « touche »…) ou d'un « + ».
+const KEY_RE = /(?<![\p{L}\d])(f(?:1[0-2]|[1-9])|[ée]chap|esc|entr[ée]e|enter|suppr|tab|ctrl|alt|maj|shift)(?![\p{L}\d])/giu;
+const KEY_SAME = { esc: 'echap', enter: 'entree', shift: 'maj' };
+const KEY_WORDS = new Set(['entree', 'tab', 'maj', 'alt', 'suppr']);
+const KEY_BEFORE = /(?:touche|appuy|tap|press|clavier|\+)[^.!?\n]{0,30}$/i;
+function keysOf(text) {
+  const keys = [];
+  for (const m of text.matchAll(KEY_RE)) {
+    let k = m[1].toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    k = KEY_SAME[k] ?? k;
+    if (KEY_WORDS.has(k)) {
+      const before = text.slice(Math.max(0, m.index - 40), m.index);
+      const after = text.slice(m.index + m[0].length, m.index + m[0].length + 3);
+      if (!KEY_BEFORE.test(before) && !/^\s*\+/.test(after)) continue;
+    }
+    keys.push(k);
+  }
+  return keys;
+}
+
+// Ce qui ne va pas dans une reformulation, ou '' si elle paraît sûre.
+function problem(before, after) {
+  if (!after) return 'L’IA n’a rien renvoyé. Réessayez.';
+  const apology = /^(?:je suis d[ée]sol[ée]|je m.excuse|je vous prie de m.excuser|je comprends (?:votre|que|cette))/i;
+  if (/mod[èe]le (?:de )?(?:langu|linguisti)|en tant qu.(?:ia|intelligence)|je suis (?:une ia|un programme)/i.test(after)
+    || (apology.test(after) && !/d[ée]sol|excus|comprend/i.test(before))) {
+    return 'L’IA a répondu au texte au lieu de le reformuler. Réessayez.';
+  }
+  if (keep(before, FIELD_RE) !== keep(after, FIELD_RE)) return 'Vérifiez les champs {…} : l’IA les a modifiés.';
+  if (keep(before, URL_RE) !== keep(after, URL_RE)) return 'Vérifiez les liens : l’IA les a modifiés.';
+  const lost = keysOf(before).filter((k) => !keysOf(after).includes(k));
+  if (lost.length) return `Vérifiez les touches : ${[...new Set(lost)].join(', ').toUpperCase()} a disparu.`;
+  if (/\?\s*$/.test(before) && !after.includes('?')) return 'Vérifiez : la question a disparu.';
+  if (before.trim().length > 30 && after.length < before.trim().length * 0.25) {
+    return 'Le résultat est bien plus court que votre texte : l’IA a peut-être répondu au lieu de reformuler.';
+  }
+  return '';
+}
+
+// Texte corrigé et rendu professionnel. `why` explique ce qui semble faux, sinon il est vide.
+// `variant` : une autre formulation que la réponse habituelle (bouton « Autre proposition »).
+export async function rewriteText(text, onProgress, onText, variant = false) {
+  const out = await ask(variant ? 'pro-alt' : 'pro', text.trim(), onProgress, onText);
+  const why = problem(text, out);
+  // Même texte à la ponctuation et aux espaces près : l'IA n'a rien corrigé.
+  const flat = (t) => t.toLowerCase().replace(/[\s.,;:!?'’]+/g, '');
+  return { text: out, ok: !why, why, same: !why && flat(out) === flat(text) };
 }

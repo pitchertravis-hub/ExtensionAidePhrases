@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TPhrase · Règles de confidentialité</title>
+<style>
+  :root { --bg: #F4F5F7; --surface: #FFFFFF; --ink: #161A22; --ink-2: #3A404D; --muted: #7A8090; --line: #E3E5EA; --accent: #23408E; color-scheme: light dark; }
+  @media (prefers-color-scheme: dark) { :root { --bg: #0F1217; --surface: #171B23; --ink: #E9EBF0; --ink-2: #C3C8D2; --muted: #8A91A0; --line: #252B36; --accent: #A3B5EC; } }
+  body { margin: 0; background: var(--bg); color: var(--ink-2); font: 16px/1.6 "Segoe UI", system-ui, sans-serif; }
+  main { max-width: 680px; margin: 0 auto; padding: 40px 16px 64px; }
+  h1 { color: var(--ink); font-size: 28px; line-height: 1.2; margin: 0 0 4px; }
+  h2 { color: var(--ink); font-size: 18px; margin: 32px 0 8px; }
+  .date { color: var(--muted); margin: 0 0 24px; }
+  .box { background: var(--surface); border: 1px solid var(--line); border-radius: 10px; padding: 14px 18px; }
+  a { color: var(--accent); }
+  ul { padding-left: 20px; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Règles de confidentialité de TPhrase</h1>
+  <p class="date">Mise à jour le 26 septembre 2026</p>
+
+  <p class="box"><strong>En résumé :</strong> TPhrase ne collecte aucune donnée. Vos phrases et vos textes restent dans votre navigateur Chrome, sur votre ordinateur. Rien n'est envoyé au développeur de l'extension.</p>
+
+  <h2>Ce que TPhrase enregistre</h2>
+  <ul>
+    <li>Vos listes, rubriques et phrases, vos favoris et le nombre d'utilisations de chaque phrase.</li>
+    <li>Vos réglages d'apparence (couleurs, police, taille).</li>
+    <li>Le texte en cours dans l'onglet Rédiger, pour le retrouver à la réouverture.</li>
+  </ul>
+  <p>Ces données sont enregistrées dans le stockage local de Chrome, sur votre ordinateur. Elles ne sont ni envoyées, ni partagées, ni vendues. Elles sont effacées si vous désinstallez l'extension. Les sauvegardes JSON ou CSV que vous exportez sont des fichiers enregistrés sur votre ordinateur.</p>
+
+  <h2>Onglet Rédiger et intelligence artificielle</h2>
+  <p>La reformulation utilise l'IA intégrée à Google Chrome (Gemini Nano, via la Prompt API). Le modèle fonctionne sur votre ordinateur : le texte à reformuler n'est pas envoyé sur Internet. Chrome télécharge le modèle une seule fois, à la première utilisation.</p>
+  <p>Les résultats de l'IA peuvent contenir des erreurs : relisez-les avant de les utiliser. L'usage de l'IA est soumis au <a href="https://policies.google.com/terms/generative-ai/use-policy">règlement de Google sur les utilisations interdites de l'IA générative</a>.</p>
+
+  <h2>Dictée vocale</h2>
+  <p>Le bouton micro utilise la reconnaissance vocale de Chrome. Selon votre version de Chrome, votre voix peut être envoyée aux serveurs de Google pour être transformée en texte, selon les <a href="https://policies.google.com/privacy">règles de confidentialité de Google</a>. TPhrase ne reçoit que le texte obtenu et ne l'envoie nulle part. La dictée est facultative : si vous tapez votre texte au clavier, rien ne quitte votre ordinateur.</p>
+
+  <h2>Permissions</h2>
+  <ul>
+    <li><strong>sidePanel</strong> : afficher TPhrase dans le panneau latéral de Chrome, si vous choisissez de l'y ancrer.</li>
+  </ul>
+  <p>TPhrase ne lit pas les pages web que vous visitez et n'a accès à aucun site.</p>
+
+  <h2>Contact</h2>
+  <p>Pour toute question, utilisez l'onglet Assistance de la fiche TPhrase sur le Chrome Web Store.</p>
+</main>
+</body>
+</html>

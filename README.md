@@ -47,8 +47,17 @@ Rien à installer : pas de Node, pas de npm, pas d'étape de construction. Le do
 2. Cliquer **Charger l'extension non empaquetée** et choisir ce dossier.
 3. Après une modification, cliquer l'icône ↻ de l'extension.
 
+**Mettre à jour (Windows)**
+1. Télécharger le nouveau `TPhrase-x.y.zip` (il arrive dans Téléchargements).
+2. Double-cliquer **`Mettre a jour TPhrase.bat`** dans le dossier de l'extension : il prend le dernier zip TPhrase
+   des Téléchargements et remplace les fichiers. Les phrases, gardées par Chrome, ne sont pas touchées.
+3. Dans `chrome://extensions`, cliquer ↻ sur TPhrase.
+
 **Pour la publier sur le Chrome Web Store**
-1. Zipper le contenu du dossier (sans `.git` ni `README.md`).
+Tous les textes à coller, les images et la marche à suivre sont dans [`store/fiche-web-store.md`](store/fiche-web-store.md) ;
+la page de confidentialité est [`docs/confidentialite.html`](docs/confidentialite.html).
+
+1. Zipper le contenu du dossier (sans `.git`, `README.md`, `outils/` ni `Mettre a jour TPhrase.bat`).
 2. Dans le `manifest.json` du zip, retirer les champs `key` et `update_url` : le Web Store les refuse. Il garde lui-même l'identifiant de l'extension.
 3. Envoyer le zip depuis le tableau de bord développeur du Web Store.
 4. Dans la fiche et l'onglet Confidentialité : indiquer que l'extension utilise l'IA intégrée à Chrome, en local,

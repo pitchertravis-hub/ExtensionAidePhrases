@@ -3,7 +3,7 @@
 import { store } from '../store.js';
 import { state, render, rubriques, copyText } from '../state.js';
 import { textToHtml, escapeHtml } from '../core/text.js';
-import { aiStatus, rewriteText, chromeVersion } from '../core/ai.js';
+import { aiStatus, rewriteText, chromeVersion, warmUp } from '../core/ai.js';
 import { createVoice } from '../core/voice.js';
 import { openMenu, bindMenu } from '../ui/menu.js';
 import { inform } from '../ui/dialog.js';
@@ -21,10 +21,12 @@ function save() {
   try { localStorage.setItem(KEY, JSON.stringify({ draft: $('rdDraft').value, out: $('rdOut').value })); } catch { /* rien à faire */ }
 }
 
-function setTag(text, warn = false) {
+// Sans message particulier, l'étiquette rappelle que l'IA peut se tromper.
+function setTag(text = '', warn = false) {
   const tag = $('rdTag');
-  tag.textContent = text;
+  tag.textContent = text || 'L’IA peut se tromper : relisez avant d’envoyer.';
   tag.classList.toggle('warn', warn);
+  tag.classList.toggle('note', !text);
 }
 
 function updateButtons() {
@@ -34,9 +36,10 @@ function updateButtons() {
   $('rdAgain').disabled = busy || !usable || !hasDraft || !hasOut;
   $('rdCopy').disabled = busy || !hasOut;
   $('rdKeep').disabled = busy || !hasOut;
+  $('rdClear').disabled = busy || (!hasDraft && !hasOut);
 }
 
-async function run() {
+async function run(variant = false) {
   const text = $('rdDraft').value.trim();
   if (!text || busy || !usable) return;
   busy = true;
@@ -47,10 +50,21 @@ async function run() {
   setTag('L’IA réfléchit…');
   updateButtons();
   try {
-    const res = await rewriteText(text, (x) => setTag(`Préparation de l’IA… ${Math.round(x * 100)} %`));
+    const res = await rewriteText(
+      text,
+      (x) => setTag(`Préparation de l’IA… ${Math.round(x * 100)} %`),
+      (partial) => {
+        // Le texte s'affiche au fur et à mesure.
+        if (box.classList.contains('busy')) { box.classList.remove('busy'); setTag('L’IA écrit…'); }
+        out.value = partial;
+        out.scrollTop = out.scrollHeight;
+      },
+      variant,
+    );
     out.value = res.text;
-    if (res.ok) setTag('Reformulé');
-    else setTag('Vérifiez les champs {…} et les liens', true);
+    if (res.same) setTag('L’IA n’a rien modifié : cliquez ↻ pour réessayer', true);
+    else if (res.ok) setTag('Reformulé · relisez avant d’envoyer');
+    else setTag(res.why, true);
     check(); // le modèle vient peut-être d'être téléchargé
   } catch (e) {
     console.warn('Reformulation IA :', e);
@@ -142,12 +156,29 @@ async function check() {
   updateButtons();
 }
 
+// Vide les deux zones ; « Annuler » les remet.
+function clearAll() {
+  const draft = $('rdDraft');
+  const out = $('rdOut');
+  const before = { draft: draft.value, out: out.value };
+  draft.value = out.value = '';
+  setTag();
+  save();
+  updateButtons();
+  draft.focus();
+  showToast('Texte effacé', {
+    actionLabel: 'Annuler',
+    onClick: () => { draft.value = before.draft; out.value = before.out; save(); updateButtons(); },
+  });
+}
+
 export function initRediger() {
   const draft = $('rdDraft');
   const out = $('rdOut');
   const saved = load();
   draft.value = saved.draft ?? '';
   out.value = saved.out ?? '';
+  setTag();
   updateButtons();
 
   check();
@@ -155,12 +186,14 @@ export function initRediger() {
   $('rdDiag').addEventListener('click', () => chrome.tabs.create({ url: 'chrome://on-device-internals' }));
 
   draft.addEventListener('input', () => { save(); updateButtons(); });
+  draft.addEventListener('focus', () => { if (usable) warmUp(); });
   out.addEventListener('input', () => { save(); updateButtons(); });
   draft.addEventListener('keydown', (e) => {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) { e.preventDefault(); run(); }
   });
-  $('rdGo').addEventListener('click', run);
-  $('rdAgain').addEventListener('click', run);
+  $('rdGo').addEventListener('click', () => run());
+  $('rdClear').addEventListener('click', clearAll);
+  $('rdAgain').addEventListener('click', () => run(true));
   $('rdCopy').addEventListener('click', copyOut);
   $('rdKeep').addEventListener('click', (e) => openKeepMenu(e.currentTarget));
   bindMenu($('rdKeepMenu'), (act) => keep(Number(act)));
