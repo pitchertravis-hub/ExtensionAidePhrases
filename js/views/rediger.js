@@ -62,7 +62,8 @@ async function run(variant = false) {
       variant,
     );
     out.value = res.text;
-    if (res.ok) setTag('Reformulé · relisez avant d’envoyer');
+    if (res.same) setTag('L’IA n’a rien modifié : cliquez ↻ pour réessayer', true);
+    else if (res.ok) setTag('Reformulé · relisez avant d’envoyer');
     else setTag(res.why, true);
     check(); // le modèle vient peut-être d'être téléchargé
   } catch (e) {

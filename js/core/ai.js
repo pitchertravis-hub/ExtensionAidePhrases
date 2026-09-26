@@ -187,5 +187,7 @@ function problem(before, after) {
 export async function rewriteText(text, onProgress, onText, variant = false) {
   const out = await ask(variant ? 'pro-alt' : 'pro', text.trim(), onProgress, onText);
   const why = problem(text, out);
-  return { text: out, ok: !why, why };
+  // Même texte à la ponctuation et aux espaces près : l'IA n'a rien corrigé.
+  const flat = (t) => t.toLowerCase().replace(/[\s.,;:!?'’]+/g, '');
+  return { text: out, ok: !why, why, same: !why && flat(out) === flat(text) };
 }
