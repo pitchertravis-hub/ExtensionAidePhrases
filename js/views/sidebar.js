@@ -13,6 +13,7 @@ const listMenu = $('listMenu');
 const rubMenu = $('rubMenu');
 let menuIndex = -1;
 let sortable = null;
+let lastCurrent = '';
 
 // Ouvre une rubrique (ou les favoris) et vide la recherche.
 export function openRubrique(index, mode = 'rub') {
@@ -55,7 +56,13 @@ function renderSide() {
   });
   nav.innerHTML = h;
   renderRubSelect(rubs, onPh);
-  nav.querySelector('[aria-current="true"]')?.scrollIntoView({ block: 'nearest', inline: 'nearest' });
+  // On ramène la rubrique ouverte en vue seulement quand elle change, pour ne
+  // pas annuler le défilement de l'utilisateur à chaque copie.
+  const current = `${state.list}|${state.mode}|${state.rub}`;
+  if (current !== lastCurrent) {
+    lastCurrent = current;
+    nav.querySelector('[aria-current="true"]')?.scrollIntoView({ block: 'nearest' });
+  }
 }
 
 // Menu déroulant des rubriques, utilisé dans le panneau étroit (ancrage).
